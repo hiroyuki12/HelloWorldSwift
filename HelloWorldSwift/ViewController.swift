@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import CoreLocation
 import LocalAuthentication
 
 class ViewController: UIViewController {
@@ -15,12 +16,24 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var wkWebView: WKWebView!
     
-    var articles: [[String: Any]] = [] //追加
+    var articles: [[String: Any]] = [] //
+    
+    // 緯度
+    var latitudeNow: String = ""
+    // 経度
+    var longitudeNow: String = ""
+    // ロケーションマネージャ
+    var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        //位置情報を取得
+        // ロケーションマネージャのセットアップ
+        setupLocationManager()
+        
+        // Face ID
         let context = LAContext()
         var error: NSError?
         let description: String = "認証"
@@ -43,13 +56,13 @@ class ViewController: UIViewController {
             print(errorDescription) // Biometry is not available on this device.
         }
         
+        // WebView
         if let url = NSURL(string: "https://www.google.com") {
             let request = NSURLRequest(url: url as URL)
             wkWebView.load(request as URLRequest)
         }
         
-        
-        
+        // WIP Tabel View
         let url: URL = URL(string: "http://qiita.com/api/v2/items")!
 
         let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
@@ -78,14 +91,17 @@ class ViewController: UIViewController {
         print("Tap!")
     }
     
+    // Button backgroud Color
     @IBAction func tapButton2(_ sender: Any) {
         view.backgroundColor = UIColor.green
     }
     
+    // ButtonAlert
     @IBAction func tapAlert(_ sender: Any) {
         popUp()
     }
     
+    // Alert
     private func popUp() {
         let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
 
@@ -101,9 +117,63 @@ class ViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    // Button 位置情報を取得
+    @IBAction func tapGetLocationInfo(_ sender: Any) {
+        // マネージャの設定
+        let status = CLLocationManager.authorizationStatus()
+        if status == .denied {
+            showAlert()
+        } else if status == .authorizedWhenInUse {
+//            self.latitude.text = latitudeNow
+            print("latitudeNow")
+            print(latitudeNow)
+//            self.longitude.text = longitudeNow
+            print("longitudeNow")
+            print(longitudeNow)
+        }
+    }
+    // ロケーションマネージャのセットアップ
+    func setupLocationManager() {
+        locationManager = CLLocationManager()
+        
+        // 権限をリクエスト
+        // 位置情報取得許可ダイアログの表示
+        guard let locationManager = locationManager else { return }
+        locationManager.requestWhenInUseAuthorization()
+        
+        // マネージャの設定
+        let status = CLLocationManager.authorizationStatus()
+        // ステータスごとの処理
+        if status == .authorizedWhenInUse {
+            locationManager.delegate = self
+            // 位置情報取得を開始
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    // アラートを表示する
+    func showAlert() {
+        let alertTitle = "位置情報取得が許可されていません。"
+        let alertMessage = "設定アプリの「プライバシー > 位置情報サービス」から変更してください。"
+        let alert: UIAlertController = UIAlertController(
+            title: alertTitle,
+            message: alertMessage,
+            preferredStyle:  UIAlertController.Style.alert
+        )
+        // OKボタン
+        let defaultAction: UIAlertAction = UIAlertAction(
+            title: "OK",
+            style: UIAlertAction.Style.default,
+            handler: nil
+        )
+        // UIAlertController に Action を追加
+        alert.addAction(defaultAction)
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+    }
 }
 
-
+// WIP Table View
 extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -126,6 +196,7 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+// WIP Table View
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("section: \(indexPath.section) index: \(indexPath.row)")
@@ -133,5 +204,22 @@ extension ViewController: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         return
+    }
+}
+
+// 位置情報を取得
+extension ViewController: CLLocationManagerDelegate {
+
+    // 位置情報が更新された際、位置情報を格納する
+    // - Parameters:
+    //   - manager: ロケーションマネージャ
+    //   - locations: 位置情報
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.first
+        let latitude = location?.coordinate.latitude
+        let longitude = location?.coordinate.longitude
+        // 位置情報を格納する
+        self.latitudeNow = String(latitude!)
+        self.longitudeNow = String(longitude!)
     }
 }
