@@ -14,11 +14,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
     }
 
 
     @IBAction func tapButton(_ sender: Any) {
-        labelHello.text = "Taped!"
+        labelHello.text = "Tap!"
+        print("Tap!")
     }
     
     @IBAction func tapButton2(_ sender: Any) {
