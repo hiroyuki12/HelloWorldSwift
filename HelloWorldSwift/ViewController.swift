@@ -7,17 +7,26 @@
 //
 
 import UIKit
+import WebKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var labelHello: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var wkWebView: WKWebView!
     
     var articles: [[String: Any]] = [] //追加
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        
+        if let url = NSURL(string: "https://www.google.com") {
+            let request = NSURLRequest(url: url as URL)
+            wkWebView.load(request as URLRequest)
+        }
+        
+        
+        
         let url: URL = URL(string: "http://qiita.com/api/v2/items")!
 
         let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
@@ -49,6 +58,26 @@ class ViewController: UIViewController {
     @IBAction func tapButton2(_ sender: Any) {
         view.backgroundColor = UIColor.green
     }
+    
+    @IBAction func tapAlert(_ sender: Any) {
+        popUp()
+    }
+    
+    private func popUp() {
+        let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
+
+        let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
+        alertController.addAction(yesAction)
+
+        let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
+        alertController.addAction(noAction)
+
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 
