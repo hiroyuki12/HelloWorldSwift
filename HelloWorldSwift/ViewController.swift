@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import LocalAuthentication
 
 class ViewController: UIViewController {
     @IBOutlet weak var labelHello: UILabel!
@@ -19,6 +20,28 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        let context = LAContext()
+        var error: NSError?
+        let description: String = "認証"
+        
+        // Touch ID・Face IDが利用できるデバイスか確認する
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            // 利用できる場合は指紋・顔認証を要求する
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: description, reply: {success, evaluateError in
+                if (success) {
+                    // 認証成功時の処理を書く
+                    print("認証成功")
+                } else {
+                    // 認証失敗時の処理を書く
+                    print("認証失敗")
+                }
+            })
+        } else {
+            // Touch ID・Face IDが利用できない場合の処理
+            let errorDescription = error?.userInfo["NSLocalizedDescription"] ?? ""
+            print(errorDescription) // Biometry is not available on this device.
+        }
         
         if let url = NSURL(string: "https://www.google.com") {
             let request = NSURLRequest(url: url as URL)
