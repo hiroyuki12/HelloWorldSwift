@@ -15,6 +15,8 @@
 		2EE5C7D1243767D9005215DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */; };
 		2EE5C7DC243767D9005215DD /* HelloWorldSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7DB243767D9005215DD /* HelloWorldSwiftTests.swift */; };
 		2EE5C7E7243767D9005215DD /* HelloWorldSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7E6243767D9005215DD /* HelloWorldSwiftUITests.swift */; };
+		2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F4243819FC005215DD /* TableViewCell.swift */; };
+		2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F5243819FC005215DD /* TableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		2EE5C7E2243767D9005215DD /* HelloWorldSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloWorldSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7E6243767D9005215DD /* HelloWorldSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldSwiftUITests.swift; sourceTree = "<group>"; };
 		2EE5C7E8243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2EE5C7F4243819FC005215DD /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		2EE5C7F5243819FC005215DD /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,8 @@
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7C8243767D5005215DD /* ViewController.swift */,
+				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
+				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
 				2EE5C7CA243767D5005215DD /* Main.storyboard */,
 				2EE5C7CD243767D9005215DD /* Assets.xcassets */,
 				2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */,
@@ -233,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EE5C7D1243767D9005215DD /* LaunchScreen.storyboard in Resources */,
+				2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */,
 				2EE5C7CE243767D9005215DD /* Assets.xcassets in Resources */,
 				2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */,
 			);
@@ -260,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
+				2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */,
 				2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
 			);
