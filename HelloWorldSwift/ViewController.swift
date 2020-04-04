@@ -20,5 +20,9 @@ class ViewController: UIViewController {
     @IBAction func tapButton(_ sender: Any) {
         labelHello.text = "Taped!"
     }
+    
+    @IBAction func tapButton2(_ sender: Any) {
+        view.backgroundColor = UIColor.green
+    }
 }
 
