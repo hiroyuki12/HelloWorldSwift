@@ -10,11 +10,12 @@ import UIKit
 import WebKit
 import CoreLocation
 import LocalAuthentication
+import MapKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var labelHello: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var wkWebView: WKWebView!
+//    @IBOutlet weak var wkWebView: WKWebView!
     
     var articles: [[String: Any]] = [] //
     
@@ -57,10 +58,10 @@ class ViewController: UIViewController {
         }
         
         // WebView
-        if let url = NSURL(string: "https://www.google.com") {
-            let request = NSURLRequest(url: url as URL)
-            wkWebView.load(request as URLRequest)
-        }
+//        if let url = NSURL(string: "https://www.google.com") {
+//            let request = NSURLRequest(url: url as URL)
+//            wkWebView.load(request as URLRequest)
+//        }
         
         // WIP Tabel View
         let url: URL = URL(string: "http://qiita.com/api/v2/items")!
