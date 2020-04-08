@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var labelHello: UILabel!
     @IBOutlet weak var tableView: UITableView!
 //    @IBOutlet weak var wkWebView: WKWebView!
+    @IBOutlet weak var labelLocation: UILabel!
+    @IBOutlet weak var labelLocation2: UILabel!
     
     var articles: [[String: Any]] = [] //
     
@@ -125,12 +127,8 @@ class ViewController: UIViewController {
         if status == .denied {
             showAlert()
         } else if status == .authorizedWhenInUse {
-//            self.latitude.text = latitudeNow
-            print("latitudeNow")
-            print(latitudeNow)
-//            self.longitude.text = longitudeNow
-            print("longitudeNow")
-            print(longitudeNow)
+            labelLocation.text = latitudeNow
+            labelLocation2.text = longitudeNow
         }
     }
     // ロケーションマネージャのセットアップ

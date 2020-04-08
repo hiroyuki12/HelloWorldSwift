@@ -60,12 +60,28 @@
                                     <action selector="tapGetLocationInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0fu-tC-Ydf"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dt-Re-jiD">
+                                <rect key="frame" x="107" y="547" width="210" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyf-LL-x0q">
+                                <rect key="frame" x="107" y="576" width="210" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="labelHello" destination="BP9-Au-XE4" id="Nx1-MD-1r4"/>
+                        <outlet property="labelLocation" destination="7dt-Re-jiD" id="z3Z-xx-ZnF"/>
+                        <outlet property="labelLocation2" destination="fyf-LL-x0q" id="jCD-ZF-gCr"/>
                         <outlet property="tableView" destination="Czx-Nc-myo" id="ICu-fv-GYb"/>
                     </connections>
                 </viewController>
