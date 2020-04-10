@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E7D68AD243E7939008C962B /* Sub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E7D68AC243E7939008C962B /* Sub.storyboard */; };
-		2E7D68B1243E7CE7008C962B /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B0243E7CE7008C962B /* SubViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
 		2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C6243767D5005215DD /* SceneDelegate.swift */; };
 		2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C8243767D5005215DD /* ViewController.swift */; };
@@ -39,8 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2E7D68AC243E7939008C962B /* Sub.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Sub.storyboard; sourceTree = "<group>"; };
-		2E7D68B0243E7CE7008C962B /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
 		2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7C4243767D5005215DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EE5C7C6243767D5005215DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,8 +112,6 @@
 				2EE5C7CD243767D9005215DD /* Assets.xcassets */,
 				2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */,
 				2EE5C7D2243767D9005215DD /* Info.plist */,
-				2E7D68AC243E7939008C962B /* Sub.storyboard */,
-				2E7D68B0243E7CE7008C962B /* SubViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -248,7 +242,6 @@
 				2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */,
 				2EE5C7CE243767D9005215DD /* Assets.xcassets in Resources */,
 				2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */,
-				2E7D68AD243E7939008C962B /* Sub.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +268,6 @@
 			files = (
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */,
-				2E7D68B1243E7CE7008C962B /* SubViewController.swift in Sources */,
 				2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
 			);
