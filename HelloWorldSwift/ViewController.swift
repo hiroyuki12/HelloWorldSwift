@@ -104,27 +104,6 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.green
     }
     
-    // ButtonAlert
-    @IBAction func tapAlert(_ sender: Any) {
-        popUp()
-    }
-    
-    // Alert
-    private func popUp() {
-        let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
-
-        let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
-        alertController.addAction(yesAction)
-
-        let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
-        alertController.addAction(noAction)
-
-        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        present(alertController, animated: true, completion: nil)
-    }
-    
     // Button 位置情報を取得
     @IBAction func tapGetLocationInfo(_ sender: Any) {
         // マネージャの設定

@@ -20,14 +20,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJP-xB-hgm">
-                                <rect key="frame" x="168" y="471" width="79" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="ButtonAlert"/>
-                                <connections>
-                                    <action selector="tapAlert:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BwR-I5-cwW"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ECC-Yj-qHy">
                                 <rect key="frame" x="151" y="509" width="108" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -75,6 +67,14 @@
                                     <segue destination="IJk-BV-QAW" kind="show" id="Nut-oi-fOP"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0A-Bq-LNC">
+                                <rect key="frame" x="191" y="301" width="33" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Alert"/>
+                                <connections>
+                                    <segue destination="uvd-PU-qgv" kind="show" id="eQ9-3i-790"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -89,6 +89,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="131.8840579710145" y="106.47321428571428"/>
+        </scene>
+        <!--Alert View Controller-->
+        <scene sceneID="h0o-gD-HHT">
+            <objects>
+                <viewController storyboardIdentifier="AlertView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uvd-PU-qgv" customClass="AlertViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ek3-v4-6ep">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJP-xB-hgm">
+                                <rect key="frame" x="122" y="394" width="171" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <state key="normal" title="ButtonAlert"/>
+                                <connections>
+                                    <action selector="tapAlert:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BwR-I5-cwW"/>
+                                    <action selector="tapAlert:" destination="uvd-PU-qgv" eventType="touchUpInside" id="kTF-zJ-mgP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="xWL-q3-9d0"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="rZM-vX-XXf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hNB-4t-5gL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="901" y="-40"/>
         </scene>
         <!--Second View Controller-->
         <scene sceneID="v2u-AX-mMW">
@@ -126,7 +154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F1o-4m-dLQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1248" y="283"/>
+            <point key="canvasLocation" x="1412" y="315"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="MES-Hv-738">
