@@ -57,8 +57,6 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.green
     }
     
-
-    
     // Button 画面遷移
     @IBAction func tapNextPage(_ sender: Any) {
 //        // Storyboardのインスタンスを名前指定で取得する

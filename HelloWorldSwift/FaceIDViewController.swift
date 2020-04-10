@@ -7,10 +7,7 @@
 //
 
 import UIKit
-import WebKit
-import CoreLocation
 import LocalAuthentication
-import MapKit
 
 class FaceIDViewController: UIViewController {
 
