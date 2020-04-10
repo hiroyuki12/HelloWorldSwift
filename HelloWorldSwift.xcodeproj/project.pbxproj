@@ -11,6 +11,8 @@
 		2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B424409E33008C962B /* AlertViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
 		2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B82440B260008C962B /* FaceIDViewController.swift */; };
+		2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68BA24411C8A008C962B /* WebViewController.swift */; };
+		2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7D68BD244127D9008C962B /* WebKit.framework */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
 		2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C6243767D5005215DD /* SceneDelegate.swift */; };
 		2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C8243767D5005215DD /* ViewController.swift */; };
@@ -45,6 +47,8 @@
 		2E7D68B424409E33008C962B /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		2E7D68B82440B260008C962B /* FaceIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceIDViewController.swift; sourceTree = "<group>"; };
+		2E7D68BA24411C8A008C962B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		2E7D68BD244127D9008C962B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7C4243767D5005215DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EE5C7C6243767D5005215DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2E7D68BC244127D9008C962B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E7D68BD244127D9008C962B /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2EE5C7B8243767D5005215DD = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +108,7 @@
 				2EE5C7DA243767D9005215DD /* HelloWorldSwiftTests */,
 				2EE5C7E5243767D9005215DD /* HelloWorldSwiftUITests */,
 				2EE5C7C2243767D5005215DD /* Products */,
+				2E7D68BC244127D9008C962B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +138,7 @@
 				2E7D68B424409E33008C962B /* AlertViewController.swift */,
 				2E7D68B62440A14F008C962B /* LocationViewController.swift */,
 				2E7D68B82440B260008C962B /* FaceIDViewController.swift */,
+				2E7D68BA24411C8A008C962B /* WebViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -279,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */,
+				2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */,
