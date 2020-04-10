@@ -32,7 +32,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        //位置情報を取得
+        //
+        
+        
+        // 位置情報を取得
         // ロケーションマネージャのセットアップ
         setupLocationManager()
         
@@ -131,6 +134,20 @@ class ViewController: UIViewController {
             labelLocation2.text = longitudeNow
         }
     }
+    
+    // Button 画面遷移
+    @IBAction func tapNextPage(_ sender: Any) {
+//        // Storyboardのインスタンスを名前指定で取得する
+//        let storyboard = UIStoryboard(name: "Sub", bundle: nil)
+//        // Storyboard内で'is initial'に指定されているViewControllerを取得する
+//        let nextVC = storyboard.instantiateInitialViewController() as! SubViewController
+//        // FullScreenにする
+//        nextVC.modalPresentationStyle = .fullScreen
+//        // presentする
+//        self.present(nextVC, animated: true, completion: nil)
+    }
+    
+    
     // ロケーションマネージャのセットアップ
     func setupLocationManager() {
         locationManager = CLLocationManager()
