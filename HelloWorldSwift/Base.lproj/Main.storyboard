@@ -54,11 +54,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cn6-fL-2We">
-                                <rect key="frame" x="182" y="327" width="59" height="30"/>
+                                <rect key="frame" x="178" y="327" width="59" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Location"/>
                                 <connections>
                                     <segue destination="Xo7-G8-8gh" kind="show" id="RPq-tz-DUZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xRN-lM-KAN">
+                                <rect key="frame" x="180" y="359" width="51" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Face ID"/>
+                                <connections>
+                                    <segue destination="ZwM-ki-cNI" kind="show" id="0Bg-gP-3pD"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -75,6 +83,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="131.8840579710145" y="106.47321428571428"/>
+        </scene>
+        <!--FaceID View Controller-->
+        <scene sceneID="MWk-9d-LKl">
+            <objects>
+                <viewController id="ZwM-ki-cNI" customClass="FaceIDViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BWM-Q0-YC6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="R7w-Pk-26K"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="jRG-nb-Zvu"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cMT-Yu-r0h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928" y="169"/>
         </scene>
         <!--Location View Controller-->
         <scene sceneID="ENr-m4-Sy4">
@@ -119,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lm6-LY-8ul" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="936" y="100"/>
+            <point key="canvasLocation" x="1630" y="163"/>
         </scene>
         <!--Alert View Controller-->
         <scene sceneID="h0o-gD-HHT">
