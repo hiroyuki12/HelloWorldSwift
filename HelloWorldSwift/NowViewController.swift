@@ -1,25 +1,31 @@
 //
-//  WebViewController.swift
+//  NowViewController.swift
 //  HelloWorldSwift
 //
-//  Created by hiroyuki on 2020/04/11.
+//  Created by hiroyuki on 2020/04/12.
 //  Copyright © 2020 hiroyuki. All rights reserved.
 //
 
 import UIKit
-import WebKit
 
-class WebViewController: UIViewController {
-    @IBOutlet weak var wkWebView: WKWebView!
+class NowViewController: UIViewController {
+    @IBOutlet weak var label: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        let now = Date() // 現在日時の取得
 
-        if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている
-          self.wkWebView.load(URLRequest(url: url))
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US") // ロケールの設定
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss" // 日付フォーマットの設定
+
+        print(dateFormatter.string(from: now)) // -> 2014/06/25 02:13:18
+        
+        label.text = dateFormatter.string(from: now)
+        
     }
     
 

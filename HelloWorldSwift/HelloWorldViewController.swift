@@ -1,25 +1,25 @@
 //
-//  WebViewController.swift
+//  HelloWorldViewController.swift
 //  HelloWorldSwift
 //
-//  Created by hiroyuki on 2020/04/11.
+//  Created by hiroyuki on 2020/04/12.
 //  Copyright © 2020 hiroyuki. All rights reserved.
 //
 
 import UIKit
-import WebKit
 
-class WebViewController: UIViewController {
-    @IBOutlet weak var wkWebView: WKWebView!
-    
+class HelloWorldViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-
-        if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている
-          self.wkWebView.load(URLRequest(url: url))
-        }
+        
+        let label = UILabel()
+        label.text = "Hello, World!"
+        label.sizeToFit()
+        label.center = self.view.center
+        view.addSubview(label)
     }
     
 
