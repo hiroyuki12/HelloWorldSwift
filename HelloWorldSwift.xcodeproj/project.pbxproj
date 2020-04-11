@@ -18,6 +18,8 @@
 		2E7D68C4244136FB008C962B /* BrightnessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C3244136FB008C962B /* BrightnessViewController.swift */; };
 		2E7D68C6244241AD008C962B /* NowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C5244241AD008C962B /* NowViewController.swift */; };
 		2E7D68C824426A2E008C962B /* HelloWorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C724426A2E008C962B /* HelloWorldViewController.swift */; };
+		2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C92442704D008C962B /* QiitaViewController.swift */; };
+		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
 		2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C6243767D5005215DD /* SceneDelegate.swift */; };
 		2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C8243767D5005215DD /* ViewController.swift */; };
@@ -59,6 +61,8 @@
 		2E7D68C3244136FB008C962B /* BrightnessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessViewController.swift; sourceTree = "<group>"; };
 		2E7D68C5244241AD008C962B /* NowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowViewController.swift; sourceTree = "<group>"; };
 		2E7D68C724426A2E008C962B /* HelloWorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldViewController.swift; sourceTree = "<group>"; };
+		2E7D68C92442704D008C962B /* QiitaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaViewController.swift; sourceTree = "<group>"; };
+		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
 		2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7C4243767D5005215DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EE5C7C6243767D5005215DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +142,8 @@
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7C8243767D5005215DD /* ViewController.swift */,
+				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
+				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
 				2EE5C7CA243767D5005215DD /* Main.storyboard */,
@@ -311,6 +317,7 @@
 				2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */,
 				2E7D68C2244130D3008C962B /* BatteryViewController.swift in Sources */,
 				2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */,
+				2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2E7D68C6244241AD008C962B /* NowViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
@@ -321,6 +328,7 @@
 				2E7D68C824426A2E008C962B /* HelloWorldViewController.swift in Sources */,
 				2E7D68C4244136FB008C962B /* BrightnessViewController.swift in Sources */,
 				2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */,
+				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
