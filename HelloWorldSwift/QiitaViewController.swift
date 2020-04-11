@@ -8,10 +8,35 @@
 
 import UIKit
 
-class QiitaViewController: UIViewController {
-    @IBOutlet weak var tableview: UITableView!
+class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var tableView: UITableView!
     
     var articles: [[String: Any]] = [] //
+    let TODO = ["牛乳を買う", "掃除をする", "アプリ開発の勉強をする"]
+    
+    // Cellの中身を設定
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        // セルに表示する値を設定する
+        cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
+        //cell.textLabel!.text = TODO[indexPath.row]
+        
+        //print(articles[0]["title"]!)
+        //print(articles[1]["title"]!)
+        print ("AAA")
+        return cell
+    }
+    
+    
+    // Cellの個数を設定
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return articles.count
+        //return TODO.count
+        
+    }
+    
+//    @IBOutlet weak var tableview: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,15 +63,16 @@ class QiitaViewController: UIViewController {
                 
                 print("count: \(json.count)") //追加
                 self.articles = articles //追加
+                //self.tableView.reloadData()
             }
             catch {
                 print(error)
             }
         })
         
-        //task.resume() //実行する
+        task.resume() //実行する
         
-        tableview.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
+//        tableview.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
         
         // register関数でUITableViewCellを登録
 //        tableview.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -58,15 +84,10 @@ class QiitaViewController: UIViewController {
     }
     
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // dequeueReusableCell関数でCellの取得
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        // UITableViewCellにあるtextLabelの設定
-        cell.textLabel?.text = "\(indexPath.row)番目のセル"
-        return cell
-    }
     
     @IBAction func load(_ sender: Any) {
+        self.tableView.reloadData()
+
     }
     
     /*
@@ -79,39 +100,4 @@ class QiitaViewController: UIViewController {
     }
     */
 
-}
-
-// WIP Table View
-extension QiitaViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return articles.count //変更
-    }
-
-    func tableview(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
-        //let article = articles[indexPath.row] //追加
-        //let title = article["title"] as! String //追加
-//        cell.bindData(text: "title: \(title)") //変更
-        cell.textLabel?.text = "\(indexPath.row)番目のセル"
-        return cell
-    }
-  
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 10
-    }
-}
-
-// WIP Table View
-extension QiitaViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("section: \(indexPath.section) index: \(indexPath.row)")
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        return
-    }
 }
