@@ -13,11 +13,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
   var articles: [[String: Any]] = []
   
-  let tag = "swift";
-//    let _tag = "flutter";
+  let tag = "swift"
+//    let _tag = "flutter"
 
-  let tagFlutter  = "flutter";
-  let tagSwift    = "swift";
+  let tagFlutter  = "flutter"
+  let tagSwift    = "swift"
+  
+  var savedPage = 1
   
   // Cellの中身を設定
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -40,12 +42,20 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // Do any additional setup after loading the view.
     myload(page: 1, perPage: 20)
+    print("myload (viewDidLoad)")
     
     print("viewDidLoad End!")
   }
   
   func myload(page: Int , perPage: Int) {
-    let url: URL = URL(string: "http://qiita.com/api/v2/tags/Swift/items")!
+    let str1:String = "http://qiita.com/api/v2/tags/Swift/items?page="
+    let str2:String = String(page)
+    let str3:String = "&per_page="
+    let str4:String = String(perPage)
+
+    let str5:String = str1 + str2 + str3 + str4
+    
+    let url: URL = URL(string: str5)!
 
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
       do {
@@ -65,6 +75,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //        print("count: \(json.count)") //追加
         
         self.articles = articles //追加
+        print("self.articles Set End!")
       }
       catch {
           print(error)
@@ -72,12 +83,50 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     })
     
     task.resume() //実行する
+    
+    print("myload End!")
+    print("savePage=")
+    print(String(savedPage))
   }
   
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
-      print("tap load button!")
-      self.tableView.reloadData()
+    print("tap load button!")
+    
+//    myload(page: savedPage, perPage: 20)
+//    print("myload")
+    print("savePage=")
+    print(String(savedPage))
+    self.tableView.reloadData()
+  }
+  
+  // Nextボタン押下
+  @IBAction func next(_ sender: Any) {
+    print("tap next button!")
+    
+    self.tableView.reloadData()
+    print("reloadData End!")
+    
+    savedPage += 1
+    myload(page: savedPage, perPage: 20)
+    print("myload(next)")
+    print("savePage=")
+    print(String(savedPage))
+    
+  }
+  
+  @IBAction func prev(_ sender: Any) {
+    print("tap prev button!")
+    
+    self.tableView.reloadData()
+    print("reloadData End!")
+    
+    savedPage -= 1
+    myload(page: savedPage, perPage: 20)
+    print("myload(prev)")
+    print("savePage=")
+    print(String(savedPage))
+    
   }
   
   /*
