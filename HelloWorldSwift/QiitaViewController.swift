@@ -7,6 +7,23 @@
 //
 
 import UIKit
+import Foundation
+
+struct QiitaUser: Codable {
+    let id: String
+    let imageUrl: String // ①
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case imageUrl = "profile_image_url" // ②
+    }
+}
+
+struct QiitaArticle: Codable {
+    let title: String
+    let url: String
+    let user: QiitaUser // ⓵
+}
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var tableView: UITableView!
@@ -25,6 +42,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    
+    let article = articles[indexPath.row]
     // セルに表示する値を設定する
     cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
     
@@ -41,7 +60,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    myload(page: 1, perPage: 20)
+    myload(page: 1, perPage: 15)
     print("myload (viewDidLoad)")
     
     print("viewDidLoad End!")
@@ -95,26 +114,21 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
-    print("tap load button!")
-    
     self.tableView.reloadData()
+    print("reloadData(tap load button")
   }
   
   // Nextボタン押下
   @IBAction func next(_ sender: Any) {
-    print("tap next button!")
-    
     savedPage += 1
-    myload(page: savedPage, perPage: 20)
-    print("myload(next)")
+    myload(page: savedPage, perPage: 15)
+    print("myload(tap next button)")
   }
   
   @IBAction func prev(_ sender: Any) {
-    print("tap prev button!")
-    
     savedPage -= 1
-    myload(page: savedPage, perPage: 20)
-    print("myload(prev)")
+    myload(page: savedPage, perPage: 15)
+    print("myload(tap prev button)")
   }
   
   /*
