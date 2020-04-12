@@ -75,6 +75,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //        print("count: \(json.count)") //追加
         
         self.articles = articles //追加
+        print("savePage : \(self.savedPage)")
         print("self.articles Set End!")
         
         DispatchQueue.main.async {
@@ -90,18 +91,12 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     task.resume() //実行する
     
     print("myload End!")
-    print("savePage=")
-    print(String(savedPage))
   }
   
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
     print("tap load button!")
     
-//    myload(page: savedPage, perPage: 20)
-//    print("myload")
-    print("savePage=")
-    print(String(savedPage))
     self.tableView.reloadData()
   }
   
@@ -109,29 +104,17 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   @IBAction func next(_ sender: Any) {
     print("tap next button!")
     
-    self.tableView.reloadData()
-    print("reloadData End!")
-    
     savedPage += 1
     myload(page: savedPage, perPage: 20)
     print("myload(next)")
-    print("savePage=")
-    print(String(savedPage))
-    
   }
   
   @IBAction func prev(_ sender: Any) {
     print("tap prev button!")
     
-    self.tableView.reloadData()
-    print("reloadData End!")
-    
     savedPage -= 1
     myload(page: savedPage, perPage: 20)
     print("myload(prev)")
-    print("savePage=")
-    print(String(savedPage))
-    
   }
   
   /*
