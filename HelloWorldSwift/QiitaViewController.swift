@@ -76,6 +76,11 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.articles = articles //追加
         print("self.articles Set End!")
+        
+        DispatchQueue.main.async {
+          self.tableView.reloadData()
+          print("reloadData End!")
+        }
       }
       catch {
           print(error)
