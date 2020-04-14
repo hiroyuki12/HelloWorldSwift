@@ -28,7 +28,6 @@ struct QiitaArticle: Codable {
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var table: UITableView!
-//  @IBOutlet weak var imageView: UIImageView!
   
   var articles: [[String: Any]] = []
   
@@ -48,21 +47,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let article = articles[indexPath.row]
     // セルに表示するテキストを設定する
     cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
+//    cell.detailTextLabel!.text = articles[indexPath.row]["title"]! as? String
     
     // セルに表示する画像を設定する
 //    let img = UIImage(named: imgArray[indexPath.row] as! String)
 //    cell.imageView?.image = img
     
-//    let button = UIButton()
-//    button.addTarget(self, action: #selector(self.buttonEvent(_: )), for: UIControl.Event.touchUpInside)
-    
     return cell
   }
-  
-//  @objc func buttonEvent(_ sender: UIButton)
-//  {
-//    print("tapped.")
-//  }
     
   // Cellの個数を設定
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,9 +88,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let articles = json.map { (article) -> [String: Any] in
             return article as! [String: Any]
         }
-        print(json)
-        print(articles[0]["user"]!)
-//        print(articles[0]["title"]!)
+//        print(json)
+//        print(articles[0]["user"]!)
+        print(articles[0]["title"]!)
+        print(articles[0]["url"]!)
 //        print(articles[1]["title"]!)
 
 //        extract articles
@@ -148,8 +141,15 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // セルをタップした時の処理
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    popUp()
+//    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
+//    popUp()
+    
+    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
+    webView.url = articles[indexPath.row]["url"]! as? String ?? "http://www.yahoo.co.jp"
+    
+    self.present(webView, animated: true, completion: nil)
   }
+  
   
   private func popUp() {
       let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
@@ -175,7 +175,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   */
   
-
 }
 
 

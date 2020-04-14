@@ -17,8 +17,9 @@ class ViewController: UIViewController {
   
 // ①セグエ実行前処理
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//    print ("aaa")
-//    print (segue.identifier)
+    /* WebKit View タップ時にGoolge表示
+    print ("aaa")
+    print (segue.identifier)
     // ②Segueの識別子確認
     //if segue.identifier == "MyWebView" {
       // ③遷移先ViewCntrollerの取得
@@ -26,6 +27,7 @@ class ViewController: UIViewController {
       // ④遷移先に渡す値の設定
       webView.url = "http://www.google.com/"
     //}
+     */
   }
   
     // Button 画面遷移
