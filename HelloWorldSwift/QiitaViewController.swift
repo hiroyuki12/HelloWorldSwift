@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import WebKit
 
 struct QiitaUser: Codable {
     let id: String
@@ -26,8 +27,8 @@ struct QiitaArticle: Codable {
 }
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-  @IBOutlet weak var tableView: UITableView!
-    
+  @IBOutlet weak var table: UITableView!
+  
   var articles: [[String: Any]] = []
   
   let tag = "swift"
@@ -44,8 +45,12 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
     let article = articles[indexPath.row]
-    // セルに表示する値を設定する
+    // セルに表示するテキストを設定する
     cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
+    
+    // セルに表示する画像を設定する
+//    let img = UIImage(named: imgArray[indexPath.row] as! String)
+//    cell.imageView?.image = img
     
     return cell
   }
@@ -82,7 +87,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let articles = json.map { (article) -> [String: Any] in
             return article as! [String: Any]
         }
-//        print(json)
+        print(json)
+        print(articles[0]["user"]!)
 //        print(articles[0]["title"]!)
 //        print(articles[1]["title"]!)
 
@@ -98,7 +104,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print("self.articles Set End!")
         
         DispatchQueue.main.async {
-          self.tableView.reloadData()
+          self.table.reloadData()
           print("reloadData End!")
         }
       }
@@ -114,7 +120,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
-    self.tableView.reloadData()
+    self.table.reloadData()
     print("reloadData(tap load button")
   }
   
@@ -131,6 +137,25 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     print("myload(tap prev button)")
   }
   
+  // セルをタップした時の処理
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    popUp()
+  }
+  
+  private func popUp() {
+      let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
+
+      let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
+      alertController.addAction(yesAction)
+
+      let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
+      alertController.addAction(noAction)
+
+      let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+      alertController.addAction(cancelAction)
+
+      present(alertController, animated: true, completion: nil)
+  }
   /*
   // MARK: - Navigation
 
@@ -140,5 +165,22 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       // Pass the selected object to the new view controller.
   }
   */
+  
 
 }
+
+
+//extension ViewController: UITableViewDelegate {
+//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
+//    let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
+//    // ③indexPathを使用してarticlesから選択されたarticleを取得
+//    //let article = articles[indexPath.row]
+//    // ④urlとtitleを代入
+//    webViewController.url = "http://www.google.com/"
+//    //webViewController.url = article.url
+//    //webViewController.title = article.title
+//    navigationController?.pushViewController(webViewController, animated: true)
+//  }
+//}
+
