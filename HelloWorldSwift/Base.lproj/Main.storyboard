@@ -506,6 +506,9 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="AsD-n6-BBo" kind="show" id="Bqp-73-iZz"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -551,4 +554,7 @@
             <point key="canvasLocation" x="811.59420289855075" y="105.80357142857143"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Bqp-73-iZz"/>
+    </inferredMetricsTieBreakers>
 </document>

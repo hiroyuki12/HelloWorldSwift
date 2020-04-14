@@ -28,6 +28,7 @@ struct QiitaArticle: Codable {
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var table: UITableView!
+//  @IBOutlet weak var imageView: UIImageView!
   
   var articles: [[String: Any]] = []
   
@@ -52,8 +53,16 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    let img = UIImage(named: imgArray[indexPath.row] as! String)
 //    cell.imageView?.image = img
     
+//    let button = UIButton()
+//    button.addTarget(self, action: #selector(self.buttonEvent(_: )), for: UIControl.Event.touchUpInside)
+    
     return cell
   }
+  
+//  @objc func buttonEvent(_ sender: UIButton)
+//  {
+//    print("tapped.")
+//  }
     
   // Cellの個数を設定
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
