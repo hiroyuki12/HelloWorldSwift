@@ -28,6 +28,7 @@ struct QiitaArticle: Codable {
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var table: UITableView!
+  @IBOutlet weak var textPage: UILabel!
   
   var articles: [[String: Any]] = []
   
@@ -47,7 +48,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let article = articles[indexPath.row]
     // セルに表示するテキストを設定する
     cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
-//    cell.detailTextLabel!.text = articles[indexPath.row]["title"]! as? String
+    cell.detailTextLabel!.text = articles[indexPath.row]["created_at"]! as? String
     
     // セルに表示する画像を設定する
 //    let img = UIImage(named: imgArray[indexPath.row] as! String)
@@ -131,12 +132,19 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     savedPage += 1
     myload(page: savedPage, perPage: 15)
     print("myload(tap next button)")
+    
+    textPage.text =  "swift Page " + String(savedPage) +
+      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
+  // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
     myload(page: savedPage, perPage: 15)
     print("myload(tap prev button)")
+    
+    textPage.text =  "swift Page " + String(savedPage) +
+      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
   // セルをタップした時の処理
