@@ -14,6 +14,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   
+  var isLoading = false;
+  
   var articles: [[String: Any]] = []
   
   let tag = "swift"
@@ -71,7 +73,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       do {
         let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Any]
         
+        // 一時退避
         let articles_tmp = self.articles
+        // 末尾に追加
         let articles = articles_tmp + json.map { (article) -> [String: Any] in
             return article as! [String: Any]
         }
@@ -96,6 +100,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         DispatchQueue.main.async {
           self.table.reloadData()
           print("reloadData End!")
+          self.isLoading = false
+          print("self.isLoading = false End!")
         }
       }
       catch {
@@ -160,6 +166,19 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
       present(alertController, animated: true, completion: nil)
   }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
+      isLoading = true
+      savedPage += 1
+      myload(page: savedPage, perPage: 15)
+      print("myload(List End)")
+      
+      textPage.text =  "swift Page " + String(savedPage) +
+        "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+    }
+  }
+  
   /*
   // MARK: - Navigation
 
