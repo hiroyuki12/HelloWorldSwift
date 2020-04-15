@@ -10,22 +10,6 @@ import UIKit
 import Foundation
 import WebKit
 
-struct QiitaUser: Codable {
-    let id: String
-    let imageUrl: String // ①
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case imageUrl = "profile_image_url" // ②
-    }
-}
-
-struct QiitaArticle: Codable {
-    let title: String
-    let url: String
-    let user: QiitaUser // ⓵
-}
-
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
@@ -82,17 +66,20 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let str5:String = str1 + str2 + str3 + str4
     
     let url: URL = URL(string: str5)!
-
+    
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
       do {
         let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Any]
-        let articles = json.map { (article) -> [String: Any] in
+        
+        let articles_tmp = self.articles
+        let articles = articles_tmp + json.map { (article) -> [String: Any] in
             return article as! [String: Any]
         }
 //        print(json)
 //        print(articles[0]["user"]!)
+        print("BBB")
         print(articles[0]["title"]!)
-        print(articles[0]["url"]!)
+//        print(articles[0]["url"]!)
 //        print(articles[1]["title"]!)
 
 //        extract articles
@@ -185,6 +172,21 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
 }
 
+struct QiitaUser: Codable {
+    let id: String
+    let imageUrl: String // ①
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case imageUrl = "profile_image_url" // ②
+    }
+}
+
+struct QiitaArticle: Codable {
+    let title: String
+    let url: String
+    let user: QiitaUser // ⓵
+}
 
 //extension ViewController: UITableViewDelegate {
 //  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
