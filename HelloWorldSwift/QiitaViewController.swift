@@ -13,6 +13,7 @@ import WebKit
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
+  @IBOutlet weak var myImage: UIImageView!
   
   var isLoading = false;
   
@@ -36,11 +37,27 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
     cell.detailTextLabel!.text = articles[indexPath.row]["created_at"]! as? String
     
+    let couponImageView = cell.viewWithTag(5) as! UIImageView
+    let image:UIImage = getImageByUrl(url:"https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20140315%2F40%2F4254050%2F12%2F384x215xbeefc5a0630dd93608c286cb.jpg%2F300%2F600&twidth=300&theight=600&qlt=80&res_format=jpg&op=r")
+     couponImageView.image = image
+//    myImage.image = image
+    
     // セルに表示する画像を設定する
 //    let img = UIImage(named: imgArray[indexPath.row] as! String)
 //    cell.imageView?.image = img
     
     return cell
+  }
+  
+  func getImageByUrl(url: String) -> UIImage{
+      let url = URL(string: url)
+      do {
+          let data = try Data(contentsOf: url!)
+          return UIImage(data: data)!
+      } catch let err {
+          print("Error : \(err.localizedDescription)")
+      }
+      return UIImage()
   }
     
   // Cellの個数を設定
@@ -53,7 +70,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    myload(page: 1, perPage: 15)
+    myload(page: 1, perPage: 20)
     print("myload (viewDidLoad)")
     
     print("viewDidLoad End!")
@@ -123,7 +140,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   // Nextボタン押下
   @IBAction func next(_ sender: Any) {
     savedPage += 1
-    myload(page: savedPage, perPage: 15)
+    myload(page: savedPage, perPage: 20)
     print("myload(tap next button)")
     
     textPage.text =  "swift Page " + String(savedPage) +
@@ -133,7 +150,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
-    myload(page: savedPage, perPage: 15)
+    myload(page: savedPage, perPage: 20)
     print("myload(tap prev button)")
     
     textPage.text =  "swift Page " + String(savedPage) +
@@ -171,7 +188,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
       isLoading = true
       savedPage += 1
-      myload(page: savedPage, perPage: 15)
+      myload(page: savedPage, perPage: 20)
       print("myload(List End)")
       
       textPage.text =  "swift Page " + String(savedPage) +
