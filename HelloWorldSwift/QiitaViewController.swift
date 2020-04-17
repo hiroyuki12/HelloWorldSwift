@@ -27,49 +27,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   var savedPage = 1
   
-  // Cellの中身を設定
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    // セルを取得する
-    let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-    
-    let article = articles[indexPath.row]
-    // セルに表示するテキストを設定する
-    cell.textLabel!.text = articles[indexPath.row]["title"]! as? String
-    cell.detailTextLabel!.text = articles[indexPath.row]["created_at"]! as? String
-    
-    let couponImageView = cell.viewWithTag(5) as! UIImageView
-    let image:UIImage = getImageByUrl(url:"https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20140315%2F40%2F4254050%2F12%2F384x215xbeefc5a0630dd93608c286cb.jpg%2F300%2F600&twidth=300&theight=600&qlt=80&res_format=jpg&op=r")
-     couponImageView.image = image
-//    myImage.image = image
-    
-    // セルに表示する画像を設定する
-//    let img = UIImage(named: imgArray[indexPath.row] as! String)
-//    cell.imageView?.image = img
-    
-    return cell
-  }
-  
-  func getImageByUrl(url: String) -> UIImage{
-      let url = URL(string: url)
-      do {
-          let data = try Data(contentsOf: url!)
-          return UIImage(data: data)!
-      } catch let err {
-          print("Error : \(err.localizedDescription)")
-      }
-      return UIImage()
-  }
-    
-  // Cellの個数を設定
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return articles.count
-  }
-
   // 起動時処理
   override func viewDidLoad() {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
+    // セルの高さを設定
+    table.rowHeight = 70
+    
     myload(page: 1, perPage: 20)
     print("myload (viewDidLoad)")
     
@@ -98,8 +63,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
 //        print(json)
 //        print(articles[0]["user"]!)
-        print("BBB")
-        print(articles[0]["title"]!)
+        //print("BBB")
+        //print(articles[0]["title"]!)
 //        print(articles[0]["url"]!)
 //        print(articles[1]["title"]!)
 
@@ -111,8 +76,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //        print("count: \(json.count)") //追加
         
         self.articles = articles //追加
-        print("savePage : \(self.savedPage)")
-        print("self.articles Set End!")
+        //print("savePage : \(self.savedPage)")
+        //print("self.articles Set End!")
         
         DispatchQueue.main.async {
           self.table.reloadData()
@@ -128,20 +93,54 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     task.resume() //実行する
     
-    print("myload End!")
+    //print("myload End!")
+  }
+  
+  // Cellの中身を設定
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // セルを取得する
+    let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    
+    let article = articles[indexPath.row]
+    // セルに表示するタイトルを設定する
+    let textTitle = cell.viewWithTag(2) as! UILabel
+    textTitle.text = article["title"]! as? String
+    // セルに表示する作成日を設定する
+    let textDetailText = cell.viewWithTag(3) as! UILabel
+    textDetailText.text = article["created_at"]! as? String
+//    print ("AAA")
+//    print (article["user"])  //ok
+    // セルに表示する画像を設定する
+    let articleUser = article["user"] as AnyObject?
+    let profileImageUrl = articleUser?["profile_image_url"]
+//    print ("BBB")
+//    print (profileImageUrl)  //ok
+    let profileImage = cell.viewWithTag(1) as! UIImageView
+    let myUrl: URL? = URL(string: profileImageUrl as! String)
+    profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    // セルに表示する画像を設定する
+//    let img = UIImage(named: imgArray[indexPath.row] as! String)
+//    cell.imageView?.image = img
+    
+    return cell
+  }
+  
+  // Cellの個数を設定
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return articles.count
   }
   
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
     self.table.reloadData()
-    print("reloadData(tap load button")
+    //print("reloadData(tap load button")
   }
   
   // Nextボタン押下
   @IBAction func next(_ sender: Any) {
     savedPage += 1
     myload(page: savedPage, perPage: 20)
-    print("myload(tap next button)")
+    //print("myload(tap next button)")
     
     textPage.text =  "swift Page " + String(savedPage) +
       "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
@@ -151,7 +150,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
     myload(page: savedPage, perPage: 20)
-    print("myload(tap prev button)")
+    //print("myload(tap prev button)")
     
     textPage.text =  "swift Page " + String(savedPage) +
       "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
@@ -170,18 +169,18 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   
   private func popUp() {
-      let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
+    let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
 
-      let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
-      alertController.addAction(yesAction)
+    let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
+    alertController.addAction(yesAction)
 
-      let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
-      alertController.addAction(noAction)
+    let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
+    alertController.addAction(noAction)
 
-      let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
-      alertController.addAction(cancelAction)
+    let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+    alertController.addAction(cancelAction)
 
-      present(alertController, animated: true, completion: nil)
+    present(alertController, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -189,7 +188,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       isLoading = true
       savedPage += 1
       myload(page: savedPage, perPage: 20)
-      print("myload(List End)")
+      //print("myload(List End)")
       
       textPage.text =  "swift Page " + String(savedPage) +
         "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
@@ -208,20 +207,49 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
 }
 
-struct QiitaUser: Codable {
-    let id: String
-    let imageUrl: String // ①
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case imageUrl = "profile_image_url" // ②
+// 指定URLから画像を読み込み、セットする
+// defaultUIImageには、URLからの読込に失敗した時の画像を指定する
+extension UIImageView {
+  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) -> Void {
+    if url == nil {
+      self.image = defaultUIImage
+      return
     }
+
+    DispatchQueue.global().async {
+      do {
+        let imageData: Data? = try Data(contentsOf: url!)
+        DispatchQueue.main.async {
+          if let data = imageData {
+            self.image = UIImage(data: data)
+          } else {
+            self.image = defaultUIImage
+          }
+        }
+      }
+      catch {
+        DispatchQueue.main.async {
+          self.image = defaultUIImage
+        }
+      }
+    }
+  }
+}
+
+struct QiitaUser: Codable {
+  let id: String
+  let imageUrl: String // ①
+  
+  enum CodingKeys: String, CodingKey {
+      case id
+      case imageUrl = "profile_image_url" // ②
+  }
 }
 
 struct QiitaArticle: Codable {
-    let title: String
-    let url: String
-    let user: QiitaUser // ⓵
+  let title: String
+  let url: String
+  let user: QiitaUser // ⓵
 }
 
 //extension ViewController: UITableViewDelegate {
