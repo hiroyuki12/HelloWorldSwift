@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import WebKit
 
-class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
@@ -19,11 +19,11 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   var articles: [[String: Any]] = []
   
-  let tag = "swift"
-//    let _tag = "flutter"
-
-  let tagFlutter  = "flutter"
+  var tag = "swift"
+//    let tag = "flutter"
+  
   let tagSwift    = "swift"
+  let tagFlutter  = "flutter"
   
   var savedPage = 1
   
@@ -35,21 +35,29 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // セルの高さを設定
     table.rowHeight = 70
     
-    myload(page: 1, perPage: 20)
+    myload(page: 1, perPage: 20, tag: tag)
     print("myload (viewDidLoad)")
+    
+//    let target = self.navigationController?.value(forKey: "_cachedInteractionController")
+//    let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
+//    self.view.addGestureRecognizer(recognizer)
     
     print("viewDidLoad End!")
   }
   
-  func myload(page: Int , perPage: Int) {
-    let str1:String = "http://qiita.com/api/v2/tags/Swift/items?page="
-    let str2:String = String(page)
-    let str3:String = "&per_page="
-    let str4:String = String(perPage)
+  func myload(page: Int , perPage: Int, tag: String) {
+    let str1:String = "http://qiita.com/api/v2/tags/"
+    let str2:String = String(tag)
+    let str3:String = "/items?page="
+    let str4:String = String(page)
+    let str5:String = "&per_page="
+    let str6:String = String(perPage)
 
-    let str5:String = str1 + str2 + str3 + str4
+    let str7:String = str1 + str2 + str3 + str4 + str5 + str6
     
-    let url: URL = URL(string: str5)!
+    let url: URL = URL(string: str7)!
+    //print ("AAA")
+    //print (str7)
     
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
       do {
@@ -136,21 +144,20 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print("reloadData(tap load button")
   }
   
-  // Nextボタン押下
+  // Flutterボタン押下
   @IBAction func next(_ sender: Any) {
-    savedPage += 1
-    myload(page: savedPage, perPage: 20)
-    //print("myload(tap next button)")
-    
-    textPage.text =  "swift Page " + String(savedPage) +
-      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+    articles.removeAll()
+    tag = tagFlutter
+    savedPage = 1
+    myload(page: savedPage, perPage: 20, tag: tag)
+    textPage.text =  String(tag) + " Page " + String(savedPage) +
+          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
-    myload(page: savedPage, perPage: 20)
-    //print("myload(tap prev button)")
+    myload(page: savedPage, perPage: 20, tag: tag)
     
     textPage.text =  "swift Page " + String(savedPage) +
       "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
@@ -187,10 +194,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
       isLoading = true
       savedPage += 1
-      myload(page: savedPage, perPage: 20)
+      myload(page: savedPage, perPage: 20, tag: tag)
       //print("myload(List End)")
       
-      textPage.text =  "swift Page " + String(savedPage) +
+      textPage.text =  String(tag) + " Page " + String(savedPage) +
         "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
     }
   }
