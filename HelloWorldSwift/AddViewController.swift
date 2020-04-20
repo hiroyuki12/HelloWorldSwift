@@ -14,8 +14,17 @@ var TodoKobetsunonakami = [String]()
 class AddViewController: UIViewController {
   @IBOutlet weak var TodoTextField: UITextField!
   @IBOutlet weak var TodoAddButton: UIButton!
+  
+  // Saveボタン押下時
   @IBAction func TodoAddButton(_ sender: Any) {
-    TodoKobetsunonakami.append(TodoTextField.text!)
+    
+    let dt = Date()
+    let dateFormatter = DateFormatter()
+    // DateFormatter を使用して書式とロケールを指定する
+    dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yMMMdHms", options: 0, locale: Locale(identifier: "ja_JP"))
+    print(dateFormatter.string(from: dt))
+    
+    TodoKobetsunonakami.append(TodoTextField.text! + "°C  " + dateFormatter.string(from: dt))
     TodoTextField.text = ""
     UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
   }
