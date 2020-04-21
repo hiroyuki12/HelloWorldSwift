@@ -128,6 +128,22 @@
                                     <segue destination="EnZ-hQ-khL" kind="show" id="mRO-YS-sbA"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="whN-mY-wWL">
+                                <rect key="frame" x="275" y="563" width="37" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add2"/>
+                                <connections>
+                                    <action selector="tapAdd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4AA-7y-XcK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yQB-fb-Y0a">
+                                <rect key="frame" x="198" y="616" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sub"/>
+                                <connections>
+                                    <action selector="tapSub:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4GC-dO-n5E"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJn-2O-iu8">
                                 <rect key="frame" x="148" y="679" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -536,7 +552,7 @@
         <!--Add View Controller-->
         <scene sceneID="2DV-p3-143">
             <objects>
-                <viewController id="gKS-C5-7ND" customClass="AddViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gKS-C5-7ND" customClass="AddViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ipc-hg-jlv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

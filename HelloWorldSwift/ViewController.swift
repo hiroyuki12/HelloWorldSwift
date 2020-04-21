@@ -9,6 +9,19 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
+  @IBAction func tapSub(_ sender: Any) {
+    let storyboard = UIStoryboard(name: "Sub", bundle: nil)
+    let next = storyboard.instantiateViewController(withIdentifier: "SubViewController")
+    self.present(next, animated: true)
+  }
+  
+  @IBAction func tapAdd(_ sender: Any) {
+    let next = self.storyboard!.instantiateViewController(withIdentifier: "AddViewController")
+    self.present(next, animated: true)
+  }
+  
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
