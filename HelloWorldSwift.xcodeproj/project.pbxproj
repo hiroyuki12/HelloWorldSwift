@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
+		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
 		2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B2244096D2008C962B /* SecondViewController.swift */; };
 		2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B424409E33008C962B /* AlertViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
@@ -54,6 +55,7 @@
 /* Begin PBXFileReference section */
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		2E7D68B2244096D2008C962B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		2E7D68B424409E33008C962B /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
 				2EE5C7CA243767D5005215DD /* Main.storyboard */,
 				2E685889244DDD060023AE5A /* AddViewController.swift */,
+				2E68588D244EF2E90023AE5A /* Log.swift */,
 				2E68588B244DDF2D0023AE5A /* ListViewController.swift */,
 				2E7D68C724426A2E008C962B /* HelloWorldViewController.swift */,
 				2E7D68C5244241AD008C962B /* NowViewController.swift */,
@@ -334,6 +337,7 @@
 				2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */,
 				2E7D68C824426A2E008C962B /* HelloWorldViewController.swift in Sources */,
 				2E7D68C4244136FB008C962B /* BrightnessViewController.swift in Sources */,
+				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,

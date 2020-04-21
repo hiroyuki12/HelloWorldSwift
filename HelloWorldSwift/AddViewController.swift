@@ -25,8 +25,25 @@ class AddViewController: UIViewController {
     print(dateFormatter.string(from: dt))
     
     TodoKobetsunonakami.append(TodoTextField.text! + "°C  " + dateFormatter.string(from: dt))
+    
+    Log.write(TodoTextField.text! + "°C  " + dateFormatter.string(from: dt) + "\n")
+    
     TodoTextField.text = ""
     UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
+    
+//    let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.example.KeepADiary")
+//    let documentsURL = containerURL?.appendingPathComponent("Documents")
+//    let fileURL = documentsURL?.appendingPathComponent("my.diary")
+//     
+//    /* write */
+//    let todayText = Date().description
+//    do {
+//        //try todayText.write(to: fileURL!, atomically: true, encoding: .utf8)
+//        try todayText.write(to: fileURL!, atomically: true, encoding: .utf8)
+//    }
+//    catch {
+//        print("write error")
+//    }
   }
   
   override func viewDidLoad() {
