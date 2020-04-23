@@ -12,6 +12,7 @@
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
 		2E685890244F21550023AE5A /* Sub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E68588F244F21550023AE5A /* Sub.storyboard */; };
 		2E685892244F220A0023AE5A /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685891244F220A0023AE5A /* SubViewController.swift */; };
+		2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */; };
 		2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B2244096D2008C962B /* SecondViewController.swift */; };
 		2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B424409E33008C962B /* AlertViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
@@ -60,6 +61,7 @@
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		2E68588F244F21550023AE5A /* Sub.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Sub.storyboard; sourceTree = "<group>"; };
 		2E685891244F220A0023AE5A /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
+		2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteViewController.swift; sourceTree = "<group>"; };
 		2E7D68B2244096D2008C962B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		2E7D68B424409E33008C962B /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
 				2EE5C7CA243767D5005215DD /* Main.storyboard */,
+				2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */,
 				2E68588F244F21550023AE5A /* Sub.storyboard */,
 				2E685889244DDD060023AE5A /* AddViewController.swift */,
 				2E68588D244EF2E90023AE5A /* Log.swift */,
@@ -336,6 +339,7 @@
 				2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2E7D68C6244241AD008C962B /* NowViewController.swift in Sources */,
+				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
 				2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */,
