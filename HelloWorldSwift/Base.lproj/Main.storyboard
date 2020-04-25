@@ -143,26 +143,23 @@
                                     <segue destination="uvd-PU-qgv" kind="show" id="eQ9-3i-790"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="E1T-o6-j45">
-                                <rect key="frame" x="59" y="141" width="80" height="60"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Htl-e3-orT">
-                                        <rect key="frame" x="0.0" y="0.0" width="80" height="30"/>
-                                        <state key="normal" title="Hello World"/>
-                                        <connections>
-                                            <action selector="tapNextPage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="svO-kH-zzQ"/>
-                                            <segue destination="IJk-BV-QAW" kind="show" id="Nut-oi-fOP"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBV-bf-Euw">
-                                        <rect key="frame" x="0.0" y="30" width="80" height="30"/>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <segue destination="GrV-bV-h6H" kind="presentation" id="JMW-Zy-uf7"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBV-bf-Euw">
+                                <rect key="frame" x="160" y="176" width="80" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="GrV-bV-h6H" kind="presentation" id="JMW-Zy-uf7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Htl-e3-orT">
+                                <rect key="frame" x="160" y="126" width="80" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Hello World"/>
+                                <connections>
+                                    <action selector="tapNextPage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="svO-kH-zzQ"/>
+                                    <segue destination="IJk-BV-QAW" kind="show" id="Nut-oi-fOP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
