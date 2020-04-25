@@ -90,6 +90,7 @@ class SQLiteViewController: UIViewController {
     print ("finish tapUpdate!")
   }
   
+  // Deleteボタンタップ時
   @IBAction func tapDelete(_ sender: Any) {
     //creating a statement
     var stmt: OpaquePointer?

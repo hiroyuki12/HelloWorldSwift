@@ -9,15 +9,21 @@
 import UIKit
 import Foundation
 import WebKit
+import SQLite3
 
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
   
+  var db: OpaquePointer?
+  
   var isLoading = false;
   
   var articles: [[String: Any]] = []
+  
+  var sqliteSavedPage = 0
+  var sqlliteSavedPerPage = 0
   
   var tag = "swift"
 //    let tag = "flutter"
@@ -26,6 +32,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let tagFlutter  = "flutter"
   
   var savedPage = 1
+  var perPage = 20
   
   // 起動時処理
   override func viewDidLoad() {
@@ -35,8 +42,24 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // セルの高さを設定
     table.rowHeight = 70
     
-    myload(page: 1, perPage: 20, tag: tag)
+    myload(page: 1, perPage: perPage, tag: tag)
     print("myload (viewDidLoad)")
+    
+    //sqlite start
+    let fileUrl = try!
+      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
+    if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
+      print("Error opening database. HeroDatabase.sqlite")
+      return
+    }
+    let createTableQuery = "create table if not exists Heroes (id integer primary key autoincrement, name text, powerrank integer)"
+    if sqlite3_exec(db, createTableQuery, nil, nil, nil) !=
+      SQLITE_OK{
+      print("Error createing table Heros")
+      return
+    }
+    print("SQLite Everything is fine!")
+    //sqlite end
     
 //    let target = self.navigationController?.value(forKey: "_cachedInteractionController")
 //    let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
@@ -144,7 +167,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print("reloadData(tap load button")
   }
   
-  // Flutterボタン押下
+  // Flutterボタンタップ時
   @IBAction func next(_ sender: Any) {
     articles.removeAll()
     tag = tagFlutter
@@ -153,6 +176,114 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     textPage.text =  String(tag) + " Page " + String(savedPage) +
           "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
+  
+  // Saveボタンタップ時
+  @IBAction func tapSave(_ sender: Any) {
+    //savedPage  //現在のページ
+    print("start tapSave.")
+    print("savedPage: " + String(savedPage))
+    
+    // mysql delete
+    tapDelete(savedPage)
+    // mysql insert
+    tapSave(savedPage)
+    
+    sqliteSavedPage = savedPage;
+    print("sqliteSavedPage: " + String(sqliteSavedPage))
+    
+  }
+  
+  // nameが1のデータをdelete。引数のpageは未使用。
+  func tapDelete(_ page: Int) {
+    //creating a statement
+    var stmt: OpaquePointer?
+    //the insert query
+    let queryString = "DELETE FROM  Heroes WHERE name = ?"
+    //preparing the query
+    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
+      let errmsg = String(cString: sqlite3_errmsg(db)!)
+      print("error preparing delte: \(errmsg)")
+      return
+    }
+    //binding the parameters 1つ目の?に1をセット
+    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
+        let errmsg = String(cString: sqlite3_errmsg(db)!)
+        print("failure binding: \(errmsg)")
+        return
+    }
+    //executing the query to insert values
+    if sqlite3_step(stmt) != SQLITE_DONE {
+        let errmsg = String(cString: sqlite3_errmsg(db)!)
+        print("failure deleting hero: \(errmsg)")
+        return
+    }
+    print ("finish tapDelete!")
+  }
+  
+  // nameが1、powerrankが引数のpageの文字列で、insert
+  func tapSave(_ page: Int) {
+    //creating a statement
+    var stmt: OpaquePointer?
+    //the insert query
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
+    //preparing the query
+    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
+      let errmsg = String(cString: sqlite3_errmsg(db)!)
+      print("error preparing insert: \(errmsg)")
+      return
+    }
+    //binding the parameters 1つ目の?に2をセット
+    if sqlite3_bind_text(stmt, 1, String(page), -1, nil) != SQLITE_OK{
+        let errmsg = String(cString: sqlite3_errmsg(db)!)
+        print("failure binding: \(errmsg)")
+        return
+    }
+    //executing the query to insert values
+    if sqlite3_step(stmt) != SQLITE_DONE {
+        let errmsg = String(cString: sqlite3_errmsg(db)!)
+        print("failure inserting hero: \(errmsg)")
+        return
+    }
+    print ("finish tapSave!")
+  }
+  
+  // Loadボタンタップ時
+  @IBAction func tapLoad(_ sender: Any) {
+    tapRead(savedPage)
+    
+    articles.removeAll()
+    //savedPage = 1
+    myload(page: savedPage, perPage: 20, tag: tag)
+    textPage.text =  String(tag) + " Page " + String(savedPage) +
+          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+    
+    print ("finish tapLoad!")
+  }
+  
+  func tapRead(_ page: Int) {
+    //this is our select query
+    let queryString = "SELECT * FROM Heroes"
+    //statement pointer
+    var stmt:OpaquePointer?
+    //preparing the query
+    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
+        let errmsg = String(cString: sqlite3_errmsg(db)!)
+        print("error preparing insert: \(errmsg)")
+        return
+    }
+    //traversing through all the records
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+      //let id = sqlite3_column_int(stmt, 0)
+      let name = String(cString: sqlite3_column_text(stmt, 1))
+      let powerrank = sqlite3_column_int(stmt, 2)
+      print("name:" + name + ", powerrank:" + String(powerrank))
+        //adding values to list
+//        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
+      savedPage = Int(powerrank)
+    }
+    print ("finish tapRead!")
+  }
+  
   
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
