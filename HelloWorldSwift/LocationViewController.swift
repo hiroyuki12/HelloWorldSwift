@@ -50,6 +50,13 @@ class LocationViewController: UIViewController {
       labelLocation.text = latitudeNow
       labelLocation2.text = longitudeNow
       
+      let dt = Date()
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yMMMdHms", options: 0, locale: Locale(identifier: "ja_JP"))
+      
+      let data = dateFormatter.string(from: dt) + "," + latitudeNow + "," + longitudeNow + "\n"
+      Log.writeToFile(file:"location.csv", text:data)
+      
       getLocationName()
       // getLocationName の完了を待つ
       while(isLoading) {}

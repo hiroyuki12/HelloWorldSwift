@@ -15,7 +15,7 @@ class Log {
         writeToFile(file: file, text: log)
     }
 
-    private static func writeToFile(file: String, text: String) {
+    static func writeToFile(file: String, text: String) {
         guard let documentPath =
             FileManager.default.urls(for: .documentDirectory,
                                      in: .userDomainMask).first else { return }
