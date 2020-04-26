@@ -139,7 +139,7 @@ class LocationViewController: UIViewController {
     
     locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     locationManager.distanceFilter = 100  //100m移動したら位置情報を更新する
-    //locationManager.distanceFilter = 1  //1m移動したら位置情報を更新する
+//    locationManager.distanceFilter = 1  //1m移動したら位置情報を更新する(動作確認用)
     // バックグランドでも位置情報を取得
     locationManager.allowsBackgroundLocationUpdates = true
   }
@@ -192,7 +192,13 @@ extension LocationViewController: CLLocationManagerDelegate {
       self.latitudeNow = String(latitude!)
       self.longitudeNow = String(longitude!)
     
+    let dt = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yMMMdHms", options: 0, locale: Locale(identifier: "ja_JP"))
+    
     print("didUpdateLocations")
-    print(String(latitude!) + "," + String(longitude!))
+    let data = dateFormatter.string(from: dt) + "," + String(latitude!) + "," + String(longitude!) + "\n"
+    print(data)
+    Log.writeToFile(file:"location.csv", text:data)
   }
 }
