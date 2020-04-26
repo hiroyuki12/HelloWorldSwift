@@ -31,14 +31,6 @@
                                     <segue destination="hxA-J2-jNz" kind="show" id="o56-1r-Eyk"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ani-zx-Rki">
-                                <rect key="frame" x="198" y="563" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add"/>
-                                <connections>
-                                    <segue destination="gKS-C5-7ND" kind="show" id="BYj-bz-maT"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ppe-Ba-ooE">
                                 <rect key="frame" x="199" y="591" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -80,7 +72,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-Bq-8Fo">
-                                <rect key="frame" x="172" y="480" width="90" height="30"/>
+                                <rect key="frame" x="172" y="422" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Now"/>
                                 <connections>
@@ -88,7 +80,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bqQ-uU-EvV">
-                                <rect key="frame" x="167" y="442" width="90" height="30"/>
+                                <rect key="frame" x="172" y="384" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Brightness"/>
                                 <connections>
@@ -96,7 +88,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5dZ-7I-GjV">
-                                <rect key="frame" x="168" y="404" width="90" height="30"/>
+                                <rect key="frame" x="171" y="346" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Battery"/>
                                 <connections>
@@ -104,7 +96,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rs4-Qr-ikR">
-                                <rect key="frame" x="167" y="366" width="90" height="30"/>
+                                <rect key="frame" x="172" y="308" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Map Kit View"/>
                                 <connections>
@@ -112,7 +104,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1cH-hj-u2q">
-                                <rect key="frame" x="171" y="328" width="87" height="30"/>
+                                <rect key="frame" x="171" y="270" width="87" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="WebKit View"/>
                                 <connections>
@@ -120,7 +112,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xRN-lM-KAN">
-                                <rect key="frame" x="167" y="290" width="80" height="30"/>
+                                <rect key="frame" x="168" y="232" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Face ID"/>
                                 <connections>
@@ -128,7 +120,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0A-Bq-LNC">
-                                <rect key="frame" x="163" y="214" width="80" height="30"/>
+                                <rect key="frame" x="168" y="156" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Alert"/>
                                 <connections>
@@ -136,24 +128,15 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBV-bf-Euw">
-                                <rect key="frame" x="160" y="176" width="80" height="30"/>
+                                <rect key="frame" x="171" y="118" width="84" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Hello World!"/>
                                 <connections>
-                                    <segue destination="GrV-bV-h6H" kind="presentation" id="JMW-Zy-uf7"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Htl-e3-orT">
-                                <rect key="frame" x="160" y="126" width="80" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Hello World"/>
-                                <connections>
-                                    <action selector="tapNextPage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="svO-kH-zzQ"/>
-                                    <segue destination="IJk-BV-QAW" kind="show" id="Nut-oi-fOP"/>
+                                    <segue destination="IJk-BV-QAW" kind="show" id="Lss-ma-0Nr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6jr-VC-Wys">
-                                <rect key="frame" x="249" y="252" width="99" height="30"/>
+                                <rect key="frame" x="244" y="194" width="99" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="LocationName"/>
                                 <connections>
@@ -161,11 +144,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cn6-fL-2We">
-                                <rect key="frame" x="88" y="252" width="80" height="30"/>
+                                <rect key="frame" x="88" y="194" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Location"/>
                                 <connections>
                                     <segue destination="Xo7-G8-8gh" kind="show" id="RPq-tz-DUZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ani-zx-Rki">
+                                <rect key="frame" x="88" y="563" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add"/>
+                                <connections>
+                                    <segue destination="gKS-C5-7ND" kind="show" id="BYj-bz-maT"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -237,7 +228,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W6s-hR-w96" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1558" y="415"/>
+            <point key="canvasLocation" x="1613" y="643"/>
         </scene>
         <!--Now View Controller-->
         <scene sceneID="FIN-0A-jzC">
@@ -265,7 +256,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OUo-Zc-ihP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="842" y="2038"/>
+            <point key="canvasLocation" x="2229" y="1186"/>
         </scene>
         <!--Battery View Controller-->
         <scene sceneID="vg1-ne-WjF">
@@ -289,6 +280,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Battery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqb-TB-1jP">
+                                <rect key="frame" x="179" y="84" width="56" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="Coy-ad-rlj"/>
@@ -301,7 +299,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4bH-75-oVu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="814" y="2695"/>
+            <point key="canvasLocation" x="1486.9565217391305" y="1185.9375"/>
         </scene>
         <!--FaceID View Controller-->
         <scene sceneID="MWk-9d-LKl">
@@ -326,7 +324,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cMT-Yu-r0h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1496" y="2038"/>
+            <point key="canvasLocation" x="841" y="1186"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="mHI-IX-D0Y">
@@ -356,7 +354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofh-af-kuv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1589.8550724637682" y="-34.151785714285715"/>
+            <point key="canvasLocation" x="1614" y="-25"/>
         </scene>
         <!--Location Name View Controller-->
         <scene sceneID="KAD-Oo-yuA">
@@ -418,7 +416,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m7m-Nt-nrN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="189.85507246376812" y="837.72321428571422"/>
+            <point key="canvasLocation" x="841" y="798"/>
         </scene>
         <!--Map Kit View Controller-->
         <scene sceneID="P79-kT-4Lt">
@@ -443,7 +441,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kvM-wH-rII" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="843" y="730"/>
+            <point key="canvasLocation" x="841" y="1387"/>
         </scene>
         <!--Brightness View Controller-->
         <scene sceneID="t1u-Oc-DT1">
@@ -471,7 +469,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZbA-Ix-sX3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1496" y="2695"/>
+            <point key="canvasLocation" x="1487" y="1492"/>
         </scene>
         <!--Location View Controller-->
         <scene sceneID="ENr-m4-Sy4">
@@ -548,7 +546,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lm6-LY-8ul" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-504.34782608695656" y="849.77678571428567"/>
+            <point key="canvasLocation" x="132" y="798"/>
         </scene>
         <!--Alert View Controller-->
         <scene sceneID="h0o-gD-HHT">
@@ -576,14 +574,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNB-4t-5gL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="813" y="3360"/>
+            <point key="canvasLocation" x="2981" y="60"/>
         </scene>
         <!--Second View Controller-->
         <scene sceneID="v2u-AX-mMW">
             <objects>
                 <viewController storyboardIdentifier="SecondView" id="GrV-bV-h6H" customClass="SecondViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7jn-CM-XWw">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbt-gR-j0o">
@@ -614,7 +612,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F1o-4m-dLQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1932" y="1385"/>
+            <point key="canvasLocation" x="2980" y="379"/>
         </scene>
         <!--My Table View Controller-->
         <scene sceneID="pHC-IG-wnh">
@@ -651,7 +649,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Os-jb-YwA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2313" y="546"/>
+            <point key="canvasLocation" x="2229" y="1492"/>
         </scene>
         <!--Hello World View Controller-->
         <scene sceneID="MES-Hv-738">
@@ -676,7 +674,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0gS-7s-zM6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2238" y="84"/>
+            <point key="canvasLocation" x="2312" y="60"/>
         </scene>
         <!--List View Controller-->
         <scene sceneID="4pF-u1-5A4">
@@ -862,7 +860,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Si9-OA-N4J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="947.82608695652186" y="-34.151785714285715"/>
+            <point key="canvasLocation" x="901" y="-25"/>
         </scene>
     </scenes>
 </document>
