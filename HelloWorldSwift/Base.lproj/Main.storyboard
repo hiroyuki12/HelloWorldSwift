@@ -56,7 +56,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJn-2O-iu8">
-                                <rect key="frame" x="148" y="725" width="119" height="30"/>
+                                <rect key="frame" x="148" y="760" width="119" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="backgroundColor"/>
                                 <connections>
@@ -157,6 +157,14 @@
                                 <state key="normal" title="Add"/>
                                 <connections>
                                     <segue destination="gKS-C5-7ND" kind="show" id="BYj-bz-maT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XRh-17-eiF">
+                                <rect key="frame" x="185" y="692" width="59" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Firebase"/>
+                                <connections>
+                                    <segue destination="Jj8-wb-2oa" kind="show" id="bzs-Dq-gGy"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -861,6 +869,31 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Si9-OA-N4J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="901" y="-25"/>
+        </scene>
+        <!--Firebase View Controller-->
+        <scene sceneID="qWN-Bn-zK5">
+            <objects>
+                <viewController id="Jj8-wb-2oa" customClass="FirebaseViewController" customModule="HelloWorldSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Z1a-rS-3El">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Firebase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XAN-Ie-wa7">
+                                <rect key="frame" x="174" y="101" width="66" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="cqh-Ev-s25"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Aje-BB-fQM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8iQ-Ay-DnB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="900.00000000000011" y="472.76785714285711"/>
         </scene>
     </scenes>
 </document>
