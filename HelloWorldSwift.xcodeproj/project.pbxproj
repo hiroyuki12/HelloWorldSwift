@@ -13,6 +13,7 @@
 		2E685890244F21550023AE5A /* Sub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E68588F244F21550023AE5A /* Sub.storyboard */; };
 		2E685892244F220A0023AE5A /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685891244F220A0023AE5A /* SubViewController.swift */; };
 		2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */; };
+		2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685899245527330023AE5A /* LocationNameViewController.swift */; };
 		2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B2244096D2008C962B /* SecondViewController.swift */; };
 		2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B424409E33008C962B /* AlertViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
@@ -62,6 +63,7 @@
 		2E68588F244F21550023AE5A /* Sub.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Sub.storyboard; sourceTree = "<group>"; };
 		2E685891244F220A0023AE5A /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
 		2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteViewController.swift; sourceTree = "<group>"; };
+		2E685899245527330023AE5A /* LocationNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameViewController.swift; sourceTree = "<group>"; };
 		2E7D68B2244096D2008C962B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		2E7D68B424409E33008C962B /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7C8243767D5005215DD /* ViewController.swift */,
 				2E685891244F220A0023AE5A /* SubViewController.swift */,
+				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
@@ -353,6 +356,7 @@
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
+				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,19 +1,19 @@
 //
-//  LocationViewController.swift
+//  LocationNameViewController.swift
 //  HelloWorldSwift
 //
-//  Created by hiroyuki on 2020/04/10.
+//  Created by hiroyuki on 2020/04/26.
 //  Copyright © 2020 hiroyuki. All rights reserved.
 //
 
 import UIKit
 import CoreLocation
 
-class LocationViewController: UIViewController {
+class LocationNameViewController: UIViewController {
   @IBOutlet weak var labelLocation: UILabel!
   @IBOutlet weak var labelLocation2: UILabel!
   @IBOutlet weak var locationName: UILabel!
-
+  
   // 緯度
   var latitudeNow: String = ""
   // 経度
@@ -37,9 +37,11 @@ class LocationViewController: UIViewController {
   }
   
   let FMT_url_rev_geo = "https://www.finds.jp/ws/rgeocode.php?lat=%s&lon=%s&json"
-  
+    
   // 位置情報を取得ボタンタップ時
   @IBAction func tapGetLocation(_ sender: Any) {
+    print("tap 位置情報を取得!")
+    
     isLoading = true
     
     // マネージャの設定
@@ -65,18 +67,7 @@ class LocationViewController: UIViewController {
     }
   }
   
-  // Startボタンタップ時
-  @IBAction func tapStart(_ sender: Any) {
-    locationManager.startUpdatingLocation()
-    print("Start tap!")
-  }
-  
-  // Stopボタンタップ時
-  @IBAction func tapStop(_ sender: Any) {
-    locationManager.stopUpdatingLocation()
-    print("Stop tap!")
-  }
-  
+
   func getLocationName()
   {
 //    let url = URL(string: String(format: FMT_url_rev_geo, self.latitudeNow, self.longitudeNow))!
@@ -122,8 +113,8 @@ class LocationViewController: UIViewController {
     // 権限をリクエスト
     // 位置情報取得許可ダイアログの表示
     guard let locationManager = locationManager else { return }
-    //locationManager.requestWhenInUseAuthorization()
-    locationManager.requestAlwaysAuthorization()
+    locationManager.requestWhenInUseAuthorization()
+//    locationManager.requestAlwaysAuthorization()
     
     // マネージャの設定
     let status = CLLocationManager.authorizationStatus()
@@ -133,15 +124,15 @@ class LocationViewController: UIViewController {
       // 位置情報取得を開始
       locationManager.startUpdatingLocation()
     }
-    if status == CLAuthorizationStatus.notDetermined {
-        locationManager.requestAlwaysAuthorization()
-    }
+//    if status == CLAuthorizationStatus.notDetermined {
+//        locationManager.requestAlwaysAuthorization()
+//    }
     
-    locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-    locationManager.distanceFilter = 100  //100m移動したら位置情報を更新する
+//    locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+//    locationManager.distanceFilter = 100  //100m移動したら位置情報を更新する
     //locationManager.distanceFilter = 1  //1m移動したら位置情報を更新する
     // バックグランドでも位置情報を取得
-    locationManager.allowsBackgroundLocationUpdates = true
+//    locationManager.allowsBackgroundLocationUpdates = true
   }
   
   // アラートを表示する
@@ -164,22 +155,20 @@ class LocationViewController: UIViewController {
     // Alertを表示
     present(alert, animated: true, completion: nil)
   }
-  
-  
+    
   /*
-  // MARK: - Navigation
+    // MARK: - Navigation
 
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      // Get the new view controller using segue.destination.
-      // Pass the selected object to the new view controller.
-  }
-  */
-
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
 }
 
 // 位置情報を取得
-extension LocationViewController: CLLocationManagerDelegate {
+extension LocationNameViewController: CLLocationManagerDelegate {
   // 位置情報が更新された際、位置情報を格納する
   // - Parameters:
   //   - manager: ロケーションマネージャ
@@ -191,8 +180,8 @@ extension LocationViewController: CLLocationManagerDelegate {
       // 位置情報を格納する
       self.latitudeNow = String(latitude!)
       self.longitudeNow = String(longitude!)
-    
-    print("didUpdateLocations")
-    print(String(latitude!) + "," + String(longitude!))
+
+      print("didUpdateLocations")
+      print(String(latitude!) + "," + String(longitude!))
   }
 }
