@@ -17,6 +17,7 @@
 		2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685899245527330023AE5A /* LocationNameViewController.swift */; };
 		2E6858DA24556ED50023AE5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6858D924556ED50023AE5A /* GoogleService-Info.plist */; };
 		2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */; };
+		2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DD2457018F0023AE5A /* DropboxViewController.swift */; };
 		2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B2244096D2008C962B /* SecondViewController.swift */; };
 		2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B424409E33008C962B /* AlertViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
@@ -75,6 +76,7 @@
 		2E685899245527330023AE5A /* LocationNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameViewController.swift; sourceTree = "<group>"; };
 		2E6858D924556ED50023AE5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewController.swift; sourceTree = "<group>"; };
+		2E6858DD2457018F0023AE5A /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		2E7D68B2244096D2008C962B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		2E7D68B424409E33008C962B /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				2E7D68BF24412F31008C962B /* MapKitViewController.swift */,
 				2E7D68C1244130D3008C962B /* BatteryViewController.swift */,
 				2E7D68C3244136FB008C962B /* BrightnessViewController.swift */,
+				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				2E7D68C4244136FB008C962B /* BrightnessViewController.swift in Sources */,
 				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
+				2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */,
 				2E7D68B3244096D2008C962B /* SecondViewController.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
