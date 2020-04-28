@@ -167,8 +167,109 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print("reloadData(tap load button")
   }
   
-  // Flutterボタンタップ時
+  // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
+    tapRead(self.savedPage)
+    
+    popUp()
+  }
+  
+  private func popUp() {
+    let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+
+    let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        if(self.tag == self.tagSwift) {
+          self.tag = self.tagFlutter
+        }
+        else {
+          self.tag = self.tagSwift
+        }
+  //      self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(flutterSwiftAction)
+
+    let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagSwift
+        self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(swiftPage1Action)
+  
+    let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagSwift
+        self.savedPage = 50
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(swiftPage50Action)
+  
+    let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagFlutter
+        self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(flutterPage1Action)
+  
+    let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        //savedPage  //現在のページ
+        print("start tapSave.")
+        print("savedPage: " + String(self.savedPage))
+        
+        // mysql delete
+        self.tapDelete(self.savedPage)
+        // mysql insert
+        self.tapSave(self.savedPage)
+        
+        self.sqliteSavedPage = self.savedPage;
+        print("sqliteSavedPage: " + String(self.sqliteSavedPage))
+
+      })
+    alertController.addAction(saveSwiftPageAction)
+  
+    let loadSwiftPageAction = UIAlertAction(title: "Load Swift Page ! " + String(self.sqliteSavedPage), style: .default,
+    handler:{
+      (action:UIAlertAction!) -> Void in
+      
+      self.articles.removeAll()
+      self.savedPage = self.sqliteSavedPage
+      self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+      self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+            "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      
+      print ("finish tapLoad!")
+
+    })
+    alertController.addAction(loadSwiftPageAction)
+  
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alertController.addAction(cancelAction)
+
+    present(alertController, animated: true, completion: nil)
+  }
+
+  func swiftPage1Action() {
     articles.removeAll()
     tag = tagFlutter
     savedPage = 1
@@ -279,7 +380,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       print("name:" + name + ", powerrank:" + String(powerrank))
         //adding values to list
 //        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
-      savedPage = Int(powerrank)
+      sqliteSavedPage = Int(powerrank)
     }
     print ("finish tapRead!")
   }
@@ -303,22 +404,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     webView.url = articles[indexPath.row]["url"]! as? String ?? "http://www.yahoo.co.jp"
     
     self.present(webView, animated: true, completion: nil)
-  }
-  
-  
-  private func popUp() {
-    let alertController = UIAlertController(title: "確認", message: "本当に実行しますか", preferredStyle: .actionSheet)
-
-    let yesAction = UIAlertAction(title: "はい", style: .default, handler: nil)
-    alertController.addAction(yesAction)
-
-    let noAction = UIAlertAction(title: "いいえ", style: .default, handler: nil)
-    alertController.addAction(noAction)
-
-    let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
-    alertController.addAction(cancelAction)
-
-    present(alertController, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

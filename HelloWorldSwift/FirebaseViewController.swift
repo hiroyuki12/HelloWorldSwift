@@ -49,6 +49,11 @@ class FirebaseViewController: UIViewController {
     }
   }
   
+  @IBAction func tapMail(_ sender: Any) {
+    
+  }
+  
+  
   /*
   // MARK: - Navigation
 
