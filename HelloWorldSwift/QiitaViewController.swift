@@ -152,7 +152,32 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // セルに表示する画像を設定する
 //    let img = UIImage(named: imgArray[indexPath.row] as! String)
 //    cell.imageView?.image = img
-    
+    // セルに表示するタグを設定する
+    let tagsText = cell.viewWithTag(4) as! UILabel
+    var arr = article["tags"] as? [[String: Any]]
+    let count = arr?.count
+    let tag1name = arr?.first!["name"] as? String
+    tagsText.text = tag1name
+    if(count! > 1) {
+      arr?.removeFirst()
+      let tag2name = arr?.first!["name"] as? String
+      tagsText.text = tag1name! + "," + tag2name!
+      if(count! > 2) {
+        arr?.removeFirst()
+        let tag3name = arr?.first!["name"] as? String
+        tagsText.text = tag1name! + "," + tag2name! + "," + tag3name!
+        if(count! > 3) {
+          arr?.removeFirst()
+          let tag4name = arr?.first!["name"] as? String
+          tagsText.text = tag1name! + "," + tag2name! + "," + tag3name! + "," + tag4name!
+          if(count! > 4) {
+            arr?.removeFirst()
+            let tag5name = arr?.first!["name"] as? String
+            tagsText.text = tag1name! + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
+          }
+        }
+      }
+    }
     return cell
   }
   
