@@ -11,6 +11,8 @@ import SwiftyDropbox
 
 class DropboxViewController: UIViewController {
   @IBOutlet weak var textField: UITextField!
+  //イメージビューを追加
+  let myImageView = UIImageView()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,6 +38,17 @@ class DropboxViewController: UIViewController {
     uploadButton.setTitle("Upload", for: .normal)
     uploadButton.addTarget(self, action: #selector(self.uploadToDropbox), for: .touchUpInside)
     self.view.addSubview(uploadButton)
+    
+    //ダウンロードボタンを追加
+    let downloadButton = UIButton(type: UIButton.ButtonType.system)
+    downloadButton.frame = CGRect(x: 10, y: 220, width: 100, height: 30)
+    downloadButton.setTitle("Download", for: .normal)
+    downloadButton.addTarget(self, action: #selector(self.downloadDropboxFile), for: .touchUpInside)
+    self.view.addSubview(downloadButton)
+
+    //画像表示エリアの記載
+    myImageView.frame = CGRect(x: 10, y: 500, width: 200, height: 120)
+    self.view.addSubview(myImageView)
     
   }
   @objc func signInDropbox(){
@@ -64,26 +77,64 @@ class DropboxViewController: UIViewController {
     }
   }
   @objc func uploadToDropbox() {
-      if let client = DropboxClientsManager.authorizedClient {
-        let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
-        
-        let request = client.files.upload(path: "/sample.txt", input: fileData)
-            .response { response, error in
-                if let response = response {
-                    print(response)
-                } else if let error = error {
-                    print(error)
-                }
-            }
-            .progress { progressData in
-                print(progressData)
-            }
+    if let client = DropboxClientsManager.authorizedClient {
+      let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
+      
+      let request = client.files.upload(path: "/sample.txt", input: fileData)
+        .response { response, error in
+          if let response = response {
+            print(response)
+          } else if let error = error {
+            print(error)
+          }
+        }
+        .progress { progressData in
+          print(progressData)
+        }
 
         // in case you want to cancel the request
 //        if someConditionIsSatisfied {
 //            request.cancel()
 //        }
     }
+  }
+  @objc func downloadDropboxFile() {
+     //ダウンロード処理
+     if let client = DropboxClientsManager.authorizedClient {
+       //ダウンロード先URLを設定
+       let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+         let UUID = Foundation.UUID().uuidString
+         var fileName = ""
+         if let suggestedFilename = response.suggestedFilename {
+             fileName = suggestedFilename
+         }
+         let pathComponent = "\(UUID)-\(fileName)"
+         return directoryURL.appendingPathComponent(pathComponent)
+       }
+       //画面描画処理
+       client.files.download(path: "/携帯/docomoF505i/100f505i-1/f1000001.jpg", destination: destination).response { response, error in
+         if let (metadata, url) = response {
+           print("Downloaded file name: \(metadata.name)")
+           do {
+             //urlをData型に変換
+             let data = try Data(contentsOf: url)
+             //Data型に変換したurlをUIImageに変換
+             let img = UIImage(data: data)
+             //UIImageをivに変換
+             let iv:UIImageView = UIImageView(image:img)
+             //変換したivをviewに追加
+             self.view.addSubview(iv)
+             //表示位置決定
+             iv.layer.position = CGPoint(x: self.view.bounds.width/2, y: 400.0)
+           } catch let err {
+             print("Error : \(err.localizedDescription)")
+           }
+         } else {
+           print(error!)
+         }
+       }
+     }
   }
   /*
   // MARK: - Navigation
