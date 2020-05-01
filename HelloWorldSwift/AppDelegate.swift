@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
       // Override point for customization after application launch.
     FirebaseApp.configure()
-    DropboxClientsManager.setupWithAppKey("INPUT_YOUR_KEY") //追加
+    DropboxClientsManager.setupWithAppKey("INPUT_YOUR_DROPBOX_KEY") //追加
     return true
   }
 

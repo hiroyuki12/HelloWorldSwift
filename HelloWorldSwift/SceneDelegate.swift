@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyDropbox
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,6 +20,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
     }
+  
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>)
+  {
+    // コールバックで来たURLの取得
+    guard let url = URLContexts.first?.url else {
+      return
+    }
+
+    if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+      switch authResult {
+      case .success:
+        print("Success! User is logged into Dropbox.")
+      case .cancel:
+        print("Authorization flow was manually canceled by user!")
+      case .error(_, let description):
+        print("Error: \(description)")
+      }
+    }
+    return
+  }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
