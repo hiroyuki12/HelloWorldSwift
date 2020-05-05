@@ -184,6 +184,7 @@
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7C8243767D5005215DD /* ViewController.swift */,
+				2EE5C7D2243767D9005215DD /* Info.plist */,
 				2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */,
 				2E685891244F220A0023AE5A /* SubViewController.swift */,
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
@@ -203,7 +204,6 @@
 				2E7D68C5244241AD008C962B /* NowViewController.swift */,
 				2EE5C7CD243767D9005215DD /* Assets.xcassets */,
 				2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */,
-				2EE5C7D2243767D9005215DD /* Info.plist */,
 				2E7D68B2244096D2008C962B /* SecondViewController.swift */,
 				2E7D68B424409E33008C962B /* AlertViewController.swift */,
 				2E7D68B82440B260008C962B /* FaceIDViewController.swift */,
@@ -259,6 +259,7 @@
 				2EE5C7BE243767D5005215DD /* Frameworks */,
 				2EE5C7BF243767D5005215DD /* Resources */,
 				774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */,
+				60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,6 +298,7 @@
 				2EE5C7DF243767D9005215DD /* Frameworks */,
 				2EE5C7E0243767D9005215DD /* Resources */,
 				4A8BAD06419C62F97869ABFC /* [CP] Embed Pods Frameworks */,
+				5AC2874C2B7CD84BD669B7C4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -419,6 +421,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5AC2874C2B7CD84BD669B7C4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */ = {

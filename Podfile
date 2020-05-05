@@ -20,4 +20,7 @@ target 'HelloWorldSwift' do
   pod 'Firebase/Database'
 
   pod 'SwiftyDropbox'
+
+  pod 'GoogleAPIClientForREST/Sheets', '~> 1.2.1'
+  pod 'GoogleSignIn', '~> 4.1.1'
 end

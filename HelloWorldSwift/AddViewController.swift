@@ -14,6 +14,8 @@ var TodoKobetsunonakami = [String]()
 class AddViewController: UIViewController {
   @IBOutlet weak var TodoTextField: UITextField!
   @IBOutlet weak var TodoAddButton: UIButton!
+  @IBOutlet weak var HourTextField: UITextField!
+  @IBOutlet weak var MinuteTextField: UITextField!
   
   // Saveボタン押下時
   @IBAction func TodoAddButton(_ sender: Any) {
