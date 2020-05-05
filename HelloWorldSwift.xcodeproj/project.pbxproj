@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F3C6DBB7CBC4F0A81E35EAA /* Pods_HelloWorldSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */; };
+		2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD652461033800DAE6C9 /* NasViewController.swift */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
@@ -68,6 +69,7 @@
 		097EEE2D41B5C80DF5BEFB62 /* Pods-HelloWorldSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwiftTests.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwiftTests/Pods-HelloWorldSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
 		0B02B5E7613C805DF04691C5 /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B0DA2BD218A715E4D5549C /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
+		2E64BD652461033800DAE6C9 /* NasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NasViewController.swift; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				2E7D68C1244130D3008C962B /* BatteryViewController.swift */,
 				2E7D68C3244136FB008C962B /* BrightnessViewController.swift */,
 				2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */,
+				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				2E7D68B524409E33008C962B /* AlertViewController.swift in Sources */,
 				2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */,
 				2E7D68C024412F31008C962B /* MapKitViewController.swift in Sources */,
+				2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */,
 				2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */,
 				2E7D68C824426A2E008C962B /* HelloWorldViewController.swift in Sources */,
 				2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */,
