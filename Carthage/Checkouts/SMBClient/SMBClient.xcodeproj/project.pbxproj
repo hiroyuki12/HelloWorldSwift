@@ -1,0 +1,588 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C323ABB91F7D9D32004A0C64 /* SMBPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C323ABB81F7D9D32004A0C64 /* SMBPathTests.swift */; };
+		C323ABBB1F7D9EFB004A0C64 /* Directory + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C323ABBA1F7D9EFB004A0C64 /* Directory + Extension.swift */; };
+		C323ABBD1F7DBA15004A0C64 /* SMBDirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C323ABBC1F7DBA15004A0C64 /* SMBDirectoryTests.swift */; };
+		C334494C1F58A80D00A0EB61 /* BridgingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334494B1F58A80D00A0EB61 /* BridgingHelpers.swift */; };
+		C334494E1F58AA4800A0EB61 /* NetBIOSNameServiceEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334494D1F58AA4800A0EB61 /* NetBIOSNameServiceEntry.swift */; };
+		C33449501F59D2E600A0EB61 /* SMBSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334494F1F59D2E600A0EB61 /* SMBSession.swift */; };
+		C33449521F59E67900A0EB61 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C33449511F59E67900A0EB61 /* libiconv.tbd */; };
+		C33449541F59FB6000A0EB61 /* SMBFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33449531F59FB6000A0EB61 /* SMBFile.swift */; };
+		C36B1D2A1F79CD1600819DE1 /* SMBServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36B1D291F79CD1600819DE1 /* SMBServer.swift */; };
+		C36B1D611F7B025A00819DE1 /* SMBServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36B1D601F7B025A00819DE1 /* SMBServerTests.swift */; };
+		C36B1D651F7C28EB00819DE1 /* SMBPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36B1D641F7C28EB00819DE1 /* SMBPath.swift */; };
+		C36F2BA91F5793B5008B96C4 /* SMBClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C36F2B9F1F5793B5008B96C4 /* SMBClient.framework */; };
+		C36F2BAE1F5793B5008B96C4 /* SMBClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36F2BAD1F5793B5008B96C4 /* SMBClientTests.swift */; };
+		C36F2BB01F5793B5008B96C4 /* SMBClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C36F2BA21F5793B5008B96C4 /* SMBClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C36F2BCC1F579566008B96C4 /* NetBIOSNameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36F2BCB1F579566008B96C4 /* NetBIOSNameService.swift */; };
+		C36F2BE91F58839C008B96C4 /* libtasn1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C36F2BE71F58839C008B96C4 /* libtasn1.a */; };
+		C36F2BEA1F58839C008B96C4 /* libdsm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C36F2BE81F58839C008B96C4 /* libdsm.a */; };
+		C3929C4D1F5F2F6A0014B804 /* SessionDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3929C4C1F5F2F6A0014B804 /* SessionDownloadTask.swift */; };
+		C3929C4F1F5F302D0014B804 /* SessionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3929C4E1F5F302D0014B804 /* SessionTask.swift */; };
+		C3929C531F606E880014B804 /* SessionUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3929C521F606E880014B804 /* SessionUploadTask.swift */; };
+		C3929C591F630A030014B804 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3929C581F630A030014B804 /* Result.swift */; };
+		C3B7323E1F7D807A0056BA8E /* SMBVolumeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B7323D1F7D807A0056BA8E /* SMBVolumeTests.swift */; };
+		C3BAD9761F799A8F009316F4 /* SMBVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BAD9751F799A8F009316F4 /* SMBVolume.swift */; };
+		C3BAD97A1F79AB70009316F4 /* SMBDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BAD9791F79AB70009316F4 /* SMBDirectory.swift */; };
+		C3BAD97C1F79ABC8009316F4 /* SMBItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BAD97B1F79ABC8009316F4 /* SMBItem.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C36F2BAA1F5793B5008B96C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C36F2B961F5793B5008B96C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C36F2B9E1F5793B5008B96C4;
+			remoteInfo = SMBClient;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C323ABB81F7D9D32004A0C64 /* SMBPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBPathTests.swift; sourceTree = "<group>"; };
+		C323ABBA1F7D9EFB004A0C64 /* Directory + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Directory + Extension.swift"; sourceTree = "<group>"; };
+		C323ABBC1F7DBA15004A0C64 /* SMBDirectoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBDirectoryTests.swift; sourceTree = "<group>"; };
+		C334494B1F58A80D00A0EB61 /* BridgingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgingHelpers.swift; sourceTree = "<group>"; };
+		C334494D1F58AA4800A0EB61 /* NetBIOSNameServiceEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetBIOSNameServiceEntry.swift; sourceTree = "<group>"; };
+		C334494F1F59D2E600A0EB61 /* SMBSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBSession.swift; sourceTree = "<group>"; };
+		C33449511F59E67900A0EB61 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		C33449531F59FB6000A0EB61 /* SMBFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBFile.swift; sourceTree = "<group>"; };
+		C36B1D291F79CD1600819DE1 /* SMBServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBServer.swift; sourceTree = "<group>"; };
+		C36B1D601F7B025A00819DE1 /* SMBServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBServerTests.swift; sourceTree = "<group>"; };
+		C36B1D641F7C28EB00819DE1 /* SMBPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBPath.swift; sourceTree = "<group>"; };
+		C36F2B9F1F5793B5008B96C4 /* SMBClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SMBClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C36F2BA21F5793B5008B96C4 /* SMBClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMBClient.h; sourceTree = "<group>"; };
+		C36F2BA31F5793B5008B96C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C36F2BA81F5793B5008B96C4 /* SMBClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SMBClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C36F2BAD1F5793B5008B96C4 /* SMBClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBClientTests.swift; sourceTree = "<group>"; };
+		C36F2BAF1F5793B5008B96C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C36F2BCB1F579566008B96C4 /* NetBIOSNameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetBIOSNameService.swift; sourceTree = "<group>"; };
+		C36F2BE71F58839C008B96C4 /* libtasn1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtasn1.a; path = libdsm/libtasn1.a; sourceTree = "<group>"; };
+		C36F2BE81F58839C008B96C4 /* libdsm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdsm.a; path = libdsm/libdsm.a; sourceTree = "<group>"; };
+		C3929C4C1F5F2F6A0014B804 /* SessionDownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDownloadTask.swift; sourceTree = "<group>"; };
+		C3929C4E1F5F302D0014B804 /* SessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTask.swift; sourceTree = "<group>"; };
+		C3929C521F606E880014B804 /* SessionUploadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionUploadTask.swift; sourceTree = "<group>"; };
+		C3929C581F630A030014B804 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		C39EB4BF1F992CD400139B24 /* SMBClient.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = SMBClient.podspec; sourceTree = "<group>"; };
+		C39EB4C01F992CDE00139B24 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C3B7323D1F7D807A0056BA8E /* SMBVolumeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBVolumeTests.swift; sourceTree = "<group>"; };
+		C3BAD9751F799A8F009316F4 /* SMBVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBVolume.swift; sourceTree = "<group>"; };
+		C3BAD9791F79AB70009316F4 /* SMBDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBDirectory.swift; sourceTree = "<group>"; };
+		C3BAD97B1F79ABC8009316F4 /* SMBItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBItem.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C36F2B9B1F5793B5008B96C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C33449521F59E67900A0EB61 /* libiconv.tbd in Frameworks */,
+				C36F2BE91F58839C008B96C4 /* libtasn1.a in Frameworks */,
+				C36F2BEA1F58839C008B96C4 /* libdsm.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C36F2BA51F5793B5008B96C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C36F2BA91F5793B5008B96C4 /* SMBClient.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C36F2B951F5793B5008B96C4 = {
+			isa = PBXGroup;
+			children = (
+				C39EB4BE1F992CB100139B24 /* Deployment */,
+				C36F2BA11F5793B5008B96C4 /* Sources */,
+				C36F2BAC1F5793B5008B96C4 /* Tests */,
+				C36F2BA01F5793B5008B96C4 /* Products */,
+				C36F2BD31F57A0AB008B96C4 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C36F2BA01F5793B5008B96C4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C36F2B9F1F5793B5008B96C4 /* SMBClient.framework */,
+				C36F2BA81F5793B5008B96C4 /* SMBClientTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C36F2BA11F5793B5008B96C4 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C36F2BA21F5793B5008B96C4 /* SMBClient.h */,
+				C36F2BCF1F579683008B96C4 /* Support Files */,
+				C36F2BCB1F579566008B96C4 /* NetBIOSNameService.swift */,
+				C334494D1F58AA4800A0EB61 /* NetBIOSNameServiceEntry.swift */,
+				C36B1D291F79CD1600819DE1 /* SMBServer.swift */,
+				C334494B1F58A80D00A0EB61 /* BridgingHelpers.swift */,
+				C334494F1F59D2E600A0EB61 /* SMBSession.swift */,
+				C3929C4E1F5F302D0014B804 /* SessionTask.swift */,
+				C3929C4C1F5F2F6A0014B804 /* SessionDownloadTask.swift */,
+				C3929C521F606E880014B804 /* SessionUploadTask.swift */,
+				C3929C581F630A030014B804 /* Result.swift */,
+				C3BAD9751F799A8F009316F4 /* SMBVolume.swift */,
+				C3BAD97B1F79ABC8009316F4 /* SMBItem.swift */,
+				C3BAD9791F79AB70009316F4 /* SMBDirectory.swift */,
+				C33449531F59FB6000A0EB61 /* SMBFile.swift */,
+				C36B1D641F7C28EB00819DE1 /* SMBPath.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		C36F2BAC1F5793B5008B96C4 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C323ABBA1F7D9EFB004A0C64 /* Directory + Extension.swift */,
+				C36B1D601F7B025A00819DE1 /* SMBServerTests.swift */,
+				C3B7323D1F7D807A0056BA8E /* SMBVolumeTests.swift */,
+				C36F2BAD1F5793B5008B96C4 /* SMBClientTests.swift */,
+				C323ABB81F7D9D32004A0C64 /* SMBPathTests.swift */,
+				C323ABBC1F7DBA15004A0C64 /* SMBDirectoryTests.swift */,
+				C36F2BAF1F5793B5008B96C4 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		C36F2BCF1F579683008B96C4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C36F2BA31F5793B5008B96C4 /* Info.plist */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		C36F2BD31F57A0AB008B96C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C33449511F59E67900A0EB61 /* libiconv.tbd */,
+				C36F2BE81F58839C008B96C4 /* libdsm.a */,
+				C36F2BE71F58839C008B96C4 /* libtasn1.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C39EB4BE1F992CB100139B24 /* Deployment */ = {
+			isa = PBXGroup;
+			children = (
+				C39EB4C01F992CDE00139B24 /* README.md */,
+				C39EB4BF1F992CD400139B24 /* SMBClient.podspec */,
+			);
+			name = Deployment;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C36F2B9C1F5793B5008B96C4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C36F2BB01F5793B5008B96C4 /* SMBClient.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C36F2B9E1F5793B5008B96C4 /* SMBClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C36F2BB31F5793B5008B96C4 /* Build configuration list for PBXNativeTarget "SMBClient" */;
+			buildPhases = (
+				C323ABBF1F7DBFAF004A0C64 /* ShellScript */,
+				C36F2B9A1F5793B5008B96C4 /* Sources */,
+				C36F2B9B1F5793B5008B96C4 /* Frameworks */,
+				C36F2B9C1F5793B5008B96C4 /* Headers */,
+				C36F2B9D1F5793B5008B96C4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SMBClient;
+			productName = SMBClient;
+			productReference = C36F2B9F1F5793B5008B96C4 /* SMBClient.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C36F2BA71F5793B5008B96C4 /* SMBClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C36F2BB61F5793B5008B96C4 /* Build configuration list for PBXNativeTarget "SMBClientTests" */;
+			buildPhases = (
+				C36F2BA41F5793B5008B96C4 /* Sources */,
+				C36F2BA51F5793B5008B96C4 /* Frameworks */,
+				C36F2BA61F5793B5008B96C4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C36F2BAB1F5793B5008B96C4 /* PBXTargetDependency */,
+			);
+			name = SMBClientTests;
+			productName = SMBClientTests;
+			productReference = C36F2BA81F5793B5008B96C4 /* SMBClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C36F2B961F5793B5008B96C4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0900;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = Filmic;
+				TargetAttributes = {
+					C36F2B9E1F5793B5008B96C4 = {
+						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+					};
+					C36F2BA71F5793B5008B96C4 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C36F2B991F5793B5008B96C4 /* Build configuration list for PBXProject "SMBClient" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C36F2B951F5793B5008B96C4;
+			productRefGroup = C36F2BA01F5793B5008B96C4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C36F2B9E1F5793B5008B96C4 /* SMBClient */,
+				C36F2BA71F5793B5008B96C4 /* SMBClientTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C36F2B9D1F5793B5008B96C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C36F2BA61F5793B5008B96C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C323ABBF1F7DBFAF004A0C64 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\nelse\n    echo \"warning: SwiftLint is not installed, download from https://github.com/realm/SwiftLint, or install with `brew install swiftlint`\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C36F2B9A1F5793B5008B96C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3929C591F630A030014B804 /* Result.swift in Sources */,
+				C3BAD97C1F79ABC8009316F4 /* SMBItem.swift in Sources */,
+				C334494E1F58AA4800A0EB61 /* NetBIOSNameServiceEntry.swift in Sources */,
+				C3929C4D1F5F2F6A0014B804 /* SessionDownloadTask.swift in Sources */,
+				C33449501F59D2E600A0EB61 /* SMBSession.swift in Sources */,
+				C36B1D651F7C28EB00819DE1 /* SMBPath.swift in Sources */,
+				C36B1D2A1F79CD1600819DE1 /* SMBServer.swift in Sources */,
+				C3BAD9761F799A8F009316F4 /* SMBVolume.swift in Sources */,
+				C3BAD97A1F79AB70009316F4 /* SMBDirectory.swift in Sources */,
+				C33449541F59FB6000A0EB61 /* SMBFile.swift in Sources */,
+				C36F2BCC1F579566008B96C4 /* NetBIOSNameService.swift in Sources */,
+				C3929C4F1F5F302D0014B804 /* SessionTask.swift in Sources */,
+				C3929C531F606E880014B804 /* SessionUploadTask.swift in Sources */,
+				C334494C1F58A80D00A0EB61 /* BridgingHelpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C36F2BA41F5793B5008B96C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C323ABBD1F7DBA15004A0C64 /* SMBDirectoryTests.swift in Sources */,
+				C323ABBB1F7D9EFB004A0C64 /* Directory + Extension.swift in Sources */,
+				C36F2BAE1F5793B5008B96C4 /* SMBClientTests.swift in Sources */,
+				C3B7323E1F7D807A0056BA8E /* SMBVolumeTests.swift in Sources */,
+				C36B1D611F7B025A00819DE1 /* SMBServerTests.swift in Sources */,
+				C323ABB91F7D9D32004A0C64 /* SMBPathTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C36F2BAB1F5793B5008B96C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C36F2B9E1F5793B5008B96C4 /* SMBClient */;
+			targetProxy = C36F2BAA1F5793B5008B96C4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C36F2BB11F5793B5008B96C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C36F2BB21F5793B5008B96C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C36F2BB41F5793B5008B96C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 88F3UUEVGV;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Sources/Support Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libdsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.filmicpro.SMBClient;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libdsm";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C36F2BB51F5793B5008B96C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 88F3UUEVGV;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Sources/Support Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libdsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.filmicpro.SMBClient;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libdsm";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C36F2BB71F5793B5008B96C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 88F3UUEVGV;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.filmicpro.SMBClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C36F2BB81F5793B5008B96C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 88F3UUEVGV;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.filmicpro.SMBClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C36F2B991F5793B5008B96C4 /* Build configuration list for PBXProject "SMBClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C36F2BB11F5793B5008B96C4 /* Debug */,
+				C36F2BB21F5793B5008B96C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C36F2BB31F5793B5008B96C4 /* Build configuration list for PBXNativeTarget "SMBClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C36F2BB41F5793B5008B96C4 /* Debug */,
+				C36F2BB51F5793B5008B96C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C36F2BB61F5793B5008B96C4 /* Build configuration list for PBXNativeTarget "SMBClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C36F2BB71F5793B5008B96C4 /* Debug */,
+				C36F2BB81F5793B5008B96C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C36F2B961F5793B5008B96C4 /* Project object */;
+}

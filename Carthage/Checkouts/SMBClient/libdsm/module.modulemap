@@ -1,0 +1,6 @@
+module libdsm [system][extern_c] {
+    umbrella header "include/bdsm/bdsm.h"
+
+    export *
+    module * { export * }
+}
