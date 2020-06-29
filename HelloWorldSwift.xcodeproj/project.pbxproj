@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0F3C6DBB7CBC4F0A81E35EAA /* Pods_HelloWorldSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */; };
+		2E127E5824AA927D00E9F55E /* SMBClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; };
 		2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD652461033800DAE6C9 /* NasViewController.swift */; };
-		2E64BD682461075B00DAE6C9 /* SMBClientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD672461075B00DAE6C9 /* SMBClientViewController.swift */; };
 		2E64BD6A2461097800DAE6C9 /* SMBClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; };
 		2E64BD6B2461097800DAE6C9 /* SMBClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
@@ -87,7 +87,6 @@
 		0B02B5E7613C805DF04691C5 /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B0DA2BD218A715E4D5549C /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2E64BD652461033800DAE6C9 /* NasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NasViewController.swift; sourceTree = "<group>"; };
-		2E64BD672461075B00DAE6C9 /* SMBClientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBClientViewController.swift; sourceTree = "<group>"; };
 		2E64BD692461097800DAE6C9 /* SMBClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SMBClient.framework; path = Carthage/Build/iOS/SMBClient.framework; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E127E5824AA927D00E9F55E /* SMBClient.framework in Frameworks */,
 				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
 				5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */,
 				2E64BD6A2461097800DAE6C9 /* SMBClient.framework in Frameworks */,
@@ -236,7 +236,6 @@
 				2E7D68C3244136FB008C962B /* BrightnessViewController.swift */,
 				2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */,
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
-				2E64BD672461075B00DAE6C9 /* SMBClientViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -286,7 +285,7 @@
 				774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */,
 				60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */,
 				2E64BD6C2461097800DAE6C9 /* Embed Frameworks */,
-				2E64BD6D246109A600DAE6C9 /* ShellScript */,
+				2E64BD6D246109A600DAE6C9 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -411,7 +410,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E64BD6D246109A600DAE6C9 /* ShellScript */ = {
+		2E64BD6D246109A600DAE6C9 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -421,6 +420,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SMBClient.framework",
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -570,7 +570,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E64BD682461075B00DAE6C9 /* SMBClientViewController.swift in Sources */,
 				2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */,
 				2E7D68C2244130D3008C962B /* BatteryViewController.swift in Sources */,
 				2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */,
@@ -777,6 +776,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -800,6 +800,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
