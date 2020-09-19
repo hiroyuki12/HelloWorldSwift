@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#import "FIRDataSnapshot.h"
-#import "FIRDatabase.h"
-#import "FIRDatabaseQuery.h"
-#import "FIRMutableData.h"
-#import "FIRServerValue.h"
-#import "FIRTransactionResult.h"
+#import <FIRDataSnapshot.h>
+#import <FIRDatabase.h>
+#import <FIRDatabaseQuery.h>
+#import <FIRMutableData.h>
+#import <FIRServerValue.h>
+#import <FIRTransactionResult.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

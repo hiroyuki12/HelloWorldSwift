@@ -21,7 +21,7 @@ class WebViewController: UIViewController {
     // Do any additional setup after loading the view.
     
     print("Hello!")
-    print(url)
+    //print(url)
     
     if let url = URL(string: self.url!) {
     //if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている

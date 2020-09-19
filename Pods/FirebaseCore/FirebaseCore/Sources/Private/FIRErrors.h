@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-#include "FIRErrorCode.h"
+#include <FIRErrorCode.h>
 
 extern NSString *const kFirebaseErrorDomain;
 extern NSString *const kFirebaseConfigErrorDomain;

@@ -16,8 +16,8 @@
 #include <algorithm>
 #include <string>
 
-#include "leveldb/export.h"
-#include "leveldb/slice.h"
+#include <leveldb/export.h>
+#include <leveldb/slice.h>
 
 namespace leveldb {
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#import "FIRDataEventType.h"
-#import "FIRDataSnapshot.h"
+#import <FIRDataEventType.h>
+#import <FIRDataSnapshot.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

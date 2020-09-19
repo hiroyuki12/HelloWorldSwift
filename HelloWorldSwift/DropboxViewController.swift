@@ -72,7 +72,7 @@ class DropboxViewController: UIViewController {
     if let client = DropboxClientsManager.authorizedClient {
       let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
       
-      let request = client.files.upload(path: "/sample.txt", input: fileData)
+      _ = client.files.upload(path: "/sample.txt", input: fileData)
         .response { response, error in
           if let response = response {
             print(response)

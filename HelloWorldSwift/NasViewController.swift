@@ -16,13 +16,13 @@ class NasViewController: UIViewController {
 
         // Do any additional setup after loading the view.
       // URLオブジェクトを作る
-      var imgUrl = NSURL(string: "https://cdn-ak.f.st-hatena.com/images/fotolife/f/fedora9/20200501/20200501150536.png");
+      let imgUrl = NSURL(string: "https://cdn-ak.f.st-hatena.com/images/fotolife/f/fedora9/20200501/20200501150536.png");
 
       // ファイルデータを作る
-      var file = NSData(contentsOf: imgUrl! as URL);
+      let file = NSData(contentsOf: imgUrl! as URL);
 
       // イメージデータを作る
-      var img = UIImage(data:file! as Data)
+      let img = UIImage(data:file! as Data)
 
       // イメージビューに表示する
       myImageView.image = img

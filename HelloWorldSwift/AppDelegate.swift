@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import SwiftyDropbox //追加
+//import SwiftyDropbox //追加
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
       // Override point for customization after application launch.
     FirebaseApp.configure()
-    DropboxClientsManager.setupWithAppKey("INPUT_YOUR_DROPBOX_KEY") //追加 INPUT_YOUR_DROPBOX_KEY
+    //DropboxClientsManager.setupWithAppKey("INPUT_YOUR_DROPBOX_KEY") //追加 INPUT_YOUR_DROPBOX_KEY
     return true
   }
 
@@ -48,16 +48,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //      return true
 //    }
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      if let authResult = DropboxClientsManager.handleRedirectURL(url) {
-          switch authResult {
-          case .success:
-              print("Success! User is logged into Dropbox.")
-          case .cancel:
-              print("Authorization flow was manually canceled by user!")
-          case .error(_, let description):
-              print("Error: \(description)")
-          }
-      }
+//      if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+//          switch authResult {
+//          case .success:
+//              print("Success! User is logged into Dropbox.")
+//          case .cancel:
+//              print("Authorization flow was manually canceled by user!")
+//          case .error(_, let description):
+//              print("Error: \(description)")
+//          }
+//      }
       return true
   }
 

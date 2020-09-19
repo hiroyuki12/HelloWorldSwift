@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F3C6DBB7CBC4F0A81E35EAA /* Pods_HelloWorldSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */; };
 		2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD652461033800DAE6C9 /* NasViewController.swift */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
@@ -39,30 +38,10 @@
 		2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CA243767D5005215DD /* Main.storyboard */; };
 		2EE5C7CE243767D9005215DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CD243767D9005215DD /* Assets.xcassets */; };
 		2EE5C7D1243767D9005215DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */; };
-		2EE5C7DC243767D9005215DD /* HelloWorldSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7DB243767D9005215DD /* HelloWorldSwiftTests.swift */; };
-		2EE5C7E7243767D9005215DD /* HelloWorldSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7E6243767D9005215DD /* HelloWorldSwiftUITests.swift */; };
 		2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F4243819FC005215DD /* TableViewCell.swift */; };
 		2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F5243819FC005215DD /* TableViewCell.xib */; };
 		5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */; };
-		F203265202C4661DDB9E5AFA /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B02B5E7613C805DF04691C5 /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2EE5C7D8243767D9005215DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2EE5C7B9243767D5005215DD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2EE5C7C0243767D5005215DD;
-			remoteInfo = HelloWorldSwift;
-		};
-		2EE5C7E3243767D9005215DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2EE5C7B9243767D5005215DD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2EE5C7C0243767D5005215DD;
-			remoteInfo = HelloWorldSwift;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,10 +83,8 @@
 		2EE5C7CD243767D9005215DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2EE5C7D0243767D9005215DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2EE5C7D2243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2EE5C7D7243767D9005215DD /* HelloWorldSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloWorldSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7DB243767D9005215DD /* HelloWorldSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldSwiftTests.swift; sourceTree = "<group>"; };
 		2EE5C7DD243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2EE5C7E2243767D9005215DD /* HelloWorldSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HelloWorldSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7E6243767D9005215DD /* HelloWorldSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldSwiftUITests.swift; sourceTree = "<group>"; };
 		2EE5C7E8243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2EE5C7F4243819FC005215DD /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
@@ -126,22 +103,6 @@
 			files = (
 				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
 				5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EE5C7D4243767D9005215DD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0F3C6DBB7CBC4F0A81E35EAA /* Pods_HelloWorldSwiftTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EE5C7DF243767D9005215DD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F203265202C4661DDB9E5AFA /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,8 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */,
-				2EE5C7D7243767D9005215DD /* HelloWorldSwiftTests.xctest */,
-				2EE5C7E2243767D9005215DD /* HelloWorldSwiftUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -278,46 +237,6 @@
 			productReference = 2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2EE5C7D6243767D9005215DD /* HelloWorldSwiftTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2EE5C7EE243767D9005215DD /* Build configuration list for PBXNativeTarget "HelloWorldSwiftTests" */;
-			buildPhases = (
-				4E85BA716B747088503F9777 /* [CP] Check Pods Manifest.lock */,
-				2EE5C7D3243767D9005215DD /* Sources */,
-				2EE5C7D4243767D9005215DD /* Frameworks */,
-				2EE5C7D5243767D9005215DD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2EE5C7D9243767D9005215DD /* PBXTargetDependency */,
-			);
-			name = HelloWorldSwiftTests;
-			productName = HelloWorldSwiftTests;
-			productReference = 2EE5C7D7243767D9005215DD /* HelloWorldSwiftTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		2EE5C7E1243767D9005215DD /* HelloWorldSwiftUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2EE5C7F1243767D9005215DD /* Build configuration list for PBXNativeTarget "HelloWorldSwiftUITests" */;
-			buildPhases = (
-				A4BFD493C44874FDBE8EF520 /* [CP] Check Pods Manifest.lock */,
-				2EE5C7DE243767D9005215DD /* Sources */,
-				2EE5C7DF243767D9005215DD /* Frameworks */,
-				2EE5C7E0243767D9005215DD /* Resources */,
-				4A8BAD06419C62F97869ABFC /* [CP] Embed Pods Frameworks */,
-				5AC2874C2B7CD84BD669B7C4 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2EE5C7E4243767D9005215DD /* PBXTargetDependency */,
-			);
-			name = HelloWorldSwiftUITests;
-			productName = HelloWorldSwiftUITests;
-			productReference = 2EE5C7E2243767D9005215DD /* HelloWorldSwiftUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -325,19 +244,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = hiroyuki;
 				TargetAttributes = {
 					2EE5C7C0243767D5005215DD = {
 						CreatedOnToolsVersion = 11.3;
-					};
-					2EE5C7D6243767D9005215DD = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 2EE5C7C0243767D5005215DD;
-					};
-					2EE5C7E1243767D9005215DD = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = 2EE5C7C0243767D5005215DD;
 					};
 				};
 			};
@@ -355,8 +266,6 @@
 			projectRoot = "";
 			targets = (
 				2EE5C7C0243767D5005215DD /* HelloWorldSwift */,
-				2EE5C7D6243767D9005215DD /* HelloWorldSwiftTests */,
-				2EE5C7E1243767D9005215DD /* HelloWorldSwiftUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -372,20 +281,6 @@
 				2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */,
 				2E685890244F21550023AE5A /* Sub.storyboard in Resources */,
 				2E6858DA24556ED50023AE5A /* GoogleService-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EE5C7D5243767D9005215DD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EE5C7E0243767D9005215DD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,62 +304,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
-		4A8BAD06419C62F97869ABFC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4E85BA716B747088503F9777 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelloWorldSwiftTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5AC2874C2B7CD84BD669B7C4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -522,28 +361,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A4BFD493C44874FDBE8EF520 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelloWorldSwift-HelloWorldSwiftUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -580,36 +397,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2EE5C7D3243767D9005215DD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2EE5C7DC243767D9005215DD /* HelloWorldSwiftTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EE5C7DE243767D9005215DD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2EE5C7E7243767D9005215DD /* HelloWorldSwiftUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2EE5C7D9243767D9005215DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2EE5C7C0243767D5005215DD /* HelloWorldSwift */;
-			targetProxy = 2EE5C7D8243767D9005215DD /* PBXContainerItemProxy */;
-		};
-		2EE5C7E4243767D9005215DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2EE5C7C0243767D5005215DD /* HelloWorldSwift */;
-			targetProxy = 2EE5C7E3243767D9005215DD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2EE5C7CA243767D5005215DD /* Main.storyboard */ = {
@@ -657,6 +445,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -717,6 +506,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -795,94 +585,6 @@
 			};
 			name = Release;
 		};
-		2EE5C7EF243767D9005215DD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E06538B16F8CDCB9809B0FE2 /* Pods-HelloWorldSwiftTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				INFOPLIST_FILE = HelloWorldSwiftTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloWorldSwift.app/HelloWorldSwift";
-			};
-			name = Debug;
-		};
-		2EE5C7F0243767D9005215DD /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 097EEE2D41B5C80DF5BEFB62 /* Pods-HelloWorldSwiftTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				INFOPLIST_FILE = HelloWorldSwiftTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HelloWorldSwift.app/HelloWorldSwift";
-			};
-			name = Release;
-		};
-		2EE5C7F2243767D9005215DD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A53647C944B063F4184FD45D /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				INFOPLIST_FILE = HelloWorldSwiftUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HelloWorldSwift;
-			};
-			name = Debug;
-		};
-		2EE5C7F3243767D9005215DD /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25B0DA2BD218A715E4D5549C /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				INFOPLIST_FILE = HelloWorldSwiftUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HelloWorldSwift;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -900,24 +602,6 @@
 			buildConfigurations = (
 				2EE5C7EC243767D9005215DD /* Debug */,
 				2EE5C7ED243767D9005215DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2EE5C7EE243767D9005215DD /* Build configuration list for PBXNativeTarget "HelloWorldSwiftTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2EE5C7EF243767D9005215DD /* Debug */,
-				2EE5C7F0243767D9005215DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2EE5C7F1243767D9005215DD /* Build configuration list for PBXNativeTarget "HelloWorldSwiftUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2EE5C7F2243767D9005215DD /* Debug */,
-				2EE5C7F3243767D9005215DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
