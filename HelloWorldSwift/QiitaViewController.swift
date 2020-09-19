@@ -43,29 +43,29 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     table.rowHeight = 70
     
     myload(page: 1, perPage: perPage, tag: tag)
-    print("myload (viewDidLoad)")
+    //print("myload (viewDidLoad)")
     
     //sqlite start
     let fileUrl = try!
       FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
     if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
-      print("Error opening database. HeroDatabase.sqlite")
+      //print("Error opening database. HeroDatabase.sqlite")
       return
     }
     let createTableQuery = "create table if not exists Heroes (id integer primary key autoincrement, name text, powerrank integer)"
     if sqlite3_exec(db, createTableQuery, nil, nil, nil) !=
       SQLITE_OK{
-      print("Error createing table Heros")
+      //print("Error createing table Heros")
       return
     }
-    print("SQLite Everything is fine!")
+    //print("SQLite Everything is fine!")
     //sqlite end
     
 //    let target = self.navigationController?.value(forKey: "_cachedInteractionController")
 //    let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
 //    self.view.addGestureRecognizer(recognizer)
     
-    print("viewDidLoad End!")
+    //print("viewDidLoad End!")
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
@@ -112,13 +112,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         DispatchQueue.main.async {
           self.table.reloadData()
-          print("reloadData End!")
+          //print("reloadData End!")
           self.isLoading = false
-          print("self.isLoading = false End!")
+          //print("self.isLoading = false End!")
         }
       }
       catch {
-          print(error)
+          //print(error)
       }
     })
     
@@ -303,8 +303,12 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
           "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
-  // Saveボタンタップ時
+  // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
+    
+    //戻る
+    dismiss(animated: true, completion: nil)
+    /*
     //savedPage  //現在のページ
     print("start tapSave.")
     print("savedPage: " + String(savedPage))
@@ -316,6 +320,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     sqliteSavedPage = savedPage;
     print("sqliteSavedPage: " + String(sqliteSavedPage))
+    */
     
   }
   

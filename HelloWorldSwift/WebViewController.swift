@@ -31,7 +31,11 @@ class WebViewController: UIViewController {
     }
   }
   
-
+  @IBAction func tapClose(_ sender: Any) {
+    //戻る
+    dismiss(animated: true, completion: nil)
+  }
+  
   /*
   // MARK: - Navigation
 
