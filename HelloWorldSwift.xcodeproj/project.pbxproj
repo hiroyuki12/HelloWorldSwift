@@ -8,10 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F3C6DBB7CBC4F0A81E35EAA /* Pods_HelloWorldSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */; };
-		2E127E5824AA927D00E9F55E /* SMBClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; };
 		2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD652461033800DAE6C9 /* NasViewController.swift */; };
-		2E64BD6A2461097800DAE6C9 /* SMBClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; };
-		2E64BD6B2461097800DAE6C9 /* SMBClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2E64BD692461097800DAE6C9 /* SMBClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
@@ -66,20 +63,6 @@
 			remoteInfo = HelloWorldSwift;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		2E64BD6C2461097800DAE6C9 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				2E64BD6B2461097800DAE6C9 /* SMBClient.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,10 +124,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E127E5824AA927D00E9F55E /* SMBClient.framework in Frameworks */,
 				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
 				5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */,
-				2E64BD6A2461097800DAE6C9 /* SMBClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +267,6 @@
 				2EE5C7BF243767D5005215DD /* Resources */,
 				774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */,
 				60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */,
-				2E64BD6C2461097800DAE6C9 /* Embed Frameworks */,
 				2E64BD6D246109A600DAE6C9 /* Run Script */,
 			);
 			buildRules = (
@@ -420,7 +400,6 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SMBClient.framework",
 			);
 			name = "Run Script";
 			outputFileListPaths = (
@@ -429,7 +408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
 		4A8BAD06419C62F97869ABFC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
