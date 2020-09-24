@@ -26,6 +26,7 @@
 		2E7D68C024412F31008C962B /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68BF24412F31008C962B /* MapKitViewController.swift */; };
 		2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C92442704D008C962B /* QiitaViewController.swift */; };
 		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
+		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
 		2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C6243767D5005215DD /* SceneDelegate.swift */; };
 		2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C8243767D5005215DD /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 		2E7D68C92442704D008C962B /* QiitaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaViewController.swift; sourceTree = "<group>"; };
 		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
 		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
+		2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeratrailViewController.swift; sourceTree = "<group>"; };
 		2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE5C7C4243767D5005215DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2EE5C7C6243767D5005215DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */,
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
+				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
 				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
@@ -357,6 +360,7 @@
 				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
+				2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */,
 				2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */,
 				2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */,
 				2E7D68C024412F31008C962B /* MapKitViewController.swift in Sources */,
@@ -524,7 +528,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -549,7 +553,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
