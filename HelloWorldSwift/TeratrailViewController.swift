@@ -159,39 +159,42 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let textDetailText = cell.viewWithTag(3) as! UILabel
     textDetailText.text = article["created"]! as? String  // questions->created
     // セルに表示する画像を設定する
-    let articleUser = article["user"] as AnyObject?
+    let articleUser = article["user"] as AnyObject?  // questions->user
     let profileImageUrl = articleUser?["photo"]  // questions->user->photo
     let profileImage = cell.viewWithTag(1) as! UIImageView
-    let myUrl: URL? = URL(string: profileImageUrl as! String)
-    profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-    // セルに表示するタグを設定する
+    if let profileImageUrl = profileImageUrl {  // if profileImageUrl not nil
+      let myUrl: URL? = URL(string: profileImageUrl as! String)
+      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    }
+    // セルに表示する回答数とタグを設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-//    let arr = article["tags"] as? [Any]
-//    let count = arr?.count
+    let replayCount = article["count_reply"] as? Int  // questions->count_reply
+    let pvCount = article["count_pv"] as? Int  // questions->count_pv
+    var arr = article["tags"] as? [String]  // questions->tags
+    let count = arr!.count
 //    let tag1name = arr?.first!
-//    let tag1name = arr?[0]
-//    tagsText.text = tag1name
-    tagsText.text = "Swift"
-//    if(count! > 1) {
-//      arr?.removeFirst()
-//      let tag2name = arr?.first!["name"] as? String
-//      tagsText.text = tag1name! + "," + tag2name!
-//      if(count! > 2) {
-//        arr?.removeFirst()
-//        let tag3name = arr?.first!["name"] as? String
-//        tagsText.text = tag1name! + "," + tag2name! + "," + tag3name!
-//        if(count! > 3) {
-//          arr?.removeFirst()
-//          let tag4name = arr?.first!["name"] as? String
-//          tagsText.text = tag1name! + "," + tag2name! + "," + tag3name! + "," + tag4name!
-//          if(count! > 4) {
-//            arr?.removeFirst()
-//            let tag5name = arr?.first!["name"] as? String
-//            tagsText.text = tag1name! + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
-//          }
-//        }
-//      }
-//    }
+    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!) + " / " + (arr?[0])!
+    tagsText.text = tag1name
+    if(count > 1) {
+      arr?.removeFirst()
+      let tag2name = arr?[0]
+      tagsText.text = tag1name + "," + tag2name!
+      if(count > 2) {
+        arr?.removeFirst()
+        let tag3name = arr?[0]
+        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
+        if(count > 3) {
+          arr?.removeFirst()
+          let tag4name = arr?[0]
+          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
+          if(count > 4) {
+            arr?.removeFirst()
+            let tag5name = arr?[0]
+            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
+          }
+        }
+      }
+    }
     return cell
   }
   
