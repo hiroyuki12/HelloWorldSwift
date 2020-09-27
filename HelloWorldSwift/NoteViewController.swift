@@ -24,7 +24,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "swift"
+  var tag = "tech"
 //    let tag = "flutter"
   
   let tagSwift    = "swift"
@@ -68,17 +68,13 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
-//    let str1:String = "https://teratail.com/api/v1/tags/"
-//    let str2:String = String(tag)
-//    let str3:String = "/questions?page="
-//    let str4:String = String(page)
-//    let str5:String = "&limit="
-//    let str6:String = String(perPage)
-
-    //let str7:String = str1 + str2 + str3 + str4 + str5 + str6
-    let str7:String = "https://note.com/api/v2/notes"
+//    let str1:String = "https://note.com/api/v1/categories/tech?note_intro_only=true&page="  // tech
+    let str1:String = "https://note.com/api/v1/categories/tech?note_intro_only=true&sort=new&page="
+//    let str1:String = "https://note.com/api/v2/notes?page="  // popular
+    let str2:String = String(page)
+    let str3:String = str1 + str2
     
-    let url: URL = URL(string: str7)!
+    let url: URL = URL(string: str3)!
     
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
 //      print ("response!!!!!")
@@ -115,6 +111,17 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
                 contentsValue2 = articles_tmp + contentsValue2  // 末尾に追加
                   self.articles = contentsValue2 //追加
               }
+              else if(key == "notes") {
+                let contentsValue = value as! [Any]
+                
+                var contentsValue2 =  contentsValue.map { (article) -> [String: Any] in
+                      return article as! [String: Any]
+                  }
+                  let articles_tmp = self.articles  // 一時退避
+                contentsValue2 = articles_tmp + contentsValue2  // 末尾に追加
+                  self.articles = contentsValue2 //追加
+              }
+              
             }
           }
         }
@@ -151,48 +158,60 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-//    textTitle.text = article["title"]! as? String // questions->title
-    textTitle.text = article["name"]! as? String // questions->title
+//    textTitle.text = article["name"]! as? String // data->notes->name
+    textTitle.text = article["tweet_text"]! as? String // data->notes->tweet_text
     // セルに表示する作成日を設定する
-//    let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = article["created"]! as? String  // questions->created
+    let textDetailText = cell.viewWithTag(3) as! UILabel
+    textDetailText.text = article["publish_at"]! as? String  // data->notes->publish_at  (tech)
+//    textDetailText.text = article["publishAt"]! as? String  // data->notes->publish_at  (popular)
     // セルに表示する画像を設定する
-//    let articleUser = article["user"] as AnyObject?  // questions->user
-//    let profileImageUrl = articleUser?["photo"]  // questions->user->photo
-//    let profileImage = cell.viewWithTag(1) as! UIImageView
-//    if profileImageUrl != nil {  // if profileImageUrl not nil
-//      let myUrl: URL? = URL(string: profileImageUrl as! String)
-//      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-//    }
-    // セルに表示する回答数とタグを設定する
-//    let tagsText = cell.viewWithTag(4) as! UILabel
-//    let replayCount = article["count_reply"] as? Int  // questions->count_reply
-//    let pvCount = article["count_pv"] as? Int  // questions->count_pv
-//    var arr = article["tags"] as? [String]  // questions->tags
-//    let count = arr!.count
-////    let tag1name = arr?.first!
-//    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!) + " / " + (arr?[0])!
-//    tagsText.text = tag1name
-//    if(count > 1) {
-//      arr?.removeFirst()
-//      let tag2name = arr?[0]
-//      tagsText.text = tag1name + "," + tag2name!
-//      if(count > 2) {
-//        arr?.removeFirst()
-//        let tag3name = arr?[0]
-//        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
-//        if(count > 3) {
-//          arr?.removeFirst()
-//          let tag4name = arr?[0]
-//          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
-//          if(count > 4) {
-//            arr?.removeFirst()
-//            let tag5name = arr?[0]
-//            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
-//          }
-//        }
-//      }
-//    }
+    let articleUser = article["user"] as AnyObject?  // data->notes->->user
+    let profileImageUrl = articleUser?["user_profile_image_path"]  // data->notes->user->user_profile_image_path
+    let profileImage = cell.viewWithTag(1) as! UIImageView
+    if profileImageUrl != nil {  // if profileImageUrl not nil
+      let myUrl: URL? = URL(string: profileImageUrl as! String)
+      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    }
+    // セルに表示するタグを設定する
+    let hasTagText = cell.viewWithTag(4) as! UILabel
+    for (key, value) in article {
+      if(key == "hashtag_notes") {  // data->notes->hashtag_notes
+        let arrayHashtagNotes = value as! [Any]
+        let distHashtagNotes =  arrayHashtagNotes.map { (article) -> [String: Any] in
+          return article as! [String: Any]
+        }
+        var tag:String = ""
+        if(distHashtagNotes.count > 0)
+        {
+          let hashtag = distHashtagNotes[0]
+          let tag1 = hashtag["hashtag"]! as! [String: Any]  // data->notes->hashtag_notes->hashtag
+          let tag2 = tag1["name"]  // data->notes->hashtag_notes->hashtag->name
+          tag = tag2 as! String
+        }
+        if(distHashtagNotes.count > 1)
+        {
+          let hashtag = distHashtagNotes[1]
+          let tag1 = hashtag["hashtag"]! as! [String: Any]
+          let tag2 = tag1["name"] as! String
+          tag += " " + tag2
+        }
+        if(distHashtagNotes.count > 2)
+        {
+          let hashtag = distHashtagNotes[2]
+          let tag1 = hashtag["hashtag"]! as! [String: Any]
+          let tag2 = tag1["name"] as! String
+          tag += " " + tag2
+        }
+        if(distHashtagNotes.count > 3)
+        {
+          let hashtag = distHashtagNotes[3]
+          let tag1 = hashtag["hashtag"]! as! [String: Any]
+          let tag2 = tag1["name"] as! String
+          tag += " " + tag2
+        }
+        hasTagText.text = tag
+      }
+    }
     return cell
   }
   
@@ -443,10 +462,19 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
 //    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
 //    popUp()
     
-//    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-//    webView.url = "https://teratail.com/questions/" + String(articles[indexPath.row]["id"] as! Int)
-//
-//    self.present(webView, animated: true, completion: nil)
+    let article = articles[indexPath.row]
+    let url = article["twitter_share_url"]! as? String // data->notes->twitter_share_url
+    
+    let newStr = url!.replacingOccurrences(of: "https://twitter.com/intent/tweet?url=", with: "")
+    let array1 = newStr.components(separatedBy: "&")  // ,で分割する
+    print(array1[0])
+    print("BBB")
+    
+    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
+    //webView.url = "https://teratail.com/questions/" + String(articles[indexPath.row]["id"] as! Int)
+    webView.url = array1[0]
+
+    self.present(webView, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
