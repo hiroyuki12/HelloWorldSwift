@@ -162,7 +162,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let articleUser = article["user"] as AnyObject?  // questions->user
     let profileImageUrl = articleUser?["photo"]  // questions->user->photo
     let profileImage = cell.viewWithTag(1) as! UIImageView
-    if let profileImageUrl = profileImageUrl {  // if profileImageUrl not nil
+    if profileImageUrl != nil {  // if profileImageUrl not nil
       let myUrl: URL? = URL(string: profileImageUrl as! String)
       profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     }

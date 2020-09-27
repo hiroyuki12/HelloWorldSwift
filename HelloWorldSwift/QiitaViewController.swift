@@ -83,8 +83,11 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print (str7)
     
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
+      guard let data = data else {
+        return
+      }
       do {
-        let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Any]
+        let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as! [Any]
         
         // 一時退避
         let articles_tmp = self.articles
@@ -92,10 +95,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let articles = articles_tmp + json.map { (article) -> [String: Any] in
             return article as! [String: Any]
         }
-        print(json)
-        print(articles[0]["user"]!)
-        print("BBB")
-        print("BBB")
+//        print(json)
+//        print(articles[0]["user"]!)
+//        print("BBB")
+//        print("BBB")
         //print(articles[0]["title"]!)
 //        print(articles[0]["url"]!)
 //        print(articles[1]["title"]!)
