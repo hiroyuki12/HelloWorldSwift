@@ -32,6 +32,7 @@ class DropboxViewController: UIViewController {
   }
   
   @objc func signInDropbox(){
+    DropboxClientsManager.setupWithAppKey("INPUT-YOUR-DROPBOX-App-key")
     if let _ = DropboxClientsManager.authorizedClient {
       //既にログイン済みだとクラッシュするのでログアウト
       DropboxClientsManager.unlinkClients()
