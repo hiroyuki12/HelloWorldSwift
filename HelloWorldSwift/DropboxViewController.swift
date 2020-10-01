@@ -68,12 +68,8 @@ class DropboxViewController: UIViewController {
   
   @objc func saveText() {
     let tmpURL = NSURL(fileURLWithPath: NSTemporaryDirectory())
-//    let fileURLx = tmpURL.URLByAppendingPathComponent("sample.txt")
     let fileURL = tmpURL.appendingPathComponent("sample.txt")!
     do {
-//      try textField.text?.writeToURL(fileURL, atomically: true, encoding: NSUTF8StringEncoding)
-//      print("fileURL")
-//      print(fileURL)
       try textField.text?.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
       print("Save text file")
     } catch {
@@ -109,9 +105,8 @@ class DropboxViewController: UIViewController {
     }
   }
   
-//  var count = 1396713410486
   var count = 0
-  var maxCount = 69
+  var maxCount = 500
 //  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
 //  var fileName = "/アプリ/Photo Watch/"//1396713410486.jpg"
   var fileName = "/アプリ/Photo Watch/1396713410486.jpg"
@@ -131,8 +126,6 @@ class DropboxViewController: UIViewController {
           print("result.entries.count")
           print(result.entries.count)  // 500
           for entry in result.entries {
-            //print(entry.name)
-            
             // Check that file is a photo (by file extension)
             if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
               // Add photo!
@@ -199,8 +192,24 @@ class DropboxViewController: UIViewController {
             let data = try Data(contentsOf: url)  //urlをData型に変換
             let img = UIImage(data: data)  //Data型に変換したurlをUIImageに変換
             let iv:UIImageView = UIImageView(image:img)  //UIImageをivに変換
-            let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
+            let maxSize: CGFloat = 390.0
+            var tmpWidth = 0
+            var tmpHeight = 0
+            if img!.size.width >= img!.size.height {
+              tmpWidth = Int((maxSize / img!.size.height) * img!.size.width)
+              tmpHeight = Int(maxSize)
+            } else {
+              tmpWidth = Int(maxSize)
+              tmpHeight = Int((maxSize / img!.size.width) * img!.size.height)
+            }
+//            let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
+            let rect:CGRect = CGRect(x:0, y:0, width:tmpWidth, height:tmpHeight)  //サイズを変更
             iv.frame = rect
+            
+            var tagViewB = 27
+            iv.tag = tagViewB
+            var fetchedViewB = self.view.viewWithTag(tagViewB)
+            fetchedViewB?.removeFromSuperview()
             self.view.addSubview(iv)  //変換したivをviewに追加
             iv.layer.position = CGPoint(x: self.view.bounds.width/2, y: 360.0)  //表示位置決定
           } catch let err {
@@ -216,7 +225,6 @@ class DropboxViewController: UIViewController {
   // Nextボタンタップ時
   @IBAction func TapNext(_ sender: Any) {
     
-    //fileName = "/携帯/docomoF505i/100f505i-1/f1000003.jpg"
     count = count + 1
     
     print(count)
@@ -365,10 +373,14 @@ class DropboxViewController: UIViewController {
   @IBAction func TapBack(_ sender: Any) {
     count = count - 1
     
-    //CountLabel.text = String(count)
+    print(count)
+    print("self.filenames![?]")
+    print(self.filenames![count])
+    
+    fileName = "/アプリ/Photo Watch/" + self.filenames![count]
+    
     downloadDropboxFile()
   }
-  
   
   /*
   // MARK: - Navigation
