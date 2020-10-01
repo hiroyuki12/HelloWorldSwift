@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 
 class FirebaseViewController: UIViewController {
 
@@ -15,7 +15,7 @@ class FirebaseViewController: UIViewController {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    let ref = Database.database().reference()
+    //let ref = Database.database().reference()
 
     // Add
 //    // KeyValue型の配列を用意しておきます。
@@ -37,16 +37,7 @@ class FirebaseViewController: UIViewController {
       
     // Select
     // データの変更を監視(observe)してるため、変更されればリアルタイムで実行されます。
-    ref.child("Page").observe(.value) { (snapshot) in
-      // Page直下のデータの数だけ繰り返す。
-      for data in snapshot.children {
-        let snapData = data as! DataSnapshot
-
-        // Dictionary型にキャスト
-        let page = snapData.value as! [String: Any]
-        print(page)
-      }
-    }
+//    ref.chil
   }
   
   @IBAction func tapMail(_ sender: Any) {

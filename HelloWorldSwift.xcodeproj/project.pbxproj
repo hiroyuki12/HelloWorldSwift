@@ -213,7 +213,6 @@
 				2EE5C7BE243767D5005215DD /* Frameworks */,
 				2EE5C7BF243767D5005215DD /* Resources */,
 				774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */,
-				60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */,
 				2E64BD6D246109A600DAE6C9 /* Run Script */,
 			);
 			buildRules = (
@@ -292,23 +291,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
-		60D6D94272EBB010C20658F7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

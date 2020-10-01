@@ -9,7 +9,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>db-INPUT-YOUR-DROPBOX-App-key</string>
+				<string>db-INPUT_YOUR_DROPBOX_APP_KEY</string>
 			</array>
 			<key>CFBundleURLName</key>
 			<string></string>

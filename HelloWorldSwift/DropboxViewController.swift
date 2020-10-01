@@ -16,6 +16,9 @@ class DropboxViewController: UIViewController {
   @IBOutlet weak var CountLabel: UILabel!
   @IBOutlet weak var DropboxPath: UILabel!
   
+  var filenames: Array<String>?
+  var filename: String?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -24,6 +27,21 @@ class DropboxViewController: UIViewController {
     //画像表示エリアの記載
     myImageView.frame = CGRect(x: 10, y: 500, width: 200, height: 120)
     self.view.addSubview(myImageView)
+    
+    self.filenames = []
+    
+    if let filename = self.filename {
+      let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.Dropbox.DropboxPhotoWatch123")
+      if let fileURL = containerURL?.appendingPathComponent(filename) {
+        print("Finding file at URL: \(fileURL)")
+        if let data = try? Data(contentsOf: fileURL) {
+          print("Image found in cache.")
+          self.myImageView.image = UIImage(data: data)  // Display image
+        } else {
+          print("Image not cached!")
+        }
+      }
+    }
   }
   
   // SignInボタンタップ時
@@ -32,7 +50,6 @@ class DropboxViewController: UIViewController {
   }
   
   @objc func signInDropbox(){
-    DropboxClientsManager.setupWithAppKey("INPUT-YOUR-DROPBOX-App-key")
     if let _ = DropboxClientsManager.authorizedClient {
       //既にログイン済みだとクラッシュするのでログアウト
       DropboxClientsManager.unlinkClients()
@@ -92,9 +109,12 @@ class DropboxViewController: UIViewController {
     }
   }
   
-  var count = 10
+//  var count = 1396713410486
+  var count = 0
   var maxCount = 69
-  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
+//  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
+//  var fileName = "/アプリ/Photo Watch/"//1396713410486.jpg"
+  var fileName = "/アプリ/Photo Watch/1396713410486.jpg"
   var fileExt = ".jpg"
   
   // Downloadボタンタップ時
@@ -103,57 +123,108 @@ class DropboxViewController: UIViewController {
   }
   
   @objc func downloadDropboxFile() {
-     //ダウンロード処理
-     if let client = DropboxClientsManager.authorizedClient {
-       //ダウンロード先URLを設定
-       let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
-         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-         let UUID = Foundation.UUID().uuidString
-         var fileName = ""
-         if let suggestedFilename = response.suggestedFilename {
-             fileName = suggestedFilename
-         }
-         let pathComponent = "\(UUID)-\(fileName)"
-         return directoryURL.appendingPathComponent(pathComponent)
-       }
-       //画面描画処理
-//      print("count")
-//      print(String(count))
+    if let client = DropboxClientsManager.authorizedClient {
+      // List contents of app folder
+      _ = client.files.listFolder(path: "/アプリ/Photo Watch/").response { response, error in
+        if let result = response {
+          print("Folder contents:")
+          print("result.entries.count")
+          print(result.entries.count)  // 500
+          for entry in result.entries {
+            //print(entry.name)
+            
+            // Check that file is a photo (by file extension)
+            if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
+              // Add photo!
+              self.filenames?.append(entry.name)
+            }
+          }
+        }
+      }
+    }
+//
+//    // logout
+//    // Clear the app group of all files
+//    if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.Dropbox.DropboxPhotoWatch123") {
+//
+//      // Fetch all files in the app group
+//      do {
+//        let fileURLArray = try FileManager.default.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [])
+//
+//        print("fileURLArray.count")
+//        print(fileURLArray.count)
+//        for fileURL in fileURLArray {
+//          // Check that file is a photo (by file extension)
+//          if fileURL.absoluteString.hasSuffix(".jpg") || fileURL.absoluteString.hasSuffix(".png") {
+//
+//            //                    do {
+//            // Delete the photo from the app group
+//            //try FileManager.default.removeItem(at: fileURL)
+//            print(fileURL)
+//            //                    } catch _ as NSError {
+//            //                        // Do nothing with the error
+//            //                    }
+//          }
+//        }
+//      } catch _ as NSError {
+//        // Do nothing with the error
+//      }
+//    }
+    
+    //
+    //ダウンロード処理
+    if let client = DropboxClientsManager.authorizedClient {
+      //ダウンロード先URLを設定
+      let destination : (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let UUID = Foundation.UUID().uuidString
+        var fileName = ""
+        if let suggestedFilename = response.suggestedFilename {
+          fileName = suggestedFilename
+        }
+        let pathComponent = "\(UUID)-\(fileName)"
+        return directoryURL.appendingPathComponent(pathComponent)
+      }
+      //画面描画処理
+      //      print("count")
+      //      print(String(count))
       //表示更新
       CountLabel.text = String(count) + " / " + String(maxCount)
       DropboxPath.text = String(fileName)
-       client.files.download(path: fileName + String(count) + fileExt, destination: destination).response { response, error in
-         if let (metadata, url) = response {
-           print("Downloaded file name: \(metadata.name)")
-           do {
-             //urlをData型に変換
-             let data = try Data(contentsOf: url)
-             //Data型に変換したurlをUIImageに変換
-             let img = UIImage(data: data)
-             //UIImageをivに変換
-             let iv:UIImageView = UIImageView(image:img)
-            //サイズを変更
-            let rect:CGRect = CGRect(x:0, y:0, width:300, height:400)
+//      client.files.download(path: fileName + String(count) + fileExt, destination: destination).response { response, error in
+        client.files.download(path: fileName, destination: destination).response { response, error in
+        if let (metadata, url) = response {
+          print("Downloaded file name: \(metadata.name)")
+          do {
+            let data = try Data(contentsOf: url)  //urlをData型に変換
+            let img = UIImage(data: data)  //Data型に変換したurlをUIImageに変換
+            let iv:UIImageView = UIImageView(image:img)  //UIImageをivに変換
+            let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
             iv.frame = rect
-             //変換したivをviewに追加
-             self.view.addSubview(iv)
-             //表示位置決定
-             iv.layer.position = CGPoint(x: self.view.bounds.width/2, y: 400.0)
-           } catch let err {
-             print("Error : \(err.localizedDescription)")
-           }
-         } else {
-           print(error!)
-         }
-       }
-     }
+            self.view.addSubview(iv)  //変換したivをviewに追加
+            iv.layer.position = CGPoint(x: self.view.bounds.width/2, y: 360.0)  //表示位置決定
+          } catch let err {
+            print("Error : \(err.localizedDescription)")
+          }
+        } else {
+          print(error!)
+        }
+      }
+    }
   }
   
   // Nextボタンタップ時
   @IBAction func TapNext(_ sender: Any) {
+    
     //fileName = "/携帯/docomoF505i/100f505i-1/f1000003.jpg"
     count = count + 1
     
+    print(count)
+    print("self.filenames![?]")
+    print(self.filenames![count])
+    
+    fileName = "/アプリ/Photo Watch/" + self.filenames![count]
+    /*
     if fileName == "/携帯/docomoF505i/100f505i-1/f10000" {
       if(count == 31) { count = 33 }
       if(count == 70) {  //69
@@ -285,6 +356,7 @@ class DropboxViewController: UIViewController {
         maxCount = 0
       }
     }
+     */
       
     //CountLabel.text = String(count)
     downloadDropboxFile()
