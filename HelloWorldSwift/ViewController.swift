@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class ViewController: UIViewController {
+  
+  @IBAction func tapGoogleSignIn(_ sender: Any) {
+    GIDSignIn.sharedInstance()?.delegate = self
+    GIDSignIn.sharedInstance()?.presentingViewController = self
+    GIDSignIn.sharedInstance()?.signIn()
+  }
   
   @IBAction func tapSub(_ sender: Any) {
     let storyboard = UIStoryboard(name: "Sub", bundle: nil)
@@ -25,6 +32,12 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
+    if let user = GIDSignIn.sharedInstance()?.currentUser {
+      print("currentUser.profile.email: \(user.profile!.email!)")
+    } else {
+      // 次回起動時にはこちらのログが出力される
+      print("currentUser is nil")
+    }
     
   }
   
@@ -56,3 +69,15 @@ class ViewController: UIViewController {
 //    }
 }
 
+// GIDSignInDelegateへの適合とメソッドの追加を行う
+extension ViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if error == nil {
+            // ログイン成功した場合
+            print("signIned user email: \(user!.profile!.email!)")
+        } else {
+            // ログイン失敗した場合
+            print("error: \(error!.localizedDescription)")
+        }
+    }
+}
