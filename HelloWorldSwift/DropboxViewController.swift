@@ -246,6 +246,12 @@ class DropboxViewController: UIViewController {
       repeats: true)
   }
   
+  func stopTimer() {
+    if timer != nil{
+      timer.invalidate()
+    }
+  }
+
   // Nextボタンタップ時
   @IBAction func TapNext(_ sender: Any) {
     count = count + 1
@@ -256,147 +262,13 @@ class DropboxViewController: UIViewController {
     
     print(count)
     print("self.filenames![?]")
-    //print(self.filenames![count])
     
     fileName = "/アプリ/Photo Watch/" + self.filenames![count]
-    /*
-    if fileName == "/携帯/docomoF505i/100f505i-1/f10000" {
-      if(count == 31) { count = 33 }
-      if(count == 70) {  //69
-        fileName = "/携帯/docomoF505i/100f505i-2/f10000"
-        count = 10
-        maxCount = 43
-      }
-    }
-    if fileName == "/携帯/docomoF505i/100f505i-2/f10000" && count == 44 {  //43
-      fileName = "/携帯/softbank705SH/Image0"
-      count = 14
-      maxCount = 88
-    }
-    if fileName == "/携帯/softbank705SH/Image0" {
-      if(count==16){count=17}
-      if(count==18){count=19}
-      if(count==20){count=25}
-      if(count==27){count=29}
-      if(count==30){count=31}
-      if(count==32){count=34}
-      if(count==35){count=38}
-      if(count==40){count=41}
-      if(count==43){count=44}
-      if(count==45){count=46}
-      if(count==48){count=52}
-      if(count==53){count=54}
-      if(count==55){count=59}
-      if(count==60){count=61}
-      if(count==65){count=66}
-      if(count==68){count=69}
-      if(count==72){count=74}
-      if(count==75){count=76}
-      if(count==78){count=79}
-      if(count==84){count=85}
-      if(count == 89) { //88
-        fileName = "/携帯/photo/Image1"
-        count = 10
-        maxCount = 85
-      }
-    }
-    if fileName == "/携帯/photo/Image1" {
-      if(count==13){count=14}
-      if(count==18){count=19}
-      if(count==20){count=21}
-      if(count==24){count=26}
-      if(count==27){count=34}
-      if(count==35){count=36}
-      if(count==38){count=39}
-      if(count==46){count=48}
-      if(count==51){count=52}
-      if(count==54){count=60}
-      if(count==69){count=71}
-      if(count==73){count=74}
-      if(count==86){  //85
-        fileName = "/Photos/2011-03-iphone/IMG_10"
-        count = 12
-        maxCount = 99
-      }
-    }
-    if fileName == "/Photos/2011-03-iphone/IMG_10" {
-      if(count==17){count=20}
-      if(count==21){count=23}
-      if(count==24){count=27}
-      if(count==29){count=30}
-      if(count==37){count=39}
-      if(count==41){count=42}
-      if(count==44){count=45}
-      if(count==48){count=49}
-      if(count==50){count=51}
-      if(count==59){count=60}
-      if(count==61){count=66}
-      if(count==89){count=90}
-      if count == 100 {  //99
-        fileName = "/Photos/2011-03-iphone/IMG_11"
-        count = 10
-        maxCount = 91
-      }
-    }
-    if fileName == "/Photos/2011-03-iphone/IMG_11" {
-      if(count==14){count=19}
-      if(count==23){count=24}
-      if(count==27){count=31}
-      if(count==34){count=35}
-      if(count==36){count=38}
-      if(count==48){count=49}
-      if(count==55){count=56}
-      if(count==83){count=87}
-      if count == 92 {  //91
-        fileName = "/Photos/2011-03-iphone/IMG_12"
-        count = 10
-        maxCount = 99
-      }
-    }
-    if fileName == "/Photos/2011-03-iphone/IMG_12" {
-      if(count==11){count=19}
-      if(count==20){count=23}
-      if(count==32){count=34}
-      if(count==37){count=39}
-      if(count==41){count=47}
-      if(count==49){count=50}
-      if(count==52){count=55}
-      if(count==56){count=57}
-      if(count==67){count=70}
-      if(count==73){count=77}
-      if(count==80){count=81}
-      if(count==82){count=96}
-      if count == 100 {  //99
-        fileName = "/Photos/2011-03-iphone/IMG_13"
-        count = 10
-        maxCount = 97
-      }
-    }
-    if fileName == "/Photos/2011-03-iphone/IMG_13" {
-      if(count==14){count=24}
-      if(count==25){count=28}
-      if(count==29){count=32}
-      if(count==35){count=39}
-      if(count==41){count=44}
-      if(count==46){count=49}
-      if(count==58){count=60}
-      if(count==62){count=63}
-      if(count==64){count=66}
-      if(count==73){count=87}
-      if(count==88){count=89}
-      if(count==92){count=95}
-      if count == 98 {  //97
-        fileName = "/Photos/2011-03-iphone/IMG_14"
-        count = 10
-        maxCount = 0
-      }
-    }
-     */
-      
-    //CountLabel.text = String(count)
+    
     downloadDropboxFile()
   }
   
+  // Backボタンタップ時
   @IBAction func TapBack(_ sender: Any) {
     count = count - 1
     
@@ -407,6 +279,13 @@ class DropboxViewController: UIViewController {
     fileName = "/アプリ/Photo Watch/" + self.filenames![count]
     
     downloadDropboxFile()
+  }
+  
+  // Closeボタンタップ時
+  @IBAction func tapClose(_ sender: Any) {
+    stopTimer()
+    //戻る
+    dismiss(animated: true, completion: nil)
   }
   
   /*
