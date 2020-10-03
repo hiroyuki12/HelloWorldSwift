@@ -19,6 +19,8 @@ class DropboxViewController: UIViewController {
   var filenames: Array<String>?
   var filename: String?
   
+  var timer: Timer!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -29,19 +31,17 @@ class DropboxViewController: UIViewController {
     self.view.addSubview(myImageView)
     
     self.filenames = []
-    
-    if let filename = self.filename {
-      let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.Dropbox.DropboxPhotoWatch123")
-      if let fileURL = containerURL?.appendingPathComponent(filename) {
-        print("Finding file at URL: \(fileURL)")
-        if let data = try? Data(contentsOf: fileURL) {
-          print("Image found in cache.")
-          self.myImageView.image = UIImage(data: data)  // Display image
-        } else {
-          print("Image not cached!")
-        }
-      }
-    }
+  }
+  
+  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくなる
+  }
+  // 3: isModalInPresentationがtrueの場合、DidAttemptToDismissが呼ばれる
+  // メソッド内で確認ダイアログを出す
+  func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+      // The user pulled down with unsaved changes
+      // Clarify the user's intent by asking whether they intended to cancel or save
+      print("presentationControllerDidAttemptToDismiss")
   }
   
   // SignInボタンタップ時
@@ -105,12 +105,14 @@ class DropboxViewController: UIViewController {
     }
   }
   
-  var count = 0
-  var maxCount = 500
-//  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
-//  var fileName = "/アプリ/Photo Watch/"//1396713410486.jpg"
+  var count = -1
+  var maxCount:UInt32 = 2000  // 2,000より大きいとエラー
+  //  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
   var fileName = "/アプリ/Photo Watch/1396713410486.jpg"
-  var fileExt = ".jpg"
+  var folderName = ""
+  var flgFolderChange = true
+  var finishListFolder = false
+  
   
   // Downloadボタンタップ時
   @IBAction func TapDownload(_ sender: Any) {
@@ -119,18 +121,25 @@ class DropboxViewController: UIViewController {
   
   @objc func downloadDropboxFile() {
     if let client = DropboxClientsManager.authorizedClient {
-      // List contents of app folder
-      _ = client.files.listFolder(path: "/アプリ/Photo Watch/").response { response, error in
-        if let result = response {
-          print("Folder contents:")
-          print("result.entries.count")
-          print(result.entries.count)  // 500
-          for entry in result.entries {
-            // Check that file is a photo (by file extension)
-            if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
-              // Add photo!
-              self.filenames?.append(entry.name)
+      if(flgFolderChange) {
+        flgFolderChange = false
+        // List contents of app folder
+        _ = client.files.listFolder(path: "/アプリ/Photo Watch/", limit:maxCount).response { response, error in
+          if let result = response {
+            print("Folder contents:")
+            print("result.entries.count")
+            print(result.entries.count)  // 500
+            for entry in result.entries {
+              // Check that file is a photo (by file extension)
+              if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
+                // Add photo!
+                self.filenames?.append(entry.name)
+              }
             }
+            self.maxCount = UInt32(self.filenames!.count)
+            self.finishListFolder = true
+            self.CountLabel.text = String(self.count+1) + " / " + String(self.maxCount)
+            self.startTimer()
           }
         }
       }
@@ -182,7 +191,12 @@ class DropboxViewController: UIViewController {
       //      print("count")
       //      print(String(count))
       //表示更新
-      CountLabel.text = String(count) + " / " + String(maxCount)
+      if(finishListFolder) {
+        CountLabel.text = String(count+1) + " / " + String(maxCount)
+      }
+      else {
+        CountLabel.text = "loading... wait"
+      }
       DropboxPath.text = String(fileName)
 //      client.files.download(path: fileName + String(count) + fileExt, destination: destination).response { response, error in
         client.files.download(path: fileName, destination: destination).response { response, error in
@@ -206,10 +220,11 @@ class DropboxViewController: UIViewController {
             let rect:CGRect = CGRect(x:0, y:0, width:tmpWidth, height:tmpHeight)  //サイズを変更
             iv.frame = rect
             
-            var tagViewB = 27
+            let tagViewB = 123
             iv.tag = tagViewB
-            var fetchedViewB = self.view.viewWithTag(tagViewB)
+            let fetchedViewB = self.view.viewWithTag(tagViewB)
             fetchedViewB?.removeFromSuperview()
+            
             self.view.addSubview(iv)  //変換したivをviewに追加
             iv.layer.position = CGPoint(x: self.view.bounds.width/2, y: 360.0)  //表示位置決定
           } catch let err {
@@ -222,14 +237,26 @@ class DropboxViewController: UIViewController {
     }
   }
   
+  func startTimer() {
+    timer = Timer.scheduledTimer(
+      timeInterval: 3.0,
+      target: self,
+      selector: #selector(self.TapNext),
+      userInfo: nil,
+      repeats: true)
+  }
+  
   // Nextボタンタップ時
   @IBAction func TapNext(_ sender: Any) {
-    
     count = count + 1
+    
+    if(count == self.maxCount) {
+      count = 0
+    }
     
     print(count)
     print("self.filenames![?]")
-    print(self.filenames![count])
+    //print(self.filenames![count])
     
     fileName = "/アプリ/Photo Watch/" + self.filenames![count]
     /*
