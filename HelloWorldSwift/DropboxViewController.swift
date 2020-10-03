@@ -29,19 +29,10 @@ class DropboxViewController: UIViewController {
     //画像表示エリアの記載
     myImageView.frame = CGRect(x: 10, y: 500, width: 200, height: 120)
     self.view.addSubview(myImageView)
-    
-    self.filenames = []
   }
   
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくなる
-  }
-  // 3: isModalInPresentationがtrueの場合、DidAttemptToDismissが呼ばれる
-  // メソッド内で確認ダイアログを出す
-  func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-      // The user pulled down with unsaved changes
-      // Clarify the user's intent by asking whether they intended to cancel or save
-      print("presentationControllerDidAttemptToDismiss")
   }
   
   // SignInボタンタップ時
@@ -65,7 +56,6 @@ class DropboxViewController: UIViewController {
   @IBAction func TapSave(_ sender: Any) {
     saveText()
   }
-  
   @objc func saveText() {
     let tmpURL = NSURL(fileURLWithPath: NSTemporaryDirectory())
     let fileURL = tmpURL.appendingPathComponent("sample.txt")!
@@ -81,7 +71,6 @@ class DropboxViewController: UIViewController {
   @IBAction func TapUpload(_ sender: Any) {
     uploadToDropbox()
   }
-  
   @objc func uploadToDropbox() {
     if let client = DropboxClientsManager.authorizedClient {
       let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
@@ -113,7 +102,6 @@ class DropboxViewController: UIViewController {
   var flgFolderChange = true
   var finishListFolder = false
   
-  
   // Downloadボタンタップ時
   @IBAction func TapDownload(_ sender: Any) {
     downloadDropboxFile()
@@ -123,12 +111,14 @@ class DropboxViewController: UIViewController {
     if let client = DropboxClientsManager.authorizedClient {
       if(flgFolderChange) {
         flgFolderChange = false
+        self.stopTimer()
         // List contents of app folder
-        _ = client.files.listFolder(path: "/アプリ/Photo Watch/", limit:maxCount).response { response, error in
+        _ = client.files.listFolder(path: "/アプリ/Photo Watch/" + folderName, limit:2000).response { response, error in
           if let result = response {
             print("Folder contents:")
             print("result.entries.count")
             print(result.entries.count)  // 500
+            self.filenames = []
             for entry in result.entries {
               // Check that file is a photo (by file extension)
               if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
@@ -239,7 +229,7 @@ class DropboxViewController: UIViewController {
   
   func startTimer() {
     timer = Timer.scheduledTimer(
-      timeInterval: 3.0,
+      timeInterval: 2.0,
       target: self,
       selector: #selector(self.TapNext),
       userInfo: nil,
@@ -247,7 +237,7 @@ class DropboxViewController: UIViewController {
   }
   
   func stopTimer() {
-    if timer != nil{
+    if timer != nil {
       timer.invalidate()
     }
   }
@@ -257,13 +247,30 @@ class DropboxViewController: UIViewController {
     count = count + 1
     
     if(count == self.maxCount) {
+      if(folderName == "") {
+        folderName = "1/"
+      }
+      else if(folderName == "1/") {
+        folderName = ""
+      }
+      flgFolderChange = true
       count = 0
     }
-    
     print(count)
     print("self.filenames![?]")
     
-    fileName = "/アプリ/Photo Watch/" + self.filenames![count]
+    if(flgFolderChange){
+      if(folderName == "1/") {
+        fileName = "/アプリ/Photo Watch/" + folderName + "IMG_20150604_235340.jpg"
+      }
+      else if(folderName == "") {
+        fileName = "/アプリ/Photo Watch/" + folderName + "1396713410486.jpg"
+      }
+    }
+    else {
+      fileName = "/アプリ/Photo Watch/" + folderName + self.filenames![count]
+    }
+    
     
     downloadDropboxFile()
   }
@@ -276,7 +283,7 @@ class DropboxViewController: UIViewController {
     print("self.filenames![?]")
     print(self.filenames![count])
     
-    fileName = "/アプリ/Photo Watch/" + self.filenames![count]
+    fileName = "/アプリ/Photo Watch/" + folderName + self.filenames![count]
     
     downloadDropboxFile()
   }
