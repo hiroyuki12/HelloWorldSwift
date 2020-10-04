@@ -2,5 +2,5 @@ target 'HelloWorldSwift' do
   use_frameworks!
 
   pod 'SwiftyDropbox'
-  pod 'GoogleSignIn'
+  pod 'BoxSDK', '~> 4.0'
 end

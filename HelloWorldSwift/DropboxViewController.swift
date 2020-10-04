@@ -174,7 +174,7 @@ class DropboxViewController: UIViewController {
         if let suggestedFilename = response.suggestedFilename {
           fileName = suggestedFilename
         }
-        let pathComponent = "\(UUID)-\(fileName)"
+        let pathComponent = "Dropbox-\(fileName)-\(UUID)" // filename download
         return directoryURL.appendingPathComponent(pathComponent)
       }
       //画面描画処理
@@ -192,10 +192,12 @@ class DropboxViewController: UIViewController {
         client.files.download(path: fileName, destination: destination).response { response, error in
         if let (metadata, url) = response {
           print("Downloaded file name: \(metadata.name)")
+          //print(url)  //ダウンロード先
           do {
             let data = try Data(contentsOf: url)  //urlをData型に変換
             let img = UIImage(data: data)  //Data型に変換したurlをUIImageに変換
             let iv:UIImageView = UIImageView(image:img)  //UIImageをivに変換
+            try FileManager.default.removeItem(at: url)  //downloadしたファイルを削除
             let maxSize: CGFloat = 390.0
             var tmpWidth = 0
             var tmpHeight = 0
@@ -257,7 +259,7 @@ class DropboxViewController: UIViewController {
       count = 0
     }
     print(count)
-    print("self.filenames![?]")
+    //print("self.filenames![?]")
     
     if(flgFolderChange){
       if(folderName == "1/") {

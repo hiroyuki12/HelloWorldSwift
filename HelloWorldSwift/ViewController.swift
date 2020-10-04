@@ -7,15 +7,9 @@
 //
 
 import UIKit
-import GoogleSignIn
+import BoxSDK
 
 class ViewController: UIViewController {
-  
-  @IBAction func tapGoogleSignIn(_ sender: Any) {
-    GIDSignIn.sharedInstance()?.delegate = self
-    GIDSignIn.sharedInstance()?.presentingViewController = self
-    GIDSignIn.sharedInstance()?.signIn()
-  }
   
   @IBAction func tapSub(_ sender: Any) {
     let storyboard = UIStoryboard(name: "Sub", bundle: nil)
@@ -28,18 +22,56 @@ class ViewController: UIViewController {
     self.present(next, animated: true)
   }
   
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    if let user = GIDSignIn.sharedInstance()?.currentUser {
-      print("currentUser.profile.email: \(user.profile!.email!)")
-    } else {
-      // 次回起動時にはこちらのログが出力される
-      print("currentUser is nil")
+    /*  box download
+    let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
+    
+    client.users.getCurrent(fields:["name", "login"]) { (result: Result<User,
+                                                                        BoxSDKError>) in
+      guard case let .success(user) = result else {
+        print("Error getting user information")
+        return
+      }
+      print("Authenticated as \(user.name)")
     }
     
+    sleep(5)
+    
+    //let url = FileManager.default.homeDirectoryForCurrentUser
+    //ダウンロード先URLを設定
+    let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let pathComponent = "AmazonDriveInstaller.dmg"
+    let url:URL = directoryURL.appendingPathComponent(pathComponent)
+    
+    print("download start")
+    print(url)
+    
+    // file:///var/mobile/Containers/Data/Application/93935B68-9405-4180-873C-07BA696C55A1/Documents/AmazonDriveInstaller.dmg
+    // file:///var/mobile/Containers/Data/Application/2FBF71FD-7C49-47FB-A844-623E3D97228C/Documents/Dropbox-download-7F05622C-55B5-4E2B-B62B-21F5B082DD2C
+    //let task: BoxDownloadTask = client.files.download(fileId: "142976834324", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
+    client.files.download(fileId: "142976834324", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
+      guard case .success = result else {
+        print("Error downloading file")
+        return
+      }
+      
+      print("File downloaded successfully")
+    }
+    print("download end")
+
+    // To cancel download
+//    if someConditionIsSatisfied {
+//        task.cancel()
+//    }
+ */
+    
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+  }
+  
   
 // ①セグエ実行前処理
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,17 +99,4 @@ class ViewController: UIViewController {
 //        // presentする
 //        self.present(nextVC, animated: true, completion: nil)
 //    }
-}
-
-// GIDSignInDelegateへの適合とメソッドの追加を行う
-extension ViewController: GIDSignInDelegate {
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        if error == nil {
-            // ログイン成功した場合
-            print("signIned user email: \(user!.profile!.email!)")
-        } else {
-            // ログイン失敗した場合
-            print("error: \(error!.localizedDescription)")
-        }
-    }
 }
