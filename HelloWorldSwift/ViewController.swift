@@ -26,21 +26,23 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
     
-    let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
-    //ダウンロード先URLを設定
-    let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    let pathComponent = "123"  // 任意のdownload先ファイル名
-    let url:URL = directoryURL.appendingPathComponent(pathComponent)
+//    let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
+//    //ダウンロード先URLを設定
+//    let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//    let pathComponent = "123"  // 任意のdownload先ファイル名
+//    let url:URL = directoryURL.appendingPathComponent(pathComponent)
+//
+//    client.files.download(fileId: "123", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
+//      guard case .success = result else {
+//        print("Error downloading file")
+//        return
+//      }
+//      print("File downloaded successfully")
+//    }
+//
+//    sleep(5)
     
-    client.files.download(fileId: "123", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
-      guard case .success = result else {
-        print("Error downloading file")
-        return
-      }
-      print("File downloaded successfully")
-    }
     
-    sleep(5)
     // To cancel download
     //    if someConditionIsSatisfied {
     //        task.cancel()

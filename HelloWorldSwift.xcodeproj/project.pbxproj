@@ -36,6 +36,7 @@
 		2EE5C7D1243767D9005215DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */; };
 		2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F4243819FC005215DD /* TableViewCell.swift */; };
 		2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F5243819FC005215DD /* TableViewCell.xib */; };
+		2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */; };
 		5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,7 @@
 		2EE5C7E8243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2EE5C7F4243819FC005215DD /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2EE5C7F5243819FC005215DD /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxViewController.swift; sourceTree = "<group>"; };
 		2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HelloWorldSwift.entitlements; sourceTree = "<group>"; };
 		41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E0DBAFDC05CDC60BAA815BD /* Pods-HelloWorldSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
 				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
 				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
+				2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
@@ -343,6 +346,7 @@
 				2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
+				2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
 				2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */,

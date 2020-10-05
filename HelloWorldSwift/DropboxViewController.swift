@@ -74,7 +74,7 @@ class DropboxViewController: UIViewController {
   @objc func uploadToDropbox() {
     if let client = DropboxClientsManager.authorizedClient {
       let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
-      
+
       _ = client.files.upload(path: "/sample.txt", input: fileData)
         .response { response, error in
           if let response = response {
@@ -87,7 +87,7 @@ class DropboxViewController: UIViewController {
           print(progressData)
         }
 
-        // in case you want to cancel the request
+//         in case you want to cancel the request
 //        if someConditionIsSatisfied {
 //            request.cancel()
 //        }
