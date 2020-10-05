@@ -25,48 +25,26 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    /*  box download
+    
     let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
-    
-    client.users.getCurrent(fields:["name", "login"]) { (result: Result<User,
-                                                                        BoxSDKError>) in
-      guard case let .success(user) = result else {
-        print("Error getting user information")
-        return
-      }
-      print("Authenticated as \(user.name)")
-    }
-    
-    sleep(5)
-    
-    //let url = FileManager.default.homeDirectoryForCurrentUser
     //ダウンロード先URLを設定
     let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    let pathComponent = "AmazonDriveInstaller.dmg"
+    let pathComponent = "123"  // 任意のdownload先ファイル名
     let url:URL = directoryURL.appendingPathComponent(pathComponent)
     
-    print("download start")
-    print(url)
-    
-    // file:///var/mobile/Containers/Data/Application/93935B68-9405-4180-873C-07BA696C55A1/Documents/AmazonDriveInstaller.dmg
-    // file:///var/mobile/Containers/Data/Application/2FBF71FD-7C49-47FB-A844-623E3D97228C/Documents/Dropbox-download-7F05622C-55B5-4E2B-B62B-21F5B082DD2C
-    //let task: BoxDownloadTask = client.files.download(fileId: "142976834324", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
-    client.files.download(fileId: "142976834324", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
+    client.files.download(fileId: "123", destinationURL: url) { (result: Result<Void, BoxSDKError>) in
       guard case .success = result else {
         print("Error downloading file")
         return
       }
-      
       print("File downloaded successfully")
     }
-    print("download end")
-
-    // To cancel download
-//    if someConditionIsSatisfied {
-//        task.cancel()
-//    }
- */
     
+    sleep(5)
+    // To cancel download
+    //    if someConditionIsSatisfied {
+    //        task.cancel()
+    //    }
   }
   
   override func viewWillAppear(_ animated: Bool) {

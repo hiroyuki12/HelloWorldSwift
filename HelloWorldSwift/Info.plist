@@ -23,7 +23,7 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>db-DROPBOX_APP_KEY</string>
+				<string>boxsdk-BOX_CLIENT_ID</string>
 			</array>
 		</dict>
 		<dict>
