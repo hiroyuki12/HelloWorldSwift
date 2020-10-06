@@ -37,6 +37,7 @@
 		2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F4243819FC005215DD /* TableViewCell.swift */; };
 		2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F5243819FC005215DD /* TableViewCell.xib */; };
 		2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */; };
+		2EED15D2252C989000DEF8F8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EED15D1252C989000DEF8F8 /* Constants.swift */; };
 		5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		2EE5C7F4243819FC005215DD /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2EE5C7F5243819FC005215DD /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxViewController.swift; sourceTree = "<group>"; };
+		2EED15D1252C989000DEF8F8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HelloWorldSwift.entitlements; sourceTree = "<group>"; };
 		41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E0DBAFDC05CDC60BAA815BD /* Pods-HelloWorldSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */,
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 				2EDCA8682520914B00A9E8BE /* NoteViewController.swift */,
+				2EED15D1252C989000DEF8F8 /* Constants.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
+				2EED15D2252C989000DEF8F8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -91,3 +91,5 @@ iOSInjectionProject/
 
 # Firebase SDK
 GoogleService-Info.plist
+
+Constants.swift
