@@ -1,23 +1,22 @@
 //
-//  DropboxViewController.swift
+//  BoxViewController.swift
 //  HelloWorldSwift
 //
 //  Created by hiroyuki on 2020/10/05.
 //  Copyright © 2020 hiroyuki. All rights reserved.
 //
 
-//#if os(iOS)
-//    import AuthenticationServices
-//#endif
+#if os(iOS)
+  import AuthenticationServices
+#endif
 import UIKit
 import BoxSDK
 
-class BoxViewController: UIViewController {
-//class BoxViewController: UIViewController, ASWebAuthenticationPresentationContextProviding {
-//  private var sdk: BoxSDK!
-//  private var client2: BoxClient!
-//  private var folderItems: [FolderItem] = []
-//  private let initialPageSize: Int = 100
+class BoxViewController: UIViewController, ASWebAuthenticationPresentationContextProviding {
+  private var sdk: BoxSDK!
+  private var client2: BoxClient!
+  private var folderItems: [FolderItem] = []
+  private let initialPageSize: Int = 100
   
   @IBOutlet weak var textField: UITextField!
   //イメージビューを追加
@@ -34,14 +33,13 @@ class BoxViewController: UIViewController {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    
-//    sdk = BoxSDK(clientId: Constants.clientId, clientSecret: Constants.clientSecret)
+    sdk = BoxSDK(clientId: Constants.clientId, clientSecret: Constants.clientSecret)
     //画像表示エリアの記載
     myImageView.frame = CGRect(x: 10, y: 500, width: 200, height: 120)
     self.view.addSubview(myImageView)
   }
   
-  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+  override func viewWillLayoutSubviews() {  // isModalInPresentationにtrueを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくする
   }
   
@@ -51,14 +49,7 @@ class BoxViewController: UIViewController {
   }
   
   @objc func signInDropbox(){
-    //if navigationItem.rightBarButtonItem?.title == "Login" {
-      //removeErrorView()
-//      getOAuthClient()
-    //}
-    //else {
-    //  removeErrorView()
-      //getSinglePageOfFolderItems()
-    //}
+    getOAuthClient()
   }
   
   // Saveボタンタップ時
@@ -88,8 +79,9 @@ class BoxViewController: UIViewController {
   }
   
   @objc func downloadBoxFile() {
-    let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
-
+    //let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
+    let client = self.client2!
+    
     if(flgFolderChange) {
       flgFolderChange = false
       self.stopTimer()
@@ -175,7 +167,7 @@ class BoxViewController: UIViewController {
         tmpWidth = Int(maxSize)
         tmpHeight = Int((maxSize / img!.size.width) * img!.size.height)
       }
-      //            let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
+//      let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
       let rect:CGRect = CGRect(x:0, y:0, width:tmpWidth, height:tmpHeight)  //サイズを変更
       iv.frame = rect
       
@@ -271,7 +263,7 @@ class BoxViewController: UIViewController {
 
 }
 
-/*
+
 // MARK: - Helpers
 extension BoxViewController {
   func getOAuthClient() {
@@ -280,7 +272,8 @@ extension BoxViewController {
         switch result {
         case let .success(client):
           self?.client2 = client
-          self?.getSinglePageOfFolderItems()
+          //self?.getSinglePageOfFolderItems()
+          print("success sdk.getOAuth2Client !!!!!!!!!!!!!")
         case let .failure(error):
           print("error in getOAuth2Client: \(error)")
           self?.addErrorView(with: error)
@@ -301,74 +294,74 @@ extension BoxViewController {
   }
   
   func getSinglePageOfFolderItems() {
-          client2.folders.listItems(
-              folderId: BoxSDK.Constants.rootFolder,
-              usemarker: true,
-              fields: ["modified_at", "name", "extension"]
-          ){ [weak self] result in
-              guard let self = self else {return}
-
-              switch result {
-              case let .success(items):
-                  self.folderItems = []
-
-                  for i in 1...self.initialPageSize {
-                      print ("Request Item #\(String(format: "%03d", i)) |")
-                      items.next { result in
-                          switch result {
-                          case let .success(item):
-                              print ("    Got Item #\(String(format: "%03d", i)) | \(item.debugDescription))")
-                              DispatchQueue.main.async {
-                                  self.folderItems.append(item)
-                                  //self.tableView.reloadData()
-                                  self.navigationItem.rightBarButtonItem?.title = "Refresh"
-                              }
-                          case let .failure(error):
-                              print ("     No Item #\(String(format: "%03d", i)) | \(error.message)")
-                              return
-                          }
-                      }
-                  }
-              case let .failure(error):
-                  self.addErrorView(with: error)
-              }
-          }
-      }
+//    client2.folders.listItems(
+//      folderId: BoxSDK.Constants.rootFolder,
+//      usemarker: true,
+//      fields: ["modified_at", "name", "extension"]
+//    ){ [weak self] result in
+//      guard let self = self else {return}
+//
+//      switch result {
+//      case let .success(items):
+//        self.folderItems = []
+//
+//        for i in 1...self.initialPageSize {
+//          print ("Request Item #\(String(format: "%03d", i)) |")
+//          items.next { result in
+//            switch result {
+//            case let .success(item):
+//              print ("    Got Item #\(String(format: "%03d", i)) | \(item.debugDescription))")
+//              DispatchQueue.main.async {
+//                self.folderItems.append(item)
+//                //self.tableView.reloadData()
+//                self.navigationItem.rightBarButtonItem?.title = "Refresh"
+//              }
+//            case let .failure(error):
+//              print ("     No Item #\(String(format: "%03d", i)) | \(error.message)")
+//              return
+//            }
+//          }
+//        }
+//      case let .failure(error):
+//        self.addErrorView(with: error)
+//      }
+//    }
+  }
 }
 
 private extension BoxViewController {
 
-    func addErrorView(with error: Error) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            //self.view.addSubview(self.errorView)
-            let safeAreaLayoutGuide = self.view.safeAreaLayoutGuide
-//            NSLayoutConstraint.activate([
-//                self.errorView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-//                self.errorView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-//                self.errorView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-//                self.errorView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-//                ])
-//            self.errorView.displayError(error)
-        }
-    }
+  func addErrorView(with error: Error) {
+//    DispatchQueue.main.async { [weak self] in
+//      guard let self = self else { return }
+//      self.view.addSubview(self.errorView)
+//      let safeAreaLayoutGuide = self.view.safeAreaLayoutGuide
+//      NSLayoutConstraint.activate([
+//        self.errorView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+//        self.errorView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+//        self.errorView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+//        self.errorView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+//      ])
+//      self.errorView.displayError(error)
+//    }
+  }
 
-    func removeErrorView() {
-//        if !view.subviews.contains(errorView) {
-//            return
-//        }
-//        DispatchQueue.main.async {
-//            self.errorView.removeFromSuperview()
-//        }
-    }
+  func removeErrorView() {
+//    if !view.subviews.contains(errorView) {
+//      return
+//    }
+//    DispatchQueue.main.async {
+//      self.errorView.removeFromSuperview()
+//    }
+  }
 }
 
 // MARK: - ASWebAuthenticationPresentationContextProviding
 /// Extension for ASWebAuthenticationPresentationContextProviding conformance
 extension BoxViewController {
-    @available(iOS 13.0, *)
-    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        return self.view.window ?? ASPresentationAnchor()
-    }
+  @available(iOS 13.0, *)
+  func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+    return self.view.window ?? ASPresentationAnchor()
+  }
 }
-*/
+

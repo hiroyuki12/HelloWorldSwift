@@ -96,8 +96,8 @@ class DropboxViewController: UIViewController {
   
   var count = -1
   var maxCount:UInt32 = 2000  // 2,000より大きいとエラー
-  //  var fileName = "/携帯/docomoF505i/100f505i-1/f10000"//10.jpg"
   var fileName = "/アプリ/Photo Watch/1396713410486.jpg"
+//  var fileName = "/携帯/docomoF505i/100f505i-1/f1000001.jpg"
   var folderName = ""
   var flgFolderChange = true
   var finishListFolder = false
@@ -114,6 +114,7 @@ class DropboxViewController: UIViewController {
         self.stopTimer()
         // List contents of app folder
         _ = client.files.listFolder(path: "/アプリ/Photo Watch/" + folderName, limit:2000).response { response, error in
+//          _ = client.files.listFolder(path: "/携帯/docomoF505i/100f505i-1/" + folderName, limit:2000).response { response, error in
           if let result = response {
             print("Folder contents:")
             print("result.entries.count")
@@ -134,36 +135,7 @@ class DropboxViewController: UIViewController {
         }
       }
     }
-//
-//    // logout
-//    // Clear the app group of all files
-//    if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.Dropbox.DropboxPhotoWatch123") {
-//
-//      // Fetch all files in the app group
-//      do {
-//        let fileURLArray = try FileManager.default.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [])
-//
-//        print("fileURLArray.count")
-//        print(fileURLArray.count)
-//        for fileURL in fileURLArray {
-//          // Check that file is a photo (by file extension)
-//          if fileURL.absoluteString.hasSuffix(".jpg") || fileURL.absoluteString.hasSuffix(".png") {
-//
-//            //                    do {
-//            // Delete the photo from the app group
-//            //try FileManager.default.removeItem(at: fileURL)
-//            print(fileURL)
-//            //                    } catch _ as NSError {
-//            //                        // Do nothing with the error
-//            //                    }
-//          }
-//        }
-//      } catch _ as NSError {
-//        // Do nothing with the error
-//      }
-//    }
     
-    //
     //ダウンロード処理
     if let client = DropboxClientsManager.authorizedClient {
       //ダウンロード先URLを設定
@@ -264,15 +236,17 @@ class DropboxViewController: UIViewController {
     if(flgFolderChange){
       if(folderName == "1/") {
         fileName = "/アプリ/Photo Watch/" + folderName + "IMG_20150604_235340.jpg"
+//        filename = "/携帯/docomoF505i/100f505i-1/" + folderName + "f1000012.jpg"
       }
       else if(folderName == "") {
         fileName = "/アプリ/Photo Watch/" + folderName + "1396713410486.jpg"
+//        filename = "/携帯/docomoF505i/100f505i-1/" + folderName + "f1000001.jpg"
       }
     }
     else {
       fileName = "/アプリ/Photo Watch/" + folderName + self.filenames![count]
+//      fileName = "/携帯/docomoF505i/100f505i-1/" + folderName + self.filenames![count]
     }
-    
     
     downloadDropboxFile()
   }
