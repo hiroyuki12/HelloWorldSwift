@@ -75,24 +75,26 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
   
   // Downloadボタンタップ時
   @IBAction func TapDownload(_ sender: Any) {
+    signInDropbox()
     downloadBoxFile()
   }
   
   @objc func downloadBoxFile() {
     //let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
-    let client = self.client2!
+    guard let client = self.client2 else { return }
     
+    // List contents of app folder
     if(flgFolderChange) {
       flgFolderChange = false
       self.stopTimer()
       // List contents of app folder
       client.folders.listItems(folderId: folderId, sort: .name, direction: .ascending) { results in
-        switch results {
+        switch results {  // switch 1
         case let .success(iterator):
           self.fileIds = []
           for _ in 1 ... 2000 {  //2,000の時sleep(18), 1,000の時sleep(10) , 10の時sleep(5)
             iterator.next { result in
-              switch result {
+              switch result {  // switch 2
               case let .success(item):
                 switch item {
                 case let .file(file):
@@ -106,24 +108,20 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
                 case .webLink(_):
                   print("") //Web link \(webLink.name) (ID: \(webLink.id)) is in the folder")
                 }
-              case let .failure(error):
+              case let .failure(error):  // switch 2
                 print("error failure 1")
                 print(error)
               }
             }
           }
-        case let .failure(error):
+        case let .failure(error):  // switch 1
           print("error failure 2")
           print(error)
           return
         }
       }
       
-      sleep(18)
-      
-      self.maxCount = UInt32(self.fileIds!.count)
-      self.finishListFolder = true
-      self.CountLabel.text = String(self.count+1) + " / " + String(self.maxCount)
+//      sleep(1)
       self.startTimer()
     }
     
@@ -160,12 +158,13 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
       let maxSize: CGFloat = 390.0
       var tmpWidth = 0
       var tmpHeight = 0
-      if img!.size.width >= img!.size.height {
-        tmpWidth = Int((maxSize / img!.size.height) * img!.size.width)
+      guard let img2 = img else { return }
+      if img2.size.width >= img2.size.height {
+        tmpWidth = Int((maxSize / img2.size.height) * img2.size.width)
         tmpHeight = Int(maxSize)
       } else {
         tmpWidth = Int(maxSize)
-        tmpHeight = Int((maxSize / img!.size.width) * img!.size.height)
+        tmpHeight = Int((maxSize / img2.size.width) * img2.size.height)
       }
 //      let rect:CGRect = CGRect(x:0, y:0, width:390, height:520)  //サイズを変更
       let rect:CGRect = CGRect(x:0, y:0, width:tmpWidth, height:tmpHeight)  //サイズを変更
@@ -200,6 +199,7 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
 
   // Nextボタンタップ時
   @IBAction func TapNext(_ sender: Any) {
+    print("TapNext")
     
     count = count + 1
     
@@ -227,6 +227,11 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
     else {
       fileId = self.fileIds![count]
     }
+    
+    guard let fileIds2 = self.fileIds else { return }
+    self.maxCount = UInt32(fileIds2.count)
+    self.finishListFolder = true
+    self.CountLabel.text = String(self.count+1) + " / " + String(self.maxCount)
     
     downloadBoxFile()
   }
