@@ -69,14 +69,15 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
-    let str1:String = "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&tagged=swift&site=stackoverflow"
-//    let str2:String = String(tag)
-//    let str3:String = "/questions?page="
-//    let str4:String = String(page)
+    let str1:String = "https://api.stackexchange.com/2.2/questions?page="
+    let str2:String = String(page)
+    let str3:String = "&order=desc&sort=activity&tagged="
+    let str4:String = String(tag)
+    let str5:String = "&site=stackoverflow"
 //    let str5:String = "&limit="
 //    let str6:String = String(perPage)
 
-    let str7:String = str1
+    let str7:String = str1 + str2 + str3 + str4 + str5
     
     let url: URL = URL(string: str7)!
     
@@ -154,47 +155,51 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = article["title"]! as? String // questions->title
+    textTitle.text = article["title"]! as? String // items->title
     // セルに表示する作成日を設定する
-//    let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = article["created"]! as? String  // questions->created
+    let textDetailText = cell.viewWithTag(3) as! UILabel
+    let tymeInterval = Double((article["creation_date"]! as? Int)!)  // items->creation_date
+    let createDate = Date(timeIntervalSince1970: tymeInterval)
+//    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss Z")
+    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss")
     // セルに表示する画像を設定する
-//    let articleOwner = article["owner"] as AnyObject?  // questions->user
-//    let profileImageUrl = articleOwner?["link"]  // questions->user->photo
-//    let profileImage = cell.viewWithTag(1) as! UIImageView
-//    if profileImageUrl != nil {  // if profileImageUrl not nil
-//      let myUrl: URL? = URL(string: profileImageUrl as! String)
-//      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-//    }
+    let articleOwner = article["owner"] as AnyObject?  // items->owner
+    let profileImageUrl = articleOwner?["profile_image"]  // items->owner->profile_image
+    let profileImage = cell.viewWithTag(1) as! UIImageView
+    if profileImageUrl != nil {  // if profileImageUrl not nil
+      let myUrl: URL? = URL(string: profileImageUrl as! String)
+      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    }
     // セルに表示する回答数とタグを設定する
-//    let tagsText = cell.viewWithTag(4) as! UILabel
-//    let replayCount = article["count_reply"] as? Int  // questions->count_reply
-//    let pvCount = article["count_pv"] as? Int  // questions->count_pv
-//    var arr = article["tags"] as? [String]  // questions->tags
-//    let count = arr!.count
-////    let tag1name = arr?.first!
-//    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!) + " / " + (arr?[0])!
-//    tagsText.text = tag1name
-//    if(count > 1) {
-//      arr?.removeFirst()
-//      let tag2name = arr?[0]
-//      tagsText.text = tag1name + "," + tag2name!
-//      if(count > 2) {
-//        arr?.removeFirst()
-//        let tag3name = arr?[0]
-//        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
-//        if(count > 3) {
-//          arr?.removeFirst()
-//          let tag4name = arr?[0]
-//          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
-//          if(count > 4) {
-//            arr?.removeFirst()
-//            let tag5name = arr?[0]
-//            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
-//          }
-//        }
-//      }
-//    }
+    let tagsText = cell.viewWithTag(4) as! UILabel
+    let replayCount = article["answer_count"] as? Int  // items->answer_count
+    let pvCount = article["view_count"] as? Int  // items->view_count
+    var arr = article["tags"] as? [String]  // items->tags
+    let count = arr!.count
+//    let tag1name = arr?.first!
+    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!)
+      + " / " + (arr?[0])!
+    tagsText.text = tag1name
+    if(count > 1) {
+      arr?.removeFirst()
+      let tag2name = arr?[0]
+      tagsText.text = tag1name + "," + tag2name!
+      if(count > 2) {
+        arr?.removeFirst()
+        let tag3name = arr?[0]
+        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
+        if(count > 3) {
+          arr?.removeFirst()
+          let tag4name = arr?[0]
+          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
+          if(count > 4) {
+            arr?.removeFirst()
+            let tag5name = arr?[0]
+            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
+          }
+        }
+      }
+    }
     return cell
   }
   
@@ -448,7 +453,7 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
 //    popUp()
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-    webView.url = "https://teratail.com/questions/" + String(articles[indexPath.row]["id"] as! Int)
+    webView.url = articles[indexPath.row]["link"] as? String
     
     self.present(webView, animated: true, completion: nil)
   }
@@ -536,3 +541,18 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
 //  }
 //}
 
+class DateUtils {
+    class func dateFromString(string: String, format: String) -> Date {
+        let formatter: DateFormatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.dateFormat = format
+        return formatter.date(from: string)!
+    }
+
+    class func stringFromDate(date: Date, format: String) -> String {
+        let formatter: DateFormatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.dateFormat = format
+        return formatter.string(from: date)
+    }
+}
