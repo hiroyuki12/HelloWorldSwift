@@ -11,7 +11,7 @@ import Foundation
 import WebKit
 import SQLite3
 
-class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class StackOverflowViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
@@ -73,7 +73,7 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
     let str2:String = String(page)
     let str3:String = "&order=desc&sort=activity&tagged="
     let str4:String = String(tag)
-    let str5:String = "&site=stackoverflow"
+    let str5:String = "&site=ja.stackoverflow"
 //    let str5:String = "&limit="
 //    let str6:String = String(perPage)
 
@@ -88,7 +88,7 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
         // ([String : Any]) 3 key/value pairs
         let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]
         
-        print(json)
+        //print(json)  // ok
 //        print("json questions  !!!!!!!!!!!!!")
         //print(json["questions"]!)  // ok
         
@@ -155,7 +155,10 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = article["title"]! as? String // items->title
+    let tmpTitle = article["title"]! as? String // items->title
+    let title1 = tmpTitle?.replacingOccurrences(of: "&#39;", with: "'")
+    let title2 = title1?.replacingOccurrences(of: "&quot;", with: "\"")
+    textTitle.text = title2
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
     let tymeInterval = Double((article["creation_date"]! as? Int)!)  // items->creation_date
@@ -164,7 +167,10 @@ class StackOverFlowViewController: UIViewController, UITableViewDelegate, UITabl
     textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss")
     // セルに表示する画像を設定する
     let articleOwner = article["owner"] as AnyObject?  // items->owner
-    let profileImageUrl = articleOwner?["profile_image"]  // items->owner->profile_image
+    let userType = articleOwner?["user_type"] as? String
+    if(userType as! String == "does_not_exist")  { return cell }
+    
+    let profileImageUrl = articleOwner?["profile_image"] // items->owner->profile_image
     let profileImage = cell.viewWithTag(1) as! UIImageView
     if profileImageUrl != nil {  // if profileImageUrl not nil
       let myUrl: URL? = URL(string: profileImageUrl as! String)
