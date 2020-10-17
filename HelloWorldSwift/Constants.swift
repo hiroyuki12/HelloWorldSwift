@@ -9,6 +9,8 @@
 import Foundation
 
 enum Constants {
-    static let clientId = "BOX_CLIENT_ID"
-    static let clientSecret = "BOX_CLIENT_SECRET"
+  static let clientId = "BOX_CLIENT_ID"
+  static let clientSecret = "BOX_CLIENT_SECRET"
+  
+  static let key = "HATENA_TOKEN"  // 
 }

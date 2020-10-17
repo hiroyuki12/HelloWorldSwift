@@ -184,7 +184,7 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
   
   func startTimer() {
     timer = Timer.scheduledTimer(
-      timeInterval: 4.0,
+      timeInterval: 2.0,
       target: self,
       selector: #selector(self.TapNext),
       userInfo: nil,
@@ -225,7 +225,12 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
       }
     }
     else {
-      fileId = self.fileIds![count]
+      if(self.fileIds?.count ?? 0 > 0) {
+        fileId = self.fileIds![count]
+      }
+      else {
+        self.CountLabel.text = "Error"
+      }
     }
     
     guard let fileIds2 = self.fileIds else { return }
