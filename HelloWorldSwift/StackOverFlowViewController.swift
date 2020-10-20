@@ -155,16 +155,20 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    let tmpTitle = article["title"]! as? String // items->title
-    let title1 = tmpTitle?.replacingOccurrences(of: "&#39;", with: "'")
-    let title2 = title1?.replacingOccurrences(of: "&quot;", with: "\"")
-    textTitle.text = title2
+    var tmpTitle = article["title"]! as? String // items->title
+    tmpTitle = tmpTitle?.replacingOccurrences(of: "&#39;", with: "'")
+    tmpTitle = tmpTitle?.replacingOccurrences(of: "&quot;", with: "\"")
+    tmpTitle = tmpTitle?.replacingOccurrences(of: "&lt;", with: "<")
+    tmpTitle = tmpTitle?.replacingOccurrences(of: "&gt;", with: ">")
+    tmpTitle = tmpTitle?.replacingOccurrences(of: "&amp;", with: "&")
+    textTitle.text = tmpTitle
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
     let tymeInterval = Double((article["creation_date"]! as? Int)!)  // items->creation_date
     let createDate = Date(timeIntervalSince1970: tymeInterval)
 //    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss Z")
-    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss")
+//    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss")
+    textDetailText.text = daysAgo(DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss"))
     // セルに表示する画像を設定する
     let articleOwner = article["owner"] as AnyObject?  // items->owner
     let userType = articleOwner?["user_type"] as? String
@@ -207,6 +211,17 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
       }
     }
     return cell
+  }
+  
+  func daysAgo(_ data: String) -> String {
+    //    print(data)
+    let calendar = Calendar.current
+    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
+    if let date = calendar.date(from: dateComponents) {
+      //print("\(date)      \(date.timeAgo())")
+      return date.timeAgo()
+    }
+    return ""
   }
   
   // Cellの個数を設定
@@ -548,17 +563,17 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
 //}
 
 class DateUtils {
-    class func dateFromString(string: String, format: String) -> Date {
-        let formatter: DateFormatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.dateFormat = format
-        return formatter.date(from: string)!
-    }
-
-    class func stringFromDate(date: Date, format: String) -> String {
-        let formatter: DateFormatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.dateFormat = format
-        return formatter.string(from: date)
-    }
+  class func dateFromString(string: String, format: String) -> Date {
+    let formatter: DateFormatter = DateFormatter()
+    formatter.calendar = Calendar(identifier: .gregorian)
+    formatter.dateFormat = format
+    return formatter.date(from: string)!
+  }
+  
+  class func stringFromDate(date: Date, format: String) -> String {
+    let formatter: DateFormatter = DateFormatter()
+    formatter.calendar = Calendar(identifier: .gregorian)
+    formatter.dateFormat = format
+    return formatter.string(from: date)
+  }
 }

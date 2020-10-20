@@ -157,7 +157,8 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     textTitle.text = article["title"]! as? String // questions->title
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = article["created"]! as? String  // questions->created
+//    textDetailText.text = article["created"]! as? String  // questions->created
+    textDetailText.text = daysAgo((article["created"]! as? String)!)  // questions->created
     // セルに表示する画像を設定する
     let articleUser = article["user"] as AnyObject?  // questions->user
     let profileImageUrl = articleUser?["photo"]  // questions->user->photo
@@ -196,6 +197,17 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
       }
     }
     return cell
+  }
+  
+  func daysAgo(_ data: String) -> String {
+    //    print(data)
+    let calendar = Calendar.current
+    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
+    if let date = calendar.date(from: dateComponents) {
+      //print("\(date)      \(date.timeAgo())")
+      return date.timeAgo()
+    }
+    return ""
   }
   
   // Cellの個数を設定

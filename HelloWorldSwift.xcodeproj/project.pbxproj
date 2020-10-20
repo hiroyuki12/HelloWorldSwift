@@ -28,6 +28,7 @@
 		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
+		2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */; };
 		2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCA8682520914B00A9E8BE /* NoteViewController.swift */; };
 		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
@@ -70,6 +71,7 @@
 		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
+		2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNewsViewController.swift; sourceTree = "<group>"; };
 		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
 		2EDCA8682520914B00A9E8BE /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeratrailViewController.swift; sourceTree = "<group>"; };
@@ -176,8 +178,9 @@
 				2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */,
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 				2EDCA8682520914B00A9E8BE /* NoteViewController.swift */,
-				2EED15D1252C989000DEF8F8 /* Constants.swift */,
 				2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */,
+				2EED15D1252C989000DEF8F8 /* Constants.swift */,
+				2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */,
 				2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */,
 				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
+				2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */,
 				2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */,

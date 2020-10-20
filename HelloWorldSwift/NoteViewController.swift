@@ -162,7 +162,8 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     textTitle.text = article["tweet_text"]! as? String // data->notes->tweet_text
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = article["publish_at"]! as? String  // data->notes->publish_at  (tech)
+//    textDetailText.text = article["publish_at"]! as? String  // data->notes->publish_at  (tech)
+    textDetailText.text = daysAgo((article["publish_at"]! as? String)!)  // data->notes->publish_at  (tech)
 //    textDetailText.text = article["publishAt"]! as? String  // data->notes->publish_at  (popular)
     // セルに表示する画像を設定する
     let articleUser = article["user"] as AnyObject?  // data->notes->->user
@@ -213,6 +214,17 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
       }
     }
     return cell
+  }
+  
+  func daysAgo(_ data: String) -> String {
+    //    print(data)
+    let calendar = Calendar.current
+    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
+    if let date = calendar.date(from: dateComponents) {
+      //print("\(date)      \(date.timeAgo())")
+      return date.timeAgo()
+    }
+    return ""
   }
   
   // Cellの個数を設定

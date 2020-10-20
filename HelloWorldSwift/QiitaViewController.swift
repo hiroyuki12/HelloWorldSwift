@@ -142,7 +142,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     textTitle.text = article["title"]! as? String
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = article["created_at"]! as? String
+//    textDetailText.text = article["created_at"]! as? String
+    textDetailText.text = daysAgo((article["created_at"] as? String)!)
     // セルに表示する画像を設定する
     let articleUser = article["user"] as AnyObject?
     let profileImageUrl = articleUser?["profile_image_url"]
@@ -181,6 +182,17 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     tagsText.text = tags
     return cell
+  }
+  
+  func daysAgo(_ data: String) -> String {
+    //    print(data)
+    let calendar = Calendar.current
+    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
+    if let date = calendar.date(from: dateComponents) {
+      //        print("\(date)      \(date.timeAgo())")
+      return date.timeAgo()
+    }
+    return ""
   }
   
   // Cellの個数を設定
@@ -489,6 +501,63 @@ extension UIImageView {
       }
     }
   }
+}
+
+extension Date {
+    func timeAgo() -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .dropAll
+        formatter.maximumUnitCount = 1
+      return String(format: formatter.string(from: self, to: Date()) ?? "" , locale: .current)
+    }
+}
+
+extension String {
+    
+    /// Index with using position of Int type
+    func index(at position: Int) -> String.Index {
+        return index((position.signum() >= 0 ? startIndex : endIndex), offsetBy: position)
+    }
+    
+    /// Subscript for using like a "string[i]"
+    subscript (position: Int) -> String {
+        let i = index(at: position)
+        return String(self[i])
+    }
+
+    /// Subscript for using like a "string[start..<end]"
+    subscript (bounds: CountableRange<Int>) -> String {
+        let start = index(at: bounds.lowerBound)
+        let end = index(at: bounds.upperBound)
+        return String(self[start..<end])
+    }
+
+    /// Subscript for using like a "string[start...end]"
+    subscript (bounds: CountableClosedRange<Int>) -> String {
+        let start = index(at: bounds.lowerBound)
+        let end = index(at: bounds.upperBound)
+        return String(self[start...end])
+    }
+    
+    /// Subscript for using like a "string[..<end]"
+    subscript (bounds: PartialRangeUpTo<Int>) -> String {
+        let i = index(at: bounds.upperBound)
+        return String(prefix(upTo: i))
+    }
+
+    /// Subscript for using like a "string[...end]"
+    subscript (bounds: PartialRangeThrough<Int>) -> String {
+        let i = index(at: bounds.upperBound)
+        return String(prefix(through: i))
+    }
+
+    /// Subscript for using like a "string[start...]"
+    subscript (bounds: PartialRangeFrom<Int>) -> String {
+        let i = index(at: bounds.lowerBound)
+        return String(suffix(from: i))
+    }
 }
 
 //struct QiitaUser: Codable {

@@ -1,8 +1,8 @@
 //
-//  HatenaBookmarkFavoriteViewController.swift
+//  GoogleNewsViewController.swift
 //  HelloWorldSwift
 //
-//  Created by hiroyuki on 2020/10/15.
+//  Created by hiroyuki on 2020/10/20.
 //  Copyright © 2020 hiroyuki. All rights reserved.
 //
 
@@ -11,19 +11,19 @@ import Foundation
 import WebKit
 import SQLite3
 
-class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, XMLParserDelegate  {
+class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, XMLParserDelegate  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
   
   var keyToken = Constants.key
   
-  var feedUrl = URL(string: Constants.favoriteUrl)!
-  let feedUrlFavorite = URL(string: Constants.favoriteUrl)!
+  var feedUrl = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
+  let feedUrlFavorite = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
   let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
   let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
   
-  var feedItems = [FeedItem]()
+  var feedItems = [GoogleFeedItem]()
   
   var currentElementName : String! // RSSパース中の現在の要素名
   
@@ -31,9 +31,9 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   let ITEM_ELEMENT_NAME = "item"
   let TITLE_ELEMENT_NAME = "title"
   let LINK_ELEMENT_NAME   = "link"
-  let BOOKMARKCOUNT_ELEMENT_NAME   = "hatena:bookmarkcount"
-  let CREATOR_ELEMENT_NAME   = "dc:creator"
-  let DATE_ELEMENT_NAME   = "dc:date"
+//  let BOOKMARKCOUNT_ELEMENT_NAME   = "hatena:bookmarkcount"
+//  let CREATOR_ELEMENT_NAME   = "dc:creator"
+  let DATE_ELEMENT_NAME   = "pubDate"
   
   // Hotentry
   let IMAGE_ELEMENT_NAME   = "hatena:imageurl"
@@ -101,31 +101,26 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     let textTitle = cell.viewWithTag(2) as! UILabel
     textTitle.text = feedItem.title
     // セルに表示するブックマーク数を設定する
-    let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = feedItem.bookmarkcount + " users"
+//    let textDetailText = cell.viewWithTag(3) as! UILabel
+//    textDetailText.text = feedItem.bookmarkcount + " users"
     // セルに表示する画像を設定する
     //https://cdn.profile-image.st-hatena.com/users/laiso/profile.gif
-    if(feedItem.creator != nil) {  // Farorite
-      let profileImageUrl = "https://cdn.profile-image.st-hatena.com/users/" + feedItem.creator + "/profile.gif"// items->thumbnail
-      let profileImage = cell.viewWithTag(1) as! UIImageView
-      let myUrl: URL? = URL(string: profileImageUrl)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-    }
-    if(feedItem.imageurl != nil) {  // Hotentry, IT
-      let profileImageUrl = feedItem.imageurl! // items->thumbnail
-      let profileImage = cell.viewWithTag(1) as! UIImageView
-      let myUrl: URL? = URL(string: profileImageUrl)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-    }
+//    if(feedItem.creator != nil) {  // Farorite
+//      let profileImageUrl = "https://cdn.profile-image.st-hatena.com/users/" + feedItem.creator + "/profile.gif"// items->thumbnail
+//      let profileImage = cell.viewWithTag(1) as! UIImageView
+//      let myUrl: URL? = URL(string: profileImageUrl)
+//      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+//    }
+//    if(feedItem.imageurl != nil) {  // Hotentry, IT
+//      let profileImageUrl = feedItem.imageurl! // items->thumbnail
+//      let profileImage = cell.viewWithTag(1) as! UIImageView
+//      let myUrl: URL? = URL(string: profileImageUrl)
+//      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+//    }
     // セルに表示するブックマークしたユーザー、日を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    if(feedItem.creator != nil) {
-//      tagsText.text = feedItem.creator + " " + feedItem.date + "+09.00"
-      tagsText.text = feedItem.creator + " " + daysAgo(feedItem.date)
-    }
-    else {
-      tagsText.text = daysAgo(feedItem.date)
-    }
+//    tagsText.text = daysAgo(feedItem.pubDate)
+    tagsText.text = feedItem.pubDate
     //    let replayCount = article["answer_count"] as? Int  // items->answer_count
     //    let pvCount = article["view_count"] as? Int  // items->view_count
     //    var arr = article["tags"] as? [String]  // items->tags
@@ -410,13 +405,13 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
     let feedItem = self.feedItems[indexPath.row]
-    webView.url = feedItem.url
+    webView.url = feedItem.link
     
     if(webView.url.hasPrefix("http")) {
       self.present(webView, animated: true, completion: nil)
     }
     else {
-      print(feedItem.url)
+      print(feedItem.link)
     }
     
   }
@@ -446,7 +441,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     self.currentElementName = nil
     print(elementName)
     if elementName == ITEM_ELEMENT_NAME {
-      self.feedItems.append(FeedItem())
+      self.feedItems.append(GoogleFeedItem())
     } else {
       currentElementName = elementName
     }
@@ -460,15 +455,9 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
         let tmpString = lastItem.title
         lastItem.title = (tmpString != nil) ? tmpString! + string : string
       case LINK_ELEMENT_NAME:
-        lastItem.url = string
-      case BOOKMARKCOUNT_ELEMENT_NAME:
-        lastItem.bookmarkcount = string
-      case CREATOR_ELEMENT_NAME:
-        lastItem.creator = string
+        lastItem.link = string
       case DATE_ELEMENT_NAME:
-        lastItem.date = string
-      case IMAGE_ELEMENT_NAME:
-        lastItem.imageurl = string
+        lastItem.pubDate = string
       default: break
       }
     }
@@ -494,12 +483,8 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
 }
 
-class FeedItem {
+class GoogleFeedItem {
   var title: String!
-  var url: String!
-  var bookmarkcount: String!
-  var creator: String!
-  var date: String!
-  
-  var imageurl: String!
+  var link: String!
+  var pubDate: String!
 }
