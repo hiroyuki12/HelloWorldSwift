@@ -172,7 +172,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     // セルに表示する画像を設定する
     let articleOwner = article["owner"] as AnyObject?  // items->owner
     let userType = articleOwner?["user_type"] as? String
-    if(userType as! String == "does_not_exist")  { return cell }
+    if(userType! == "does_not_exist")  { return cell }
     
     let profileImageUrl = articleOwner?["profile_image"] // items->owner->profile_image
     let profileImage = cell.viewWithTag(1) as! UIImageView

@@ -500,7 +500,7 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
       self.present(webView, animated: true, completion: nil)
     }
     else {
-      print(feedItem.link)
+      print(feedItem.link ?? "")
     }
     
   }

@@ -299,7 +299,7 @@
 		1910C9D945894D281324FF541F3AC017 /* FolderItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FolderItem.swift; path = Sources/Responses/FolderItem.swift; sourceTree = "<group>"; };
 		1BACA75A5C0BE5979F9B0005F3F077EA /* Collaborator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Collaborator.swift; path = Sources/Responses/Collaborator.swift; sourceTree = "<group>"; };
 		1BDA42A2DACC5A3DC750E9EF9A26EF74 /* CollaborationsModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CollaborationsModule.swift; path = Sources/Modules/CollaborationsModule.swift; sourceTree = "<group>"; };
-		1CBA76EDD27FA2D20B1EA0F0BF7F082C /* SwiftyDropbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyDropbox.framework; path = SwiftyDropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CBA76EDD27FA2D20B1EA0F0BF7F082C /* SwiftyDropbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyDropbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D0713AB5D8B727F04B187C3ACD48AC5 /* FileRequests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileRequests.swift; path = Source/SwiftyDropbox/Shared/Generated/FileRequests.swift; sourceTree = "<group>"; };
 		1FE78181669CBDD69347FD2C2DF2E95D /* ConfigurablePermissionData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConfigurablePermissionData.swift; path = Sources/Requests/BodyData/ConfigurablePermissionData.swift; sourceTree = "<group>"; };
 		20B6BEE2B1A5C2B9B3381C3BBB7B8617 /* TeamLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TeamLog.swift; path = Source/SwiftyDropbox/Shared/Generated/TeamLog.swift; sourceTree = "<group>"; };
@@ -315,7 +315,7 @@
 		2B597E1159F1AE729A31873ABEFF3DB8 /* PollingURLInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PollingURLInfo.swift; path = Sources/Responses/PollingURLInfo.swift; sourceTree = "<group>"; };
 		2B82CEDA52CC9D0746E88E237D3AE6DE /* MetadataModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetadataModule.swift; path = Sources/Modules/MetadataModule.swift; sourceTree = "<group>"; };
 		2BB34FCF6EAA6D683BB32087539C9808 /* URLValidation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = URLValidation.swift; path = Sources/Core/URLValidation.swift; sourceTree = "<group>"; };
-		2C21D8932A9BDF1DC44A4DB3D1EE7F2A /* Pods_HelloWorldSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_HelloWorldSwift.framework; path = "Pods-HelloWorldSwift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C21D8932A9BDF1DC44A4DB3D1EE7F2A /* Pods_HelloWorldSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9B9ADC37FBDEE5F6BF39C380BA3009 /* Task.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Task.swift; path = Sources/Responses/Task.swift; sourceTree = "<group>"; };
 		2DFB2737DB38D184194700F16C026CC7 /* SharedLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SharedLink.swift; path = Sources/Responses/SharedLink.swift; sourceTree = "<group>"; };
 		2E21A83141D23678FEE180958A3B38E1 /* BoxAPIAuthError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoxAPIAuthError.swift; path = Sources/Core/Errors/BoxAPIAuthError.swift; sourceTree = "<group>"; };
@@ -340,7 +340,7 @@
 		421EA3922EAEF7CF3E51E984025AC5CC /* Files.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Files.swift; path = Source/SwiftyDropbox/Shared/Generated/Files.swift; sourceTree = "<group>"; };
 		427D9DA16347BF5CD54E4279375A2E68 /* Timeline.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Timeline.swift; path = Source/Timeline.swift; sourceTree = "<group>"; };
 		4403EF55E11A620E7CD07ADCDA846FE8 /* FileRepresentation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileRepresentation.swift; path = Sources/Responses/FileRepresentation.swift; sourceTree = "<group>"; };
-		46D57782646CA916CBFD3D75BA213DB5 /* BoxSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BoxSDK.framework; path = BoxSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46D57782646CA916CBFD3D75BA213DB5 /* BoxSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BoxSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		491882D8E51BC559AA28395E81753932 /* TermsOfServiceUserStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TermsOfServiceUserStatus.swift; path = Sources/Responses/TermsOfServiceUserStatus.swift; sourceTree = "<group>"; };
 		4987523D770F54A9257301088D3F5DAB /* BoxSDKError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoxSDKError.swift; path = Sources/Core/Errors/BoxSDKError.swift; sourceTree = "<group>"; };
 		499C9216D4933E961E42F4CE1DA5BE3A /* Pods-HelloWorldSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-HelloWorldSwift-dummy.m"; sourceTree = "<group>"; };
@@ -366,7 +366,7 @@
 		58863F69AFC3074C9CC50CA7BA4DCE62 /* MetadataCascadePolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetadataCascadePolicy.swift; path = Sources/Responses/MetadataCascadePolicy.swift; sourceTree = "<group>"; };
 		58CCAACFD247DAB43B6ECA01C2B3A012 /* SwiftyDropbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyDropbox.debug.xcconfig; sourceTree = "<group>"; };
 		5CA764B527A1D31BD66DF280DF369B25 /* AnalyticsHeaderGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnalyticsHeaderGenerator.swift; path = Sources/Requests/AnalyticsHeaderGenerator.swift; sourceTree = "<group>"; };
-		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Alamofire.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F06CE80B2D1809E243D0621E6DED9A5 /* BoxEnum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoxEnum.swift; path = Sources/Core/BoxEnum.swift; sourceTree = "<group>"; };
 		5FF448D20FAF10EFE63C0689D852AA7A /* UIDeviceExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIDeviceExtension.swift; path = Sources/Core/Extensions/UIDeviceExtension.swift; sourceTree = "<group>"; };
 		600DCFC9C846AD6E6F605F9A08FB5E56 /* DelegatedAuthSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelegatedAuthSession.swift; path = Sources/Sessions/DelegatedAuth/DelegatedAuthSession.swift; sourceTree = "<group>"; };
@@ -439,7 +439,7 @@
 		9B2E3800FED34ECF626392AA98EC82CB /* SwiftyDropbox-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyDropbox-prefix.pch"; sourceTree = "<group>"; };
 		9B971DFE267B6D03B25A883BEA4C0ACA /* TermsOfServicesModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TermsOfServicesModule.swift; path = Sources/Modules/TermsOfServicesModule.swift; sourceTree = "<group>"; };
 		9D4A92C49AD9774489F52DDB00FD2CFC /* MetadataModule+Templates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MetadataModule+Templates.swift"; path = "Sources/Modules/MetadataModule+Templates.swift"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DB3346CA4B8F3D29F09CD2E38C85CD9 /* ParameterEncoding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ParameterEncoding.swift; path = Source/ParameterEncoding.swift; sourceTree = "<group>"; };
 		9F4E8A55DAC7A95992F3752244B674D0 /* DropboxTransportClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropboxTransportClient.swift; path = Source/SwiftyDropbox/Shared/Handwritten/DropboxTransportClient.swift; sourceTree = "<group>"; };
 		A07E129CED8EC3A599AD52C2100E37B2 /* OAuthWebAuthentication.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OAuthWebAuthentication.swift; path = Sources/Sessions/OAuth2/OAuthWebAuthentication.swift; sourceTree = "<group>"; };
@@ -663,7 +663,6 @@
 				E83E2F550205F961827B6148DAB53440 /* UsersRoutes.swift */,
 				B87447C4F15D361A3603580E0ECAA317 /* Support Files */,
 			);
-			name = SwiftyDropbox;
 			path = SwiftyDropbox;
 			sourceTree = "<group>";
 		};
@@ -673,7 +672,6 @@
 				8FC898F2B8927DACC910AF889CE9BD33 /* Core */,
 				11FE1CB5C408FFE5218811D68CC0084A /* Support Files */,
 			);
-			name = BoxSDK;
 			path = BoxSDK;
 			sourceTree = "<group>";
 		};
@@ -707,7 +705,6 @@
 				AE20E94210696E36E2116AC2FEE69173 /* Validation.swift */,
 				6D554E7F58A2EFEAD1F3ABEE08EFCA47 /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -1083,6 +1080,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1100;
+				TargetAttributes = {
+					FF39B7A1D9F00620D9F56635ABBB2C03 = {
+						LastSwiftMigration = 1200;
+					};
+				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 10.0";
@@ -1446,7 +1448,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1826,7 +1828,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

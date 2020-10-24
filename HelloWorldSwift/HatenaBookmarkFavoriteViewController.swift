@@ -416,7 +416,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
       self.present(webView, animated: true, completion: nil)
     }
     else {
-      print(feedItem.url)
+      print(feedItem.url ?? "")
     }
     
   }
