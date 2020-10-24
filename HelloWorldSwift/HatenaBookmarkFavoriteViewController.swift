@@ -444,7 +444,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
   func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
     self.currentElementName = nil
-    print(elementName)
+    //print(elementName)
     if elementName == ITEM_ELEMENT_NAME {
       self.feedItems.append(FeedItem())
     } else {

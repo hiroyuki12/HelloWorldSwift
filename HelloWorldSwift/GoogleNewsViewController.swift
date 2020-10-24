@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import WebKit
 import SQLite3
+import Alamofire
 
 class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, XMLParserDelegate  {
   @IBOutlet weak var table: UITableView!
@@ -19,9 +20,19 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   var keyToken = Constants.key
   
   var feedUrl = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
-  let feedUrlFavorite = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
-  let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
-  let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
+  
+  // Google News
+  let feedUrlTopNews = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
+  let feedUrlTechnology = URL(string: "https://news.google.com/news/rss/headlines/section/topic/TECHNOLOGY?hl=ja&gl=JP&ceid=JP:ja")
+  let feedUrlTechnologyEn = URL(string: "https://news.google.com/news/rss/headlines/section/topic/TECHNOLOGY")
+  
+  // Yahoo News
+  let feedUrlKokunai = URL(string: "https://news.yahoo.co.jp/rss/categories/domestic.xml")
+  let feedUrlIT = URL(string: "https://news.yahoo.co.jp/rss/categories/it.xml")
+  
+  // menthas
+  let feedUrliOS = URL(string: "https://menthas.com/ios/rss")
+  let feedUrlProgramming = URL(string: "https://menthas.com/programming/rss")
   
   var feedItems = [GoogleFeedItem]()
   
@@ -31,12 +42,12 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   let ITEM_ELEMENT_NAME = "item"
   let TITLE_ELEMENT_NAME = "title"
   let LINK_ELEMENT_NAME   = "link"
-//  let BOOKMARKCOUNT_ELEMENT_NAME   = "hatena:bookmarkcount"
-//  let CREATOR_ELEMENT_NAME   = "dc:creator"
   let DATE_ELEMENT_NAME   = "pubDate"
+  let SOURCE_ELEMENT_NAME   = "source"
+  let DESCRIPTION_ELEMENT_NAME   = "description"
   
   // Hotentry
-  let IMAGE_ELEMENT_NAME   = "hatena:imageurl"
+  let IMAGE_ELEMENT_NAME   = "image"
   
   var db: OpaquePointer?
   
@@ -45,11 +56,17 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "Fav"
+  var tag = "TopNews"
   
-  let tagFav    = "Fav"
-  let tagHotentry  = "Hotentry"
+  let tagTopNews    = "TopNews"
+  let tagTech  = "Tech"
+  let tagTechEn  = "TechEn"
+  
+  let tagKokunai  = "国内"
   let tagIT  = "IT"
+  
+  let tagMenthas  = "iOS/Apple"
+  let tagProgramming  = "Programming"
   
   var savedPage = 1
   var perPage = 20
@@ -61,6 +78,8 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
+    //getArticles()
+    
     parser = XMLParser(contentsOf: feedUrl)
     parser.delegate = self
     parser.parse()
@@ -87,6 +106,19 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     //print("viewDidLoad End!")
   }
   
+  func getArticles() {
+    Alamofire.request("https://qiita.com/api/v2/items", method: .get)
+      .responseJSON {response in
+        guard let data2 = response.data else {
+          return
+        }
+        do {
+          print(data2)
+
+        }
+      }
+  }
+  
   func myload() {
     
   }
@@ -100,9 +132,12 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
     textTitle.text = feedItem.title
-    // セルに表示するブックマーク数を設定する
-//    let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = feedItem.bookmarkcount + " users"
+    // セルに表示するソースを設定する
+    let textDetailText = cell.viewWithTag(3) as! UILabel
+    textDetailText.text = feedItem.source
+    if(feedItem.source == nil) {
+      textDetailText.text = feedItem.description
+    }
     // セルに表示する画像を設定する
     //https://cdn.profile-image.st-hatena.com/users/laiso/profile.gif
 //    if(feedItem.creator != nil) {  // Farorite
@@ -111,16 +146,21 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
 //      let myUrl: URL? = URL(string: profileImageUrl)
 //      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
 //    }
-//    if(feedItem.imageurl != nil) {  // Hotentry, IT
-//      let profileImageUrl = feedItem.imageurl! // items->thumbnail
-//      let profileImage = cell.viewWithTag(1) as! UIImageView
-//      let myUrl: URL? = URL(string: profileImageUrl)
-//      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-//    }
-    // セルに表示するブックマークしたユーザー、日を設定する
+    //print(feedItem.image)
+    if(feedItem.image != nil) {
+      let profileImageUrl = feedItem.image! // items->thumbnail
+      let profileImage = cell.viewWithTag(1) as! UIImageView
+      let myUrl: URL? = URL(string: profileImageUrl)
+      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    }
+    else {
+      let profileImage = cell.viewWithTag(1) as! UIImageView
+      profileImage.image = nil
+    }
+    // セルに表示する日時を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-//    tagsText.text = daysAgo(feedItem.pubDate)
-    tagsText.text = feedItem.pubDate
+    tagsText.text = daysAgo(feedItem.pubDate)
+//    tagsText.text = feedItem.pubDate
     //    let replayCount = article["answer_count"] as? Int  // items->answer_count
     //    let pvCount = article["view_count"] as? Int  // items->view_count
     //    var arr = article["tags"] as? [String]  // items->tags
@@ -153,24 +193,49 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   }
   
   func daysAgo(_ data: String) -> String {
-    //    print(data)
+    //print(data)
     let calendar = Calendar.current
     
-    let hour = Int(data[11...12])! + 9
-    if (hour < 24) {
-      let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
-      if let date = calendar.date(from: dateComponents) {
-        //print("\(date)      \(date.timeAgo())")
-        return date.timeAgo()
+    var month = 0
+    //if(data[26...28] == "GMT") {
+    if(data.lengthOfBytes(using: .utf8) > 26) {  // google news
+      if(data[8...10] == "Oct") { month = 10 }
+      
+      let hour = Int(data[17...18])! + 9
+      if (hour < 24) {
+        let dateComponents = DateComponents(calendar: calendar, year: Int(data[12...15]), month: month, day: Int(data[5...6]), hour: hour, minute: Int(data[20...21]), second: Int(data[23...24]))
+        if let date = calendar.date(from: dateComponents) {
+          //print("\(date)      \(date.timeAgo())")
+          return date.timeAgo()
+        }
+      }
+      else {
+        let hour = Int(data[17...18])! + 9 - 24
+        let day = Int(data[5...6])! + 1  // 31 + 1
+        let dateComponents = DateComponents(calendar: calendar, year: Int(data[12...15]), month: month, day: day, hour: hour, minute: Int(data[20...21]), second: Int(data[23...24]))
+        if let date = calendar.date(from: dateComponents) {
+          //print("\(date)      \(date.timeAgo())")
+          return date.timeAgo()
+        }
       }
     }
-    else {
-      let hour = Int(data[11...12])! + 9 - 24
-      let day = Int(data[8...9])! + 1  // 31 + 1
-      let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: day, hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
-      if let date = calendar.date(from: dateComponents) {
-        //print("\(date)      \(date.timeAgo())")
-        return date.timeAgo()
+    else { // yahoo news
+      let hour = Int(data[11...12])! + 9
+      if (hour < 24) {
+        let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
+        if let date = calendar.date(from: dateComponents) {
+          //print("\(date)      \(date.timeAgo())")
+          return date.timeAgo()
+        }
+      }
+      else {
+        let hour = Int(data[11...12])! + 9 - 24
+        let day = Int(data[8...9])! + 1  // 31 + 1
+        let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: month, day: day, hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
+        if let date = calendar.date(from: dateComponents) {
+          //print("\(date)      \(date.timeAgo())")
+          return date.timeAgo()
+        }
       }
     }
     
@@ -198,22 +263,22 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
     
-    let flutterSwiftAction = UIAlertAction(title: "Fav/Hotentry/IT", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "TopNews/Tech/TechEn", style: .default,
                                            handler:{
                                             (action:UIAlertAction!) -> Void in
 //                                            self.articles.removeAll()
                                             self.feedItems.removeAll()
-                                            if(self.tag == self.tagFav) {
-                                              self.tag = self.tagHotentry
-                                              self.feedUrl = self.feedUrlHotentry!
+                                            if(self.tag == self.tagTopNews) {
+                                              self.tag = self.tagTech
+                                              self.feedUrl = self.feedUrlTechnology!
                                             }
-                                            else if(self.tag == self.tagHotentry) {
-                                              self.tag = self.tagIT
-                                              self.feedUrl = self.feedUrlIT!
+                                            else if(self.tag == self.tagTech) {
+                                              self.tag = self.tagTechEn
+                                              self.feedUrl = self.feedUrlTechnologyEn!
                                             }
                                             else {
-                                              self.tag = self.tagFav
-                                              self.feedUrl = self.feedUrlFavorite
+                                              self.tag = self.tagTopNews
+                                              self.feedUrl = self.feedUrlTopNews
                                             }
                                             //      self.savedPage = 1
                                             self.parser = XMLParser(contentsOf: self.feedUrl)
@@ -226,27 +291,51 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
                                            })
     alertController.addAction(flutterSwiftAction)
     
-    let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
+    let swiftPage1Action = UIAlertAction(title: "Yahoo News 国内/IT", style: .default,
                                          handler:{
                                           (action:UIAlertAction!) -> Void in
-//                                          self.articles.removeAll()
-                                          self.tag = self.tagFav
-                                          self.savedPage = 1
+//                                            self.articles.removeAll()
+                                          self.feedItems.removeAll()
+                                          if(self.tag == self.tagKokunai) {
+                                            self.tag = self.tagIT
+                                            self.feedUrl = self.feedUrlIT!
+                                          }
+                                          else {
+                                            self.tag = self.tagKokunai
+                                            self.feedUrl = self.feedUrlKokunai!
+                                          }
+                                          //      self.savedPage = 1
+                                          self.parser = XMLParser(contentsOf: self.feedUrl)
+                                          self.parser.delegate = self
+                                          self.parser.parse()
+                                          self.table.reloadData()
                                           //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                          self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                          "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+                                          self.textPage.text = String(self.tag) + " Page " + String(self.savedPage) +
+                                            "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
                                          })
     alertController.addAction(swiftPage1Action)
     
-    let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
+    let swiftPage50Action = UIAlertAction(title: "Menthas iOS/Programming", style: .default,
                                           handler:{
-                                            (action:UIAlertAction!) -> Void in
-//                                            self.articles.removeAll()
-                                            self.tag = self.tagFav
-                                            self.savedPage = 50
-                                            //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                            self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+                                           (action:UIAlertAction!) -> Void in
+ //                                            self.articles.removeAll()
+                                           self.feedItems.removeAll()
+                                           if(self.tag == self.tagMenthas) {
+                                             self.tag = self.tagProgramming
+                                             self.feedUrl = self.feedUrlProgramming!
+                                           }
+                                           else {
+                                             self.tag = self.tagMenthas
+                                             self.feedUrl = self.feedUrliOS!
+                                           }
+                                           //      self.savedPage = 1
+                                           self.parser = XMLParser(contentsOf: self.feedUrl)
+                                           self.parser.delegate = self
+                                           self.parser.parse()
+                                           self.table.reloadData()
+                                           //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+                                           self.textPage.text = String(self.tag) + " Page " + String(self.savedPage) +
+                                             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
                                           })
     alertController.addAction(swiftPage50Action)
     
@@ -254,7 +343,7 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
                                            handler:{
                                             (action:UIAlertAction!) -> Void in
 //                                            self.articles.removeAll()
-                                            self.tag = self.tagHotentry
+                                            self.tag = self.tagTech
                                             self.savedPage = 1
                                             //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
                                             self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -439,7 +528,7 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   
   func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
     self.currentElementName = nil
-    print(elementName)
+    //print(elementName)
     if elementName == ITEM_ELEMENT_NAME {
       self.feedItems.append(GoogleFeedItem())
     } else {
@@ -449,15 +538,29 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   
   func parser(_ parser: XMLParser, foundCharacters string: String) {
     if self.feedItems.count > 0 {
+      //print(self.currentElementName)
+      //print(string)
       let lastItem = self.feedItems[self.feedItems.count - 1]
       switch self.currentElementName {
       case TITLE_ELEMENT_NAME:
         let tmpString = lastItem.title
         lastItem.title = (tmpString != nil) ? tmpString! + string : string
       case LINK_ELEMENT_NAME:
-        lastItem.link = string
+        if(string != "&" && string != "source=rss") {  // yahoo news
+          lastItem.link = string
+        }
       case DATE_ELEMENT_NAME:
         lastItem.pubDate = string
+      case SOURCE_ELEMENT_NAME:
+        lastItem.source = string
+      case IMAGE_ELEMENT_NAME:
+        if(!string.contains("h=") && string != "h=34" && string != "q=90" && string != "&"
+            && string != "h=450" && string != "h=253" && string != "pri=l" && string != "exp=10800") {  // yahoo news
+          //print(string)
+          lastItem.image = string
+        }
+      case DESCRIPTION_ELEMENT_NAME:
+        lastItem.description = string
       default: break
       }
     }
@@ -470,7 +573,6 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   func parserDidEndDocument(_ parser: XMLParser) {
     //      self.tableView.reloadData()
   }
-  
   /*
    // MARK: - Navigation
    
@@ -487,4 +589,10 @@ class GoogleFeedItem {
   var title: String!
   var link: String!
   var pubDate: String!
+  var source: String!
+  
+  // yahoo news
+  var image: String!
+  var description: String!
+  
 }

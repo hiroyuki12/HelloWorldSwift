@@ -12,8 +12,8 @@ enum Constants {
   static let clientId = "BOX_CLIENT_ID"
   static let clientSecret = "BOX_CLIENT_SECRET"
   
-  static let key = "HATENA_TOKEN"  //
-  static let favoriteUrl = "https://b.hatena.ne.jp/fedora9/favorite.rss?key=" + "HATENA_TOKEN"  // 
+  static let key = "HATENA_TOKEN"  // 
+  static let favoriteUrl = "https://b.hatena.ne.jp/fedora9/favorite.rss?key=" + key  // HATENA_TOKEN
 
 }
 
