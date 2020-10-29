@@ -138,6 +138,9 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     if(feedItem.source == nil) {
       textDetailText.text = feedItem.description
     }
+    else if(feedItem.source == "ニュース") {
+      textDetailText.text = "Yahoo!ニュース"
+    }
     // セルに表示する画像を設定する
     //https://cdn.profile-image.st-hatena.com/users/laiso/profile.gif
 //    if(feedItem.creator != nil) {  // Farorite
@@ -154,8 +157,16 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
       profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     }
     else {
-      let profileImage = cell.viewWithTag(1) as! UIImageView
-      profileImage.image = nil
+      if(self.tag == self.tagKokunai || self.tag == self.tagIT) {
+          let profileImageUrl = "https://amd-pctr.c.yimg.jp/r/iwiz-amd/cate_image/pol.jpg" // Yahoo News
+          let profileImage = cell.viewWithTag(1) as! UIImageView
+          let myUrl: URL? = URL(string: profileImageUrl)
+          profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+      }
+      else {
+        let profileImage = cell.viewWithTag(1) as! UIImageView
+        profileImage.image = nil
+      }
     }
     // セルに表示する日時を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel

@@ -20,8 +20,10 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
   var feedUrl = URL(string: Constants.favoriteUrl)!
   let feedUrlFavorite = URL(string: Constants.favoriteUrl)!
+  let feedUrlSwift = URL(string: "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=1")
   let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
   let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
+//  let feedUrlBookmark = URL(string: "http://b.hatena.ne.jp/naoya/rss?page=2")
   
   var feedItems = [FeedItem]()
   
@@ -48,6 +50,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   var tag = "Fav"
   
   let tagFav    = "Fav"
+  let tagSwift    = "Swift"
   let tagHotentry  = "Hotentry"
   let tagIT  = "IT"
   
@@ -62,6 +65,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     
     // Do any additional setup after loading the view.
     parser = XMLParser(contentsOf: feedUrl)
+//    print(feedUrl)
     parser.delegate = self
     parser.parse()
     
@@ -187,6 +191,10 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     return self.feedItems.count
   }
   
+  override func viewWillLayoutSubviews() {  // isModalInPresentationにtrueを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくする
+  }
+  
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
     self.table.reloadData()
@@ -203,12 +211,17 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
     
-    let flutterSwiftAction = UIAlertAction(title: "Fav/Hotentry/IT", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Fav/Swift/Hotentry/IT", style: .default,
                                            handler:{
                                             (action:UIAlertAction!) -> Void in
 //                                            self.articles.removeAll()
                                             self.feedItems.removeAll()
                                             if(self.tag == self.tagFav) {
+                                              self.tag = self.tagSwift
+                                              self.feedUrl = self.feedUrlSwift!
+                                              //print(self.feedUrlHotentry)
+                                            }
+                                            else if(self.tag == self.tagSwift) {
                                               self.tag = self.tagHotentry
                                               self.feedUrl = self.feedUrlHotentry!
                                             }
@@ -422,24 +435,25 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//    if(tag == tagHotentry || tag == tagIT) {
-//        if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
-//          isLoading = true
-//          savedPage += 1
-//          print(savedPage)
-//          let url = "http://b.hatena.ne.jp/hotentry.rss?page=" + String(savedPage)
-//          self.feedUrl = URL(string: url)!
-//          self.parser = XMLParser(contentsOf: self.feedUrl)
-//          self.parser.delegate = self
-//          self.parser.parse()
-//          self.table.reloadData()
+    if(tag == tagSwift) {
+        if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
+          isLoading = true
+          savedPage += 1
+          print(savedPage)
+          let url = "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage)
+          self.feedUrl = URL(string: url)!
+          self.parser = XMLParser(contentsOf: self.feedUrl)
+          self.parser.delegate = self
+          self.parser.parse()
+          self.table.reloadData()
 //          //myload(page: savedPage, perPage: 20, tag: tag)
 //          //print("myload(List End)")
 //
-//          textPage.text =  String(tag) + " Page " + String(savedPage) +
-//            "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-//        }
-//    }
+          textPage.text =  String(tag) + " Page " + String(savedPage) +
+            "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+          isLoading = false
+        }
+    }
   }
   
   func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {

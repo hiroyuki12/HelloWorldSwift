@@ -29,6 +29,7 @@
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
 		2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */; };
+		2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4E825471D790084E423 /* FeedlyViewController.swift */; };
 		2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCA8682520914B00A9E8BE /* NoteViewController.swift */; };
 		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
@@ -72,6 +73,7 @@
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNewsViewController.swift; sourceTree = "<group>"; };
+		2EC8F4E825471D790084E423 /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
 		2EDCA8682520914B00A9E8BE /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeratrailViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7D2243767D9005215DD /* Info.plist */,
+				2EED15D1252C989000DEF8F8 /* Constants.swift */,
 				2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */,
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
@@ -179,8 +182,8 @@
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 				2EDCA8682520914B00A9E8BE /* NoteViewController.swift */,
 				2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */,
-				2EED15D1252C989000DEF8F8 /* Constants.swift */,
 				2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */,
+				2EC8F4E825471D790084E423 /* FeedlyViewController.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
+				2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */,
 				2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */,
 				2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */,
 				2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */,
