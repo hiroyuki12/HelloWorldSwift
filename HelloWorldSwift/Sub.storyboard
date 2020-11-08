@@ -163,9 +163,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wdj-u5-WNR">
-                                <rect key="frame" x="186" y="658" width="37" height="30"/>
+                                <rect key="frame" x="185" y="658" width="39" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="close"/>
+                                <state key="normal" title="Close"/>
                                 <connections>
                                     <action selector="tapClose:" destination="do0-SQ-fNM" eventType="touchUpInside" id="V0r-OA-50X"/>
                                 </connections>

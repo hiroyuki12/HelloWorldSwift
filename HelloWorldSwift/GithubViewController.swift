@@ -98,31 +98,6 @@ struct QiitaUserStruct: Codable {
   var website_url: String
 }
 
-struct QiitaArticleStruct: Codable {
-  var coediting: Bool
-  var comments_count: Int
-  var created_at: String
-  var id: String
-  var likes_count: Int
-//  var private: Bool
-  var reactions_count: Int
-  var tags: [TagsStruct]
-  var title: String
-  var updated_at: String
-  var url: String
-  var user: UserStruct
-  
-  struct TagsStruct: Codable {
-    var name: String
-  }
-  struct UserStruct: Codable {
-    var id: String
-    var items_count: Int
-    var permanent_id: Int
-    var profile_image_url: String
-    var team_only: Bool
-  }
-}
 
 class GithubViewController: UIViewController {
   
@@ -134,9 +109,9 @@ class GithubViewController: UIViewController {
 //    let url: URL = URL(string: "https://qiita.com/api/v2/users/TakahiRoyte")!
 //    let url: URL = URL(string: "https://api.github.com/users/octocat")!
 //    let url: URL = URL(string: "https://bookmark.hatenaapis.com/count/entry?url=http%3A%2F%2Fwww.hatena.ne.jp%2F")!
-//    let url: URL = URL(string: "https://b.hatena.ne.jp/entry/json/https://tech.hey.jp/entry/2020/10/23/111200")!
+    let url: URL = URL(string: "https://b.hatena.ne.jp/entry/json/https://tech.hey.jp/entry/2020/10/23/111200")!
 //    let url: URL = URL(string: "https://covid19-japan-web-api.now.sh/api/v1/total")!
-    let url: URL = URL(string: "https://qiita.com/api/v2/items")!
+//    let url: URL = URL(string: "https://qiita.com/api/v2/items")!
     
     let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
       guard let data = data else {
@@ -154,21 +129,21 @@ class GithubViewController: UIViewController {
 //        print(github.login)
                 
         
-//        let hatenaBookmark = try JSONDecoder().decode(HatenaBookmarkStruct.self, from: data)
-//        print(hatenaBookmark.url)
-//        if(hatenaBookmark.bookmarks[0].tags.count > 0)  {
-//          print(hatenaBookmark.bookmarks[0].tags[0])
-//        }
-//        print(hatenaBookmark.related[0].count)
-//        print(hatenaBookmark.title)
+        let hatenaBookmark = try JSONDecoder().decode(HatenaBookmarkStruct.self, from: data)
+        print(hatenaBookmark.url)
+        if(hatenaBookmark.bookmarks[0].tags.count > 0)  {
+          print(hatenaBookmark.bookmarks[0].tags[0])
+        }
+        print(hatenaBookmark.related[0].count)
+        print(hatenaBookmark.title)
 //
 //        let covid19 = try JSONDecoder().decode(Covid19Struct.self, from: data)
 //        print(covid19.date)
         
-        let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)
-        print(qiitaArticles[0].title)
-        print(qiitaArticles[0].tags[0].name)
-        print(qiitaArticles[0].user.id)
+//        let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)
+//        print(qiitaArticles[0].title)
+//        print(qiitaArticles[0].tags[0].name)
+//        print(qiitaArticles[0].user.id)
         
       // コンソールに出力
 //      print("data: \(String(describing: data))")

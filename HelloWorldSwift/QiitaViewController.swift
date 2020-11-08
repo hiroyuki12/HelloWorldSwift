@@ -11,6 +11,32 @@ import Foundation
 import WebKit
 import SQLite3
 
+struct QiitaArticleStruct: Codable {
+  var coediting: Bool
+  var comments_count: Int
+  var created_at: String
+  var id: String
+  var likes_count: Int
+//  var private: Bool
+  var reactions_count: Int
+  var tags: [TagsStruct]
+  var title: String
+  var updated_at: String
+  var url: String
+  var user: UserStruct
+  
+  struct TagsStruct: Codable {
+    var name: String
+  }
+  struct UserStruct: Codable {
+    var id: String
+    var items_count: Int
+    var permanent_id: Int
+    var profile_image_url: String
+    var team_only: Bool
+  }
+}
+
 class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
@@ -20,7 +46,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   var isLoading = false;
   
-  var articles: [[String: Any]] = []
+  var articles: [QiitaArticleStruct] = []  // Codable
   
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
@@ -90,29 +116,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return
       }
       do {
-        let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as! [Any]
+        let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)  // Codable
         
         // 一時退避
         let articles_tmp = self.articles
         // 末尾に追加
-        let articles = articles_tmp + json.map { (article) -> [String: Any] in
-            return article as! [String: Any]
-        }
-//        print(json)
-//        print(articles[0]["user"]!)
+        let articles = articles_tmp + qiitaArticles
         
-        //print(articles[0]["title"]!)
-//        print(articles[0]["url"]!)
-//        print(articles[1]["title"]!)
-
-//        extract articles
-//        for entry in articles {
-//            print(entry["title"]!)
-//        }
-//
-//        print("count: \(json.count)") //追加
-        
-        self.articles = articles //追加
+        self.articles = articles
         //print("savePage : \(self.savedPage)")
         //print("self.articles Set End!")
         
@@ -141,42 +152,30 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = article["title"]! as? String
+    textTitle.text = article.title
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = article["created_at"]! as? String
-    textDetailText.text = daysAgo((article["created_at"] as? String)!)
+    textDetailText.text = daysAgo(article.created_at)
     // セルに表示する画像を設定する
-    let articleUser = article["user"] as AnyObject?
-    let profileImageUrl = articleUser?["profile_image_url"]
+    let profileImageUrl = article.user.profile_image_url
     let profileImage = cell.viewWithTag(1) as! UIImageView
-    let myUrl: URL? = URL(string: profileImageUrl as! String)
+    let myUrl: URL? = URL(string: profileImageUrl)
     profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     // セルに表示するタグを設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    var arr = article["tags"] as? [[String: Any]]
-    let count = arr?.count
+    let count = article.tags.count
     tagsText.text = ""
     var tags = ""
-    if(count! > 0) {
-      let tag1name = arr?.first!["name"] as? String
-      tags = tag1name!
-      if(count! > 1) {
-        arr?.removeFirst()
-        let tag2name = arr?.first!["name"] as? String
-        tags += "," + tag2name!
-        if(count! > 2) {
-          arr?.removeFirst()
-          let tag3name = arr?.first!["name"] as? String
-          tags += "," + tag3name!
-          if(count! > 3) {
-            arr?.removeFirst()
-            let tag4name = arr?.first!["name"] as? String
-            tags += "," + tag4name!
-            if(count! > 4) {
-              arr?.removeFirst()
-              let tag5name = arr?.first!["name"] as? String
-              tags += "," + tag5name!
+    if(count > 0) {
+      tags = article.tags[0].name
+      if(count > 1) {
+        tags += "," + article.tags[1].name
+        if(count > 2) {
+          tags += "," + article.tags[2].name
+          if(count > 3) {
+            tags += "," + article.tags[3].name
+            if(count > 4) {
+              tags += "," + article.tags[4].name
             }
           }
         }
@@ -327,23 +326,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
-    
     //戻る
     dismiss(animated: true, completion: nil)
-    /*
-    //savedPage  //現在のページ
-    print("start tapSave.")
-    print("savedPage: " + String(savedPage))
-    
-    // mysql delete
-    tapDelete(savedPage)
-    // mysql insert
-    tapSave(savedPage)
-    
-    sqliteSavedPage = savedPage;
-    print("sqliteSavedPage: " + String(sqliteSavedPage))
-    */
-    
   }
   
   // nameがtagのデータをdelete。引数のpageは未使用。
@@ -390,15 +374,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-//    tapRead(savedPage)
-    
-//    articles.removeAll()
-//    //savedPage = 1
-//    myload(page: savedPage, perPage: 20, tag: tag)
-//    textPage.text =  String(tag) + " Page " + String(savedPage) +
-//          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-//    
-//    print ("finish tapLoad!")
   }
   
   func tapRead(_ page: Int, _ tag: String) {
@@ -426,7 +401,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    print ("finish tapRead!")
   }
   
-  
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
@@ -442,7 +416,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    popUp()
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-    webView.url = articles[indexPath.row]["url"]! as? String ?? "http://www.yahoo.co.jp"
+//    webView.url = articles[indexPath.row].url as? String ?? "http://www.yahoo.co.jp"
+    webView.url = articles[indexPath.row].url
     
     self.present(webView, animated: true, completion: nil)
   }
@@ -556,22 +531,6 @@ extension String {
         return String(suffix(from: i))
     }
 }
-
-//struct QiitaUser: Codable {
-//  let id: String
-//  let imageUrl: String // ①
-//
-//  enum CodingKeys: String, CodingKey {
-//      case id
-//      case imageUrl = "profile_image_url" // ②
-//  }
-//}
-//
-//struct QiitaArticle: Codable {
-//  let title: String
-//  let url: String
-//  let user: QiitaUser // ⓵
-//}
 
 //extension ViewController: UITableViewDelegate {
 //  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
