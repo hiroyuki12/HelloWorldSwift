@@ -151,6 +151,30 @@
                                     <action selector="tapSave:" destination="hxA-J2-jNz" eventType="touchUpInside" id="YWH-xp-8Mz"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IiU-fh-Hc2">
+                                <rect key="frame" x="274" y="698" width="40" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Safari"/>
+                                <connections>
+                                    <action selector="tapSafari:" destination="AsD-n6-BBo" eventType="touchUpInside" id="Nf7-XL-Ar1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2MY-Yx-EOm">
+                                <rect key="frame" x="95" y="698" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="share"/>
+                                <connections>
+                                    <action selector="tapShare:" destination="AsD-n6-BBo" eventType="touchUpInside" id="64Z-jY-MG6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebU-ZJ-7W9">
+                                <rect key="frame" x="20" y="698" width="34" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="back"/>
+                                <connections>
+                                    <action selector="tapBack:" destination="AsD-n6-BBo" eventType="touchUpInside" id="zME-Gs-PaO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5Dy-S2-Wpy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1179,7 +1203,7 @@
                                     <action selector="next:" destination="sxM-uB-2Mh" eventType="touchUpInside" id="uAT-aE-Bdb"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TopNews Page 1/25posts/1〜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pj7-Qv-oLz">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tech Page 1/25posts/1〜" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pj7-Qv-oLz">
                                 <rect key="frame" x="92" y="686" width="208" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>

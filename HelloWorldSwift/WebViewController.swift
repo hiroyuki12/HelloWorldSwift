@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Accounts
 
 class WebViewController: UIViewController {
   @IBOutlet weak var wkWebView: WKWebView!
@@ -17,17 +18,18 @@ class WebViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    // Do any additional setup after loading the view.
     
-    print("Hello!")
+    // Do any additional setup after loading the view.
+    //print("Hello!")
     //print(url)
     
     if let url = URL(string: self.url!) {
-    //if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている
+      //if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている
       let request = URLRequest(url: url)
       //self.wkWebView.load(URLRequest(url: url))
       wkWebView.load(request)
+      // スワイプで進む、戻るを有効にする
+      wkWebView.allowsBackForwardNavigationGestures = true
     }
   }
   
@@ -35,6 +37,46 @@ class WebViewController: UIViewController {
     //戻る
     dismiss(animated: true, completion: nil)
   }
+  
+  @IBAction func tapBack(_ sender: Any) {
+    wkWebView.goBack()
+  }
+  
+  
+  @IBAction func tapShare(_ sender: Any) {
+    // 共有する項目
+    let shareText = wkWebView.title
+    let shareWebsite = NSURL(string: url)!
+//    let shareImage = UIImage(named: "shareSample.png")!
+    
+    let activityItems = [shareText, shareWebsite] as [Any]
+    
+    // 初期化処理
+    let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    
+    // 使用しないアクティビティタイプ
+    let excludedActivityTypes = [
+      UIActivity.ActivityType.postToFacebook,
+      UIActivity.ActivityType.postToTwitter,
+      UIActivity.ActivityType.message,
+      UIActivity.ActivityType.saveToCameraRoll,
+      UIActivity.ActivityType.print
+    ]
+    
+    activityVC.excludedActivityTypes = excludedActivityTypes
+    
+    // UIActivityViewControllerを表示
+    self.present(activityVC, animated: true, completion: nil)
+    
+  }
+  
+  @IBAction func tapSafari(_ sender: Any) {
+    let url2 = NSURL(string: url)
+    if UIApplication.shared.canOpenURL(url2 as! URL) {
+      UIApplication.shared.open(url2! as URL, options: [:], completionHandler: nil)
+    }
+  }
+  
   
   /*
   // MARK: - Navigation

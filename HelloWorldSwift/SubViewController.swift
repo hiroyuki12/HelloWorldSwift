@@ -8,12 +8,17 @@
 
 import UIKit
 import LocalAuthentication  // Face ID
+import SwiftUI
 
 class SubViewController: UIViewController {
   @IBOutlet weak var labelBatteryLevel: UILabel!
   @IBOutlet weak var labelBatteryStatus: UILabel!
   @IBOutlet weak var labelBrightness: UILabel!
   @IBOutlet weak var labelNow: UILabel!
+  
+  @IBSegueAction func toSwiftUI(_ coder: NSCoder) -> UIViewController? {
+    return UIHostingController(coder: coder, rootView: SwiftUIView()) // rootViewのvalueをSwiftUIView()に変更
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -90,6 +95,12 @@ class SubViewController: UIViewController {
       alertController.addAction(cancelAction)
 
       present(alertController, animated: true, completion: nil)
+  }
+  
+  
+  @IBAction func tapClose(_ sender: Any) {
+      //戻る
+      dismiss(animated: true, completion: nil)
   }
   
   @IBAction func tapFaceID(_ sender: Any) {

@@ -19,7 +19,8 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   
   var keyToken = Constants.key
   
-  var feedUrl = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
+  var feedUrl = URL(string: "https://news.google.com/news/rss/headlines/section/topic/TECHNOLOGY?hl=ja&gl=JP&ceid=JP:ja")!
+//  var feedUrl = URL(string: "https://hatenablog.com/g/11696248318754643907/feed")!
   
   // Google News
   let feedUrlTopNews = URL(string: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja")!
@@ -49,6 +50,9 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   // Hotentry
   let IMAGE_ELEMENT_NAME   = "image"
   
+  // Atom
+//  let ENTRY_ELEMENT_NAME = "entry"
+  
   var db: OpaquePointer?
   
   var isLoading = false;
@@ -56,7 +60,7 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "TopNews"
+  var tag = "Tech"
   
   let tagTopNews    = "TopNews"
   let tagTech  = "Tech"
@@ -150,7 +154,7 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
 //      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
 //    }
     //print(feedItem.image)
-    if(feedItem.image != nil) {
+    if feedItem.image != nil {
       let profileImageUrl = feedItem.image! // items->thumbnail
       let profileImage = cell.viewWithTag(1) as! UIImageView
       let myUrl: URL? = URL(string: profileImageUrl)
@@ -170,7 +174,9 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     // セルに表示する日時を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    tagsText.text = daysAgo(feedItem.pubDate)
+    if feedItem.pubDate != nil {
+      tagsText.text = daysAgo(feedItem.pubDate)
+    }
 //    tagsText.text = feedItem.pubDate
     //    let replayCount = article["answer_count"] as? Int  // items->answer_count
     //    let pvCount = article["view_count"] as? Int  // items->view_count
@@ -210,7 +216,15 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     var month = 0
     //if(data[26...28] == "GMT") {
     if(data.lengthOfBytes(using: .utf8) > 26) {  // google news
+      //print(data[8...10])
       if(data[8...10] == "Oct") { month = 10 }
+      else if(data[8...10] == "Nov") { month = 11 }
+      else if(data[8...10] == "Dec") { month = 12 }
+      else if(data[8...10] == "Jan") { month = 1 }
+      else if(data[8...10] == "Feb") { month = 2 }
+      else if(data[8...10] == "Mar") { month = 3 }
+      else if(data[8...10] == "Apr") { month = 4 }
+      else if(data[8...10] == "May") { month = 5 }
       
       let hour = Int(data[17...18])! + 9
       if (hour < 24) {
@@ -274,22 +288,22 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
     
-    let flutterSwiftAction = UIAlertAction(title: "TopNews/Tech/TechEn", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Tech/TopNews/TechEn", style: .default,
                                            handler:{
                                             (action:UIAlertAction!) -> Void in
 //                                            self.articles.removeAll()
                                             self.feedItems.removeAll()
                                             if(self.tag == self.tagTopNews) {
-                                              self.tag = self.tagTech
-                                              self.feedUrl = self.feedUrlTechnology!
-                                            }
-                                            else if(self.tag == self.tagTech) {
                                               self.tag = self.tagTechEn
                                               self.feedUrl = self.feedUrlTechnologyEn!
                                             }
-                                            else {
+                                            else if(self.tag == self.tagTech) {
                                               self.tag = self.tagTopNews
                                               self.feedUrl = self.feedUrlTopNews
+                                            }
+                                            else {
+                                              self.tag = self.tagTech
+                                              self.feedUrl = self.feedUrlTechnology!
                                             }
                                             //      self.savedPage = 1
                                             self.parser = XMLParser(contentsOf: self.feedUrl)
@@ -302,18 +316,18 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
                                            })
     alertController.addAction(flutterSwiftAction)
     
-    let swiftPage1Action = UIAlertAction(title: "Yahoo News 国内/IT", style: .default,
+    let swiftPage1Action = UIAlertAction(title: "Yahoo News IT/国内", style: .default,
                                          handler:{
                                           (action:UIAlertAction!) -> Void in
 //                                            self.articles.removeAll()
                                           self.feedItems.removeAll()
-                                          if(self.tag == self.tagKokunai) {
-                                            self.tag = self.tagIT
-                                            self.feedUrl = self.feedUrlIT!
-                                          }
-                                          else {
+                                          if(self.tag == self.tagIT) {
                                             self.tag = self.tagKokunai
                                             self.feedUrl = self.feedUrlKokunai!
+                                          }
+                                          else {
+                                            self.tag = self.tagIT
+                                            self.feedUrl = self.feedUrlIT!
                                           }
                                           //      self.savedPage = 1
                                           self.parser = XMLParser(contentsOf: self.feedUrl)
@@ -539,7 +553,8 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
   
   func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
     self.currentElementName = nil
-    //print(elementName)
+//    print(elementName)
+//    if elementName == ITEM_ELEMENT_NAME || elementName == ENTRY_ELEMENT_NAME {
     if elementName == ITEM_ELEMENT_NAME {
       self.feedItems.append(GoogleFeedItem())
     } else {

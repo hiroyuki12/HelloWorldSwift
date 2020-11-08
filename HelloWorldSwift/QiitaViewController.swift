@@ -28,8 +28,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   var tag = "swift"
 //    let tag = "flutter"
   
-  let tagSwift    = "swift"
-  let tagFlutter  = "flutter"
+  let tagSwift      = "swift"
+  let tagFirebase   = "firebase"
+  let tagFirestore  = "firestore"
+  let tagFlutter    = "flutter"
   
   var savedPage = 1
   var perPage = 20
@@ -42,7 +44,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // セルの高さを設定
     table.rowHeight = 70
     
-    myload(page: 1, perPage: perPage, tag: tag)
+    myload(page: savedPage, perPage: perPage, tag: tag)
     //print("myload (viewDidLoad)")
     
     //sqlite start
@@ -69,6 +71,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
+    if page > 100 {
+      return
+    }
     let str1:String = "http://qiita.com/api/v2/tags/"
     let str2:String = String(tag)
     let str3:String = "/items?page="
@@ -79,8 +84,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let str7:String = str1 + str2 + str3 + str4 + str5 + str6
     
     let url: URL = URL(string: str7)!
-    //print ("AAA")
-    //print (str7)
     
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
       guard let data = data else {
@@ -97,8 +100,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
 //        print(json)
 //        print(articles[0]["user"]!)
-//        print("BBB")
-//        print("BBB")
+        
         //print(articles[0]["title"]!)
 //        print(articles[0]["url"]!)
 //        print(articles[1]["title"]!)
@@ -208,7 +210,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage)
+    tapRead(self.savedPage, self.tag)
     
     popUp()
   }
@@ -216,17 +218,23 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/Firebase/Firestore/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagFirebase
+        }
+        else if(self.tag == self.tagFirebase) {
+          self.tag = self.tagFirestore
+        }
+        else if(self.tag == self.tagFirestore) {
           self.tag = self.tagFlutter
         }
         else {
           self.tag = self.tagSwift
         }
-  //      self.savedPage = 1
+        self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -269,7 +277,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       })
     alertController.addAction(flutterPage1Action)
   
-    let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
+    let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         //savedPage  //現在のページ
@@ -277,9 +285,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print("savedPage: " + String(self.savedPage))
         
         // mysql delete
-        self.tapDelete(self.savedPage)
+        self.tapDelete(self.savedPage, self.tag)
         // mysql insert
-        self.tapSave(self.savedPage)
+        self.tapSave(self.savedPage, self.tag)
         
         self.sqliteSavedPage = self.savedPage;
         print("sqliteSavedPage: " + String(self.sqliteSavedPage))
@@ -287,7 +295,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       })
     alertController.addAction(saveSwiftPageAction)
   
-    let loadSwiftPageAction = UIAlertAction(title: "Load Swift Page ! " + String(self.sqliteSavedPage), style: .default,
+    let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
     handler:{
       (action:UIAlertAction!) -> Void in
       
@@ -338,82 +346,71 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
   }
   
-  // nameが1のデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int) {
+  // nameがtagのデータをdelete。引数のpageは未使用。
+  func tapDelete(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = ?"
+    let queryString = "DELETE FROM  Heroes WHERE name = " + "\"" + tag + "\""
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-      let errmsg = String(cString: sqlite3_errmsg(db)!)
-      print("error preparing delte: \(errmsg)")
+//      let errmsg = String(cString: sqlite3_errmsg(db)!)
+//      print("error preparing delte: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に1をセット
-    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
-        let errmsg = String(cString: sqlite3_errmsg(db)!)
-        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
-        let errmsg = String(cString: sqlite3_errmsg(db)!)
-        print("failure deleting hero: \(errmsg)")
+//        let errmsg = String(cString: sqlite3_errmsg(db)!)
+//        print("failure deleting hero: \(errmsg)")
         return
     }
-    print ("finish tapDelete!")
+//    print ("finish tapDelete!")
   }
   
   // nameが1、powerrankが引数のpageの文字列で、insert
-  func tapSave(_ page: Int) {
+  func tapSave(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (\"" + tag + "\"," + String(page) + ")"
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-      let errmsg = String(cString: sqlite3_errmsg(db)!)
-      print("error preparing insert: \(errmsg)")
+//      let errmsg = String(cString: sqlite3_errmsg(db)!)
+//      print("error preparing insert: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に2をセット
-    if sqlite3_bind_text(stmt, 1, String(page), -1, nil) != SQLITE_OK{
-        let errmsg = String(cString: sqlite3_errmsg(db)!)
-        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
-        let errmsg = String(cString: sqlite3_errmsg(db)!)
-        print("failure inserting hero: \(errmsg)")
+//        let errmsg = String(cString: sqlite3_errmsg(db)!)
+//        print("failure inserting hero: \(errmsg)")
         return
     }
-    print ("finish tapSave!")
+//    print ("finish tapSave!")
   }
   
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-    tapRead(savedPage)
+//    tapRead(savedPage)
     
-    articles.removeAll()
-    //savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-    
-    print ("finish tapLoad!")
+//    articles.removeAll()
+//    //savedPage = 1
+//    myload(page: savedPage, perPage: 20, tag: tag)
+//    textPage.text =  String(tag) + " Page " + String(savedPage) +
+//          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+//    
+//    print ("finish tapLoad!")
   }
   
-  func tapRead(_ page: Int) {
+  func tapRead(_ page: Int, _ tag: String) {
+    sqliteSavedPage = 0
     //this is our select query
-    let queryString = "SELECT * FROM Heroes"
+    let queryString = "SELECT * FROM Heroes Where name = \"" + tag + "\""
     //statement pointer
     var stmt:OpaquePointer?
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-        let errmsg = String(cString: sqlite3_errmsg(db)!)
-        print("error preparing insert: \(errmsg)")
+//        let errmsg = String(cString: sqlite3_errmsg(db)!)
+//        print("error preparing insert: \(errmsg)")
         return
     }
     //traversing through all the records
@@ -426,7 +423,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
       sqliteSavedPage = Int(powerrank)
     }
-    print ("finish tapRead!")
+//    print ("finish tapRead!")
   }
   
   

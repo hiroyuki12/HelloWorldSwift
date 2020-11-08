@@ -25,15 +25,15 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "swift"
+  var tag = "hbfav"
 //    let tag = "flutter"
   
-  let tagSwift    = "swift"
-  let tagFlutter  = "flutter"
+  let tagHbfav    = "hbfav"
+  let tagHatenaStuff  = "hatenastuff"
   
   var savedPage = 1
   var perPage = 20
-  var continuation = "9603780391000"
+  var continuation = "99999999999999"
   
   // 起動時処理
   override func viewDidLoad() {
@@ -74,9 +74,23 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //    let str2:String = String(page)
 //    let str3:String = "&order=desc&sort=activity&tagged="
 //    let str4:String = String(tag)
-//    let str5:String = "&site=ja.stackoverflow"
-    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/global.uncategorized&continuation=" + continuation
-    //print(page)
+//    let str2:String = "global.uncategorized"
+    var category:String = ""
+    if tag == tagHbfav {
+      category = "c59b3cef-0fa1-414c-8aca-dc9678aaa85f"
+    }
+    else {
+      category = "9b810adf-9db6-4600-8377-b04aec630ffc"
+    }
+    
+//    let str2:String = "c59b3cef-0fa1-414c-8aca-dc9678aaa85f"  // hbfav2 category
+//    let str2:String = "9b810adf-9db6-4600-8377-b04aec630ffc"  // hatenastuff category
+    
+    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/" + category + "&continuation=" + continuation
+//    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/hbfav&continuation=" + continuation
+//    print(page)
+//    print(continuation)
+    
 //    let str5:String = "&limit="
 //    let str6:String = String(perPage)
 
@@ -116,8 +130,28 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
               
 //            print(items2.count)
-            self.continuation = String((items2[19]["published"] as? Int)!)
+            if items2.count > 19 {
+              self.continuation = String((items2[19]["published"] as? Int)!)
+            }
 //            print(self.continuation)
+//            print(items2[0])
+//            print(items2[0]["alternate"])
+//            print(items2[1]["alternate"])
+            
+            var url2:String = ""
+            let array = items2[0]["alternate"] as! NSArray
+            for roop in array {
+              let next = roop as! NSDictionary
+              //print(next["href"])
+              let url = next["href"] as? String
+              if let url = url {
+                url2 = url
+//                print(url2)
+//                print(items2[0]["title"])
+                self.getBookmarkCount(value: url2)
+//                print(items2[0])
+              }
+            }
             
             // 一時退避
             let articles_tmp = self.articles
@@ -150,6 +184,31 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
     task.resume() //実行する
     
     //print("myload End!")
+  }
+  
+  func getBookmarkCount(value: String) {
+//    print("start getBookmarkCount")
+    let url: URL = URL(string: "https://bookmark.hatenaapis.com/count/entry?url=" + value)!
+//    print(url)
+    let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
+//      print(data)
+      guard let data = data else {
+        return
+      }
+      do {
+        let count = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+        print(count)
+      // コンソールに出力
+//      print("data: \(String(describing: data))")
+//      print("response: \(String(describing: response))")
+//      print("error: \(String(describing: error))")
+      }
+      catch {
+          //print(error)
+      }
+    })
+    task.resume()
+    
   }
   
   // Cellの中身を設定
@@ -268,7 +327,7 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
   
   // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage)
+    tapRead(self.savedPage, self.tag)
     
     popUp()
   }
@@ -276,28 +335,29 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "hbfav/HatenaStuff", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
-        if(self.tag == self.tagSwift) {
-          self.tag = self.tagFlutter
+        if(self.tag == self.tagHbfav) {
+          self.tag = self.tagHatenaStuff
         }
         else {
-          self.tag = self.tagSwift
+          self.tag = self.tagHbfav
         }
-  //      self.savedPage = 1
+        self.savedPage = 1
+        self.continuation = "99999999999999"
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
       })
     alertController.addAction(flutterSwiftAction)
 
-    let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
+    let swiftPage1Action = UIAlertAction(title: "hbfav page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
-        self.tag = self.tagSwift
+        self.tag = self.tagHbfav
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -305,11 +365,11 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
       })
     alertController.addAction(swiftPage1Action)
   
-    let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
+    let swiftPage50Action = UIAlertAction(title: "hbfav page50/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
-        self.tag = self.tagSwift
+        self.tag = self.tagHbfav
         self.savedPage = 50
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -317,11 +377,11 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
       })
     alertController.addAction(swiftPage50Action)
   
-    let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
+    let flutterPage1Action = UIAlertAction(title: "HatenaStuff page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
-        self.tag = self.tagFlutter
+        self.tag = self.tagHatenaStuff
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -329,7 +389,7 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
       })
     alertController.addAction(flutterPage1Action)
   
-    let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
+    let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         //savedPage  //現在のページ
@@ -337,9 +397,9 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        print("savedPage: " + String(self.savedPage))
         
         // mysql delete
-        self.tapDelete(self.savedPage)
+        self.tapDelete(self.savedPage, self.tag)
         // mysql insert
-        self.tapSave(self.savedPage)
+        self.tapSave(self.savedPage, self.tag)
         
         self.sqliteSavedPage = self.savedPage;
 //        print("sqliteSavedPage: " + String(self.sqliteSavedPage))
@@ -347,7 +407,7 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
       })
     alertController.addAction(saveSwiftPageAction)
   
-    let loadSwiftPageAction = UIAlertAction(title: "Load Swift Page ! " + String(self.sqliteSavedPage), style: .default,
+    let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
     handler:{
       (action:UIAlertAction!) -> Void in
       
@@ -370,7 +430,7 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
   func swiftPage1Action() {
     articles.removeAll()
-    tag = tagFlutter
+    tag = tagHatenaStuff
     savedPage = 1
     myload(page: savedPage, perPage: 20, tag: tag)
     textPage.text =  String(tag) + " Page " + String(savedPage) +
@@ -398,23 +458,17 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
   }
   
-  // nameが1のデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int) {
+  // nameがtagのデータをdelete。引数のpageは未使用。
+  func tapDelete(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = ?"
+    let queryString = "DELETE FROM  Heroes WHERE name = " + "\"" + tag + "\""
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
 //      let errmsg = String(cString: sqlite3_errmsg(db)!)
 //      print("error preparing delte: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に1をセット
-    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
@@ -426,22 +480,16 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
   }
   
   // nameが1、powerrankが引数のpageの文字列で、insert
-  func tapSave(_ page: Int) {
+  func tapSave(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (\"" + tag + "\"," + String(page) + ")"
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
 //      let errmsg = String(cString: sqlite3_errmsg(db)!)
 //      print("error preparing insert: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に2をセット
-    if sqlite3_bind_text(stmt, 1, String(page), -1, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
@@ -452,22 +500,27 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //    print ("finish tapSave!")
   }
   
+  override func viewWillLayoutSubviews() {  // isModalInPresentationにtrueを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくする
+  }
+  
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-    tapRead(savedPage)
+//    tapRead(savedPage)
     
-    articles.removeAll()
-    //savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+//    articles.removeAll()
+//    //savedPage = 1
+//    myload(page: savedPage, perPage: 20, tag: tag)
+//    textPage.text =  String(tag) + " Page " + String(savedPage) +
+//          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
     
 //    print ("finish tapLoad!")
   }
   
-  func tapRead(_ page: Int) {
+  func tapRead(_ page: Int, _ tag: String) {
+    sqliteSavedPage = 0
     //this is our select query
-    let queryString = "SELECT * FROM Heroes"
+    let queryString = "SELECT * FROM Heroes Where name = \"" + tag + "\""
     //statement pointer
     var stmt:OpaquePointer?
     //preparing the query
@@ -479,9 +532,9 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //traversing through all the records
     while(sqlite3_step(stmt) == SQLITE_ROW){
       //let id = sqlite3_column_int(stmt, 0)
-//      let name = String(cString: sqlite3_column_text(stmt, 1))
+      let name = String(cString: sqlite3_column_text(stmt, 1))
       let powerrank = sqlite3_column_int(stmt, 2)
-//      print("name:" + name + ", powerrank:" + String(powerrank))
+      print("name:" + name + ", powerrank:" + String(powerrank))
         //adding values to list
 //        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
       sqliteSavedPage = Int(powerrank)

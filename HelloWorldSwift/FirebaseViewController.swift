@@ -7,27 +7,33 @@
 //
 
 import UIKit
-//import Firebase
+import Firebase
+import FirebaseDatabase
+import FirebaseFirestore
 
 class FirebaseViewController: UIViewController {
-
+  @IBOutlet weak var txtId: UITextField!
+  @IBOutlet weak var txtContent: UITextField!
+  @IBOutlet weak var txtCreateDate: UITextField!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    //let ref = Database.database().reference()
+    let ref = Database.database().reference()
 
     // Add
 //    // KeyValue型の配列を用意しておきます。
-//    let page = ["savedPage":"1"]
+//    let bluray = ["id":"1", "content": "content", "create": "2020/11/02"]
+//    let bluray = ["id":"2", "content": "映像研には手を出すな", "create": "2020/11/02"]
 //    // データを追加します。idは自動で設定してくれます。
-//    ref.child("Page").childByAutoId().setValue(page)
+//    ref.child("Bluray").childByAutoId().setValue(bluray)
       
     // Update
 //    // 先程のIDを指定します。(人によって変わるので、自分のDatabaseからコピペしてね)
-//    let id = "-M5pJ7f2Dx34sAdNqUzl"
+//    let id = "-ML6J9jCekcNI30l23Ia"
 //    // 先程のIDを指定してデータを上書きします。
-//    ref.child("Page/\(id)/savedPage").setValue("2")
+//    ref.child("Bluray/\(id)/content").setValue("content")
       
     // Delete
 //    // 先程のIDを指定します。(人によって変わるので、自分のDatabaseからコピペしてね)
@@ -35,13 +41,68 @@ class FirebaseViewController: UIViewController {
 //    // 先程のIDを指定してデータを削除します。
 //    ref.child("Page/\(id)").removeValue()
       
+    
+    
     // Select
     // データの変更を監視(observe)してるため、変更されればリアルタイムで実行されます。
-//    ref.chil
+    ref.child("Bluray").observe(.value) { (snapshot) in
+      // Users直下のデータの数だけ繰り返す。
+      for data in snapshot.children {
+        let snapData = data as! DataSnapshot
+        // Dictionary型にキャスト
+        let bluray = snapData.value as! [String: Any]
+        if let id = bluray["id"] {
+          if id as! String == "2" {
+            print(bluray)
+          }
+        }
+      }
+    }
+    
+    print("finished !!!")
   }
   
-  @IBAction func tapMail(_ sender: Any) {
+  @IBAction func tapAdd(_ sender: Any) {
+    let ref = Database.database().reference()
+
+    // Add
+//    // KeyValue型の配列を用意しておきます。
+    let bluray = ["id":txtId.text, "content": txtContent.text, "crate": txtCreateDate.text]
+//    // データを追加します。idは自動で設定してくれます。
+    ref.child("Bluray").childByAutoId().setValue(bluray)
     
+    txtContent.text = ""
+  }
+  
+  
+  @IBAction func tapFirestore(_ sender: Any) {
+    creatUserCollectionAutomaticDocument()
+  }
+  
+  // 「users」コレクションの作成（ドキュメント名指定）
+  func creatUserCollectionDesignationDocument() {
+    // FIRFirestoreインスタンスの作成
+    let db = Firestore.firestore()
+    
+    // "users"という名称のコレクションを作成
+    // "hoge"という名称のドキュメントを作成
+    // ["name": "hoge"]というデータを保存
+    db.collection("users").document("hoge").setData(["name": "hoge"]) { error in
+      if let error = error {
+        print("エラーが起きました")
+      }
+      else {
+        print("ドキュメント「hoge」が保存できました")
+      }
+    }
+  }
+  // usersコレクションの作成（ドキュメント名自動）
+  func creatUserCollectionAutomaticDocument() {
+    let db = Firestore.firestore()
+    db.collection("users").addDocument(data: ["name": "hoge"]) { error in
+      if let error = error { print("エラーが起きました") }
+      else { print("ドキュメントが保存できました") }
+    }
   }
   
   
