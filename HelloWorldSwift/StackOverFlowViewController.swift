@@ -1,5 +1,5 @@
 //
-//  QiitaViewController.swift
+//  StackOverflowViewController.swift
 //  HelloWorldSwift
 //
 //  Created by hiroyuki on 2020/10/12.
@@ -11,6 +11,25 @@ import Foundation
 import WebKit
 import SQLite3
 
+struct StackOverflowArticlesStruct: Codable {
+  var items: [ItemsStruct]
+  
+  struct ItemsStruct: Codable {
+    var answer_count: Int
+    var title: String
+    var creation_date: Int
+    var owner: OwnerStruct?
+    var view_count: Int
+    var tags: [String]
+    var link: String
+
+    struct OwnerStruct: Codable {
+      var  profile_image: String?
+      var user_type: String?
+    }
+  }
+}
+
 class StackOverflowViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
@@ -20,16 +39,17 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   
   var isLoading = false;
   
-  var articles: [[String: Any]] = []
+  var items: [StackOverflowArticlesStruct.ItemsStruct] = []
   
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
   var tag = "swift"
-//    let tag = "flutter"
   
-  let tagSwift    = "swift"
-  let tagFlutter  = "flutter"
+  let tagSwift      = "swift"
+  let tagFirebase   = "firebase"
+//  let tagFirestore  = "firestore"
+  let tagFlutter    = "flutter"
   
   var savedPage = 1
   var perPage = 20
@@ -84,51 +104,17 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
 //      print ("response!!!!!")
 //      print(response!)
+      guard let data = data else {
+        return
+      }
       do {
-        // ([String : Any]) 3 key/value pairs
-        let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]
+        let stackOverFlowArticles = try JSONDecoder().decode(StackOverflowArticlesStruct.self, from: data)  // Codable
+        //print("AA")
+        //print(stackOverFlowArticles.items[0])
         
-        //print(json)  // ok
-//        print("json questions  !!!!!!!!!!!!!")
-        //print(json["questions"]!)  // ok
-        
-        // ([Dictionary<String, Any>.Element]) 3 values
-        let articles = json.map { (article) in
-          return article
-        }
-      
-        //print(articles)  // ok
-        
-        // itemsのデータをself.articlesに入れる(meta,questions,tags)
-        for (key, value) in articles {
-          if(key == "items") {
-            //print("\(key) -> \(value)")
-            let items = value as! [Any]
-            
-            //print(questions)
-            
-            var items2 =  items.map { (article) -> [String: Any] in
-                return article as! [String: Any]
-            }
-              
-//          print(questions2[0]["title"]!)
-          
-            // 一時退避
-            let articles_tmp = self.articles
-            // 末尾に追加
-            items2 = articles_tmp + items2
-            
-            self.articles = items2 //追加
-          }
-        }
-      
-//        print(articles[1]["title"]!)
-//        print("BBBBBB")
-
-//        print("count: \(json.count)") //追加
-        
-        //print("savePage : \(self.savedPage)")
-        //print("self.articles Set End!")
+        let items_tmp = self.items  // 一時退避
+        self.items = items_tmp + stackOverFlowArticles.items
+        //print("self.items Set End!")
         
         DispatchQueue.main.async {
           self.table.reloadData()
@@ -152,29 +138,28 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
-    let article = articles[indexPath.row]
+    let item = items[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    var tmpTitle = article["title"]! as? String // items->title
-    tmpTitle = tmpTitle?.replacingOccurrences(of: "&#39;", with: "'")
-    tmpTitle = tmpTitle?.replacingOccurrences(of: "&quot;", with: "\"")
-    tmpTitle = tmpTitle?.replacingOccurrences(of: "&lt;", with: "<")
-    tmpTitle = tmpTitle?.replacingOccurrences(of: "&gt;", with: ">")
-    tmpTitle = tmpTitle?.replacingOccurrences(of: "&amp;", with: "&")
+    var tmpTitle = item.title // items->title
+    tmpTitle = tmpTitle.replacingOccurrences(of: "&#39;", with: "'")
+    tmpTitle = tmpTitle.replacingOccurrences(of: "&quot;", with: "\"")
+    tmpTitle = tmpTitle.replacingOccurrences(of: "&lt;", with: "<")
+    tmpTitle = tmpTitle.replacingOccurrences(of: "&gt;", with: ">")
+    tmpTitle = tmpTitle.replacingOccurrences(of: "&amp;", with: "&")
     textTitle.text = tmpTitle
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-    let tymeInterval = Double((article["creation_date"]! as? Int)!)  // items->creation_date
+    let tymeInterval = Double(item.creation_date)  // items->creation_date
     let createDate = Date(timeIntervalSince1970: tymeInterval)
 //    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss Z")
 //    textDetailText.text = DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss")
     textDetailText.text = daysAgo(DateUtils.stringFromDate(date: createDate, format: "yyyy-MM-dd HH:mm:ss"))
     // セルに表示する画像を設定する
-    let articleOwner = article["owner"] as AnyObject?  // items->owner
-    let userType = articleOwner?["user_type"] as? String
+    let userType = item.owner?.user_type  // items->owner?->user_type
     if(userType! == "does_not_exist")  { return cell }
     
-    let profileImageUrl = articleOwner?["profile_image"] // items->owner->profile_image
+    let profileImageUrl = item.owner?.profile_image // items->owner->profile_image
     let profileImage = cell.viewWithTag(1) as! UIImageView
     if profileImageUrl != nil {  // if profileImageUrl not nil
       let myUrl: URL? = URL(string: profileImageUrl as! String)
@@ -182,30 +167,24 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     }
     // セルに表示する回答数とタグを設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    let replayCount = article["answer_count"] as? Int  // items->answer_count
-    let pvCount = article["view_count"] as? Int  // items->view_count
-    var arr = article["tags"] as? [String]  // items->tags
-    let count = arr!.count
-//    let tag1name = arr?.first!
-    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!)
-      + " / " + (arr?[0])!
+    let replayCount = item.answer_count  // items->answer_count
+    let pvCount = item.view_count  // items->view_count
+    let count = item.tags.count
+    let tag1name = "回答数 " + String(replayCount) + " / PV数 " + String(pvCount)
+      + " / " + item.tags[0]
     tagsText.text = tag1name
     if(count > 1) {
-      arr?.removeFirst()
-      let tag2name = arr?[0]
-      tagsText.text = tag1name + "," + tag2name!
+      let tag2name = item.tags[1]
+      tagsText.text = tag1name + "," + tag2name
       if(count > 2) {
-        arr?.removeFirst()
-        let tag3name = arr?[0]
-        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
+        let tag3name = item.tags[2]
+        tagsText.text = tag1name + "," + tag2name + "," + tag3name
         if(count > 3) {
-          arr?.removeFirst()
-          let tag4name = arr?[0]
-          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
+          let tag4name = item.tags[3]
+          tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name
           if(count > 4) {
-            arr?.removeFirst()
-            let tag5name = arr?[0]
-            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
+            let tag5name = item.tags[4]
+            tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name + "," + tag5name
           }
         }
       }
@@ -226,7 +205,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   
   // Cellの個数を設定
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return articles.count
+    return items.count
   }
   
   // Loadボタン押下
@@ -245,17 +224,20 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/Firebase/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.items.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagFirebase
+        }
+        else if(self.tag == self.tagFirebase) {
           self.tag = self.tagFlutter
         }
         else {
           self.tag = self.tagSwift
         }
-  //      self.savedPage = 1
+        self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -265,7 +247,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.items.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -277,7 +259,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.items.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 50
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -289,7 +271,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.items.removeAll()
         self.tag = self.tagFlutter
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -301,10 +283,6 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        //savedPage  //現在のページ
-//        print("start tapSave.")
-//        print("savedPage: " + String(self.savedPage))
-        
         // mysql delete
         self.tapDelete(self.savedPage)
         // mysql insert
@@ -320,7 +298,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     handler:{
       (action:UIAlertAction!) -> Void in
       
-      self.articles.removeAll()
+      self.items.removeAll()
       self.savedPage = self.sqliteSavedPage
       self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
       self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -338,7 +316,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   }
 
   func swiftPage1Action() {
-    articles.removeAll()
+    items.removeAll()
     tag = tagFlutter
     savedPage = 1
     myload(page: savedPage, perPage: 20, tag: tag)
@@ -348,23 +326,8 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
-    
     //戻る
     dismiss(animated: true, completion: nil)
-    /*
-    //savedPage  //現在のページ
-    print("start tapSave.")
-    print("savedPage: " + String(savedPage))
-    
-    // mysql delete
-    tapDelete(savedPage)
-    // mysql insert
-    tapSave(savedPage)
-    
-    sqliteSavedPage = savedPage;
-    print("sqliteSavedPage: " + String(sqliteSavedPage))
-    */
-    
   }
   
   // nameが1のデータをdelete。引数のpageは未使用。
@@ -423,15 +386,6 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-    tapRead(savedPage)
-    
-    articles.removeAll()
-    //savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-    
-//    print ("finish tapLoad!")
   }
   
   func tapRead(_ page: Int) {
@@ -458,7 +412,6 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
 //    print ("finish tapRead!")
   }
   
-  
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
@@ -474,7 +427,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
 //    popUp()
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-    webView.url = articles[indexPath.row]["link"] as? String
+    webView.url = items[indexPath.row].link
     
     self.present(webView, animated: true, completion: nil)
   }
@@ -502,65 +455,6 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   */
   
 }
-
-// 指定URLから画像を読み込み、セットする
-// defaultUIImageには、URLからの読込に失敗した時の画像を指定する
-//extension UIImageView {
-//  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) -> Void {
-//    if url == nil {
-//      self.image = defaultUIImage
-//      return
-//    }
-//
-//    DispatchQueue.global().async {
-//      do {
-//        let imageData: Data? = try Data(contentsOf: url!)
-//        DispatchQueue.main.async {
-//          if let data = imageData {
-//            self.image = UIImage(data: data)
-//          } else {
-//            self.image = defaultUIImage
-//          }
-//        }
-//      }
-//      catch {
-//        DispatchQueue.main.async {
-//          self.image = defaultUIImage
-//        }
-//      }
-//    }
-//  }
-//}
-
-//struct TeratrailUser: Codable {
-//  let id: String
-//  let imageUrl: String // ①
-//
-//  enum CodingKeys: String, CodingKey {
-//      case id
-//      case imageUrl = "profile_image_url" // ②
-//  }
-//}
-//
-//struct TeratrailArticle: Codable {
-//  let title: String
-//  let url: String
-//  let user: TeratrailUser // ⓵
-//}
-
-//extension ViewController: UITableViewDelegate {
-//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//    let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//    // ③indexPathを使用してarticlesから選択されたarticleを取得
-//    //let article = articles[indexPath.row]
-//    // ④urlとtitleを代入
-//    webViewController.url = "http://www.google.com/"
-//    //webViewController.url = article.url
-//    //webViewController.title = article.title
-//    navigationController?.pushViewController(webViewController, animated: true)
-//  }
-//}
 
 class DateUtils {
   class func dateFromString(string: String, format: String) -> Date {

@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import FirebaseFirestore
+import FirebaseAuth
 
 class FirebaseViewController: UIViewController {
   @IBOutlet weak var txtId: UITextField!
@@ -45,19 +46,19 @@ class FirebaseViewController: UIViewController {
     
     // Select
     // データの変更を監視(observe)してるため、変更されればリアルタイムで実行されます。
-    ref.child("Bluray").observe(.value) { (snapshot) in
-      // Users直下のデータの数だけ繰り返す。
-      for data in snapshot.children {
-        let snapData = data as! DataSnapshot
-        // Dictionary型にキャスト
-        let bluray = snapData.value as! [String: Any]
-        if let id = bluray["id"] {
-          if id as! String == "2" {
-            print(bluray)
-          }
-        }
-      }
-    }
+//    ref.child("Bluray").observe(.value) { (snapshot) in
+//      // Users直下のデータの数だけ繰り返す。
+//      for data in snapshot.children {
+//        let snapData = data as! DataSnapshot
+//        // Dictionary型にキャスト
+//        let bluray = snapData.value as! [String: Any]
+//        if let id = bluray["id"] {
+//          if id as! String == "2" {
+//            print(bluray)
+//          }
+//        }
+//      }
+//    }
     
     print("finished !!!")
   }
@@ -105,7 +106,40 @@ class FirebaseViewController: UIViewController {
     }
   }
   
+  @IBAction func tapSignUp(_ sender: Any) {
+    Auth.auth().createUser(withEmail: "hiroyuki12@gmail.com", password: "pass") { [weak self] result, error in
+        guard let self = self else { return }
+        if let user = result?.user {
+            let req = user.createProfileChangeRequest()
+            req.displayName = "hiroyuki"
+            req.commitChanges() { [weak self] error in
+                guard let self = self else { return }
+                if error == nil {
+                    user.sendEmailVerification() { [weak self] error in
+                        guard let self = self else { return }
+                        if error == nil {
+                            // 仮登録完了画面へ遷移する処理
+                        }
+                        self.showErrorIfNeeded(error)
+                    }
+                }
+                self.showErrorIfNeeded(error)
+            }
+        }
+        self.showErrorIfNeeded(error)
+    }
+  }
   
+  private func showErrorIfNeeded(_ errorOrNil: Error?) {
+      // エラーがなければ何もしません
+      guard let error = errorOrNil else { return }
+      
+      let message = "エラーが起きました" // ここは後述しますが、とりあえず固定文字列
+      let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      present(alert, animated: true, completion: nil)
+  }
+
   /*
   // MARK: - Navigation
 

@@ -1,5 +1,5 @@
 //
-//  QiitaViewController.swift
+//  TeratailViewController.swift
 //  HelloWorldSwift
 //
 //  Created by hiroyuki on 2020/04/12.
@@ -11,6 +11,25 @@ import Foundation
 import WebKit
 import SQLite3
 
+struct TeratailArticlesStruct: Codable {
+  var questions: [QuestionsStruct]
+  
+  struct QuestionsStruct: Codable {
+    var id: Int
+    var title: String
+    var created: String
+    var count_reply: Int
+    var count_pv: Int
+    var tags: [String]
+    var user: UserStruct?
+
+    struct UserStruct: Codable {
+      var photo: String
+//      var score: Int
+    }
+  }
+}
+
 class TeratrailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
@@ -20,16 +39,17 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   
   var isLoading = false;
   
-  var articles: [[String: Any]] = []
+  var questions: [TeratailArticlesStruct.QuestionsStruct] = []
   
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "swift"
-//    let tag = "flutter"
+  var tag = "Swift"
   
-  let tagSwift    = "swift"
-  let tagFlutter  = "flutter"
+  let tagSwift      = "Swift"
+  let tagFirebase   = "Firebase"
+//  let tagFirestore  = "firestore"
+  let tagFlutter    = "Flutter"
   
   var savedPage = 1
   var perPage = 20
@@ -83,51 +103,17 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
 //      print ("response!!!!!")
 //      print(response!)
+      guard let data = data else {
+        return
+      }
       do {
-        // ([String : Any]) 3 key/value pairs
-        let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]
+        let teratailArticles = try JSONDecoder().decode(TeratailArticlesStruct.self, from: data)  // Codable
+//        print("AA")
+//        print(teratailArticles.questions[0])
         
-        //print(json)  // ok
-//        print("json questions  !!!!!!!!!!!!!")
-        //print(json["questions"]!)  // ok
-        
-        // ([Dictionary<String, Any>.Element]) 3 values
-        let articles = json.map { (article) in
-          return article
-        }
-      
-        //print(articles)  // ok
-        
-        // questionsのデータをself.articlesに入れる(meta,questions,tags)
-        for (key, value) in articles {
-          if(key == "questions") {
-            //print("\(key) -> \(value)")
-            let questions = value as! [Any]
-            
-            //print(questions)
-            
-            var questions2 =  questions.map { (article) -> [String: Any] in
-                return article as! [String: Any]
-            }
-              
-//          print(questions2[0]["title"]!)
-          
-            // 一時退避
-            let articles_tmp = self.articles
-            // 末尾に追加
-            questions2 = articles_tmp + questions2
-            
-            self.articles = questions2 //追加
-          }
-        }
-      
-//        print(articles[1]["title"]!)
-//        print("BBBBBB")
-
-//        print("count: \(json.count)") //追加
-        
-        //print("savePage : \(self.savedPage)")
-        //print("self.articles Set End!")
+        let articles2_tmp = self.questions  // 一時退避
+        self.questions = articles2_tmp + teratailArticles.questions
+        //print("self.questions Set End!")
         
         DispatchQueue.main.async {
           self.table.reloadData()
@@ -151,47 +137,39 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
-    let article = articles[indexPath.row]
+    let question = questions[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = article["title"]! as? String // questions->title
+    textTitle.text = question.title // questions->title
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = article["created"]! as? String  // questions->created
-    textDetailText.text = daysAgo((article["created"]! as? String)!)  // questions->created
+    textDetailText.text = daysAgo(question.created)  // questions->created
     // セルに表示する画像を設定する
-    let articleUser = article["user"] as AnyObject?  // questions->user
-    let profileImageUrl = articleUser?["photo"]  // questions->user->photo
+    let profileImageUrl = question.user?.photo  // questions->user?->photo
     let profileImage = cell.viewWithTag(1) as! UIImageView
     if profileImageUrl != nil {  // if profileImageUrl not nil
-      let myUrl: URL? = URL(string: profileImageUrl as! String)
+      let myUrl: URL? = URL(string: profileImageUrl!)
       profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     }
     // セルに表示する回答数とタグを設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    let replayCount = article["count_reply"] as? Int  // questions->count_reply
-    let pvCount = article["count_pv"] as? Int  // questions->count_pv
-    var arr = article["tags"] as? [String]  // questions->tags
-    let count = arr!.count
-//    let tag1name = arr?.first!
-    let tag1name = "回答数 " + String(replayCount!) + " / PV数 " + String(pvCount!) + " / " + (arr?[0])!
+    let replayCount = question.count_reply  // questions->count_reply
+    let pvCount = question.count_pv  // questions->count_pv
+    let count = question.tags.count
+    let tag1name = "回答数 " + String(replayCount) + " / PV数 " + String(pvCount) + " / " + question.tags[0]
     tagsText.text = tag1name
     if(count > 1) {
-      arr?.removeFirst()
-      let tag2name = arr?[0]
-      tagsText.text = tag1name + "," + tag2name!
+      let tag2name = question.tags[1]
+      tagsText.text = tag1name + "," + tag2name
       if(count > 2) {
-        arr?.removeFirst()
-        let tag3name = arr?[0]
-        tagsText.text = tag1name + "," + tag2name! + "," + tag3name!
+        let tag3name = question.tags[2]
+        tagsText.text = tag1name + "," + tag2name + "," + tag3name
         if(count > 3) {
-          arr?.removeFirst()
-          let tag4name = arr?[0]
-          tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name!
+          let tag4name = question.tags[3]
+          tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name
           if(count > 4) {
-            arr?.removeFirst()
-            let tag5name = arr?[0]
-            tagsText.text = tag1name + "," + tag2name! + "," + tag3name! + "," + tag4name! + "," + tag5name!
+            let tag5name = question.tags[4]
+            tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name + "," + tag5name
           }
         }
       }
@@ -212,7 +190,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   
   // Cellの個数を設定
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return articles.count
+    return questions.count
   }
   
   // Loadボタン押下
@@ -231,17 +209,23 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/Firebase/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.questions.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagFirebase
+        }
+        else if(self.tag == self.tagFirebase) {
           self.tag = self.tagFlutter
         }
+//        else if(self.tag == self.tagFirestore) {
+//          self.tag = self.tagFlutter
+//        }
         else {
           self.tag = self.tagSwift
         }
-  //      self.savedPage = 1
+        self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -251,7 +235,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.questions.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -263,7 +247,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.questions.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 50
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -275,7 +259,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.questions.removeAll()
         self.tag = self.tagFlutter
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -287,18 +271,13 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        //savedPage  //現在のページ
-//        print("start tapSave.")
-//        print("savedPage: " + String(self.savedPage))
         
         // mysql delete
         self.tapDelete(self.savedPage)
         // mysql insert
         self.tapSave(self.savedPage)
         
-        self.sqliteSavedPage = self.savedPage;
-//        print("sqliteSavedPage: " + String(self.sqliteSavedPage))
-
+        self.sqliteSavedPage = self.savedPage
       })
     alertController.addAction(saveSwiftPageAction)
   
@@ -306,7 +285,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     handler:{
       (action:UIAlertAction!) -> Void in
       
-      self.articles.removeAll()
+      self.questions.removeAll()
       self.savedPage = self.sqliteSavedPage
       self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
       self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -324,7 +303,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   }
 
   func swiftPage1Action() {
-    articles.removeAll()
+    questions.removeAll()
     tag = tagFlutter
     savedPage = 1
     myload(page: savedPage, perPage: 20, tag: tag)
@@ -334,23 +313,8 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
-    
     //戻る
     dismiss(animated: true, completion: nil)
-    /*
-    //savedPage  //現在のページ
-    print("start tapSave.")
-    print("savedPage: " + String(savedPage))
-    
-    // mysql delete
-    tapDelete(savedPage)
-    // mysql insert
-    tapSave(savedPage)
-    
-    sqliteSavedPage = savedPage;
-    print("sqliteSavedPage: " + String(sqliteSavedPage))
-    */
-    
   }
   
   // nameが1のデータをdelete。引数のpageは未使用。
@@ -409,15 +373,6 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-    tapRead(savedPage)
-    
-    articles.removeAll()
-    //savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-    
-//    print ("finish tapLoad!")
   }
   
   func tapRead(_ page: Int) {
@@ -444,7 +399,6 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
 //    print ("finish tapRead!")
   }
   
-  
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
@@ -460,7 +414,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
 //    popUp()
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-    webView.url = "https://teratail.com/questions/" + String(articles[indexPath.row]["id"] as! Int)
+    webView.url = "https://teratail.com/questions/" + String(questions[indexPath.row].id)
     
     self.present(webView, animated: true, completion: nil)
   }
@@ -488,63 +442,4 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   */
   
 }
-
-// 指定URLから画像を読み込み、セットする
-// defaultUIImageには、URLからの読込に失敗した時の画像を指定する
-//extension UIImageView {
-//  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) -> Void {
-//    if url == nil {
-//      self.image = defaultUIImage
-//      return
-//    }
-//
-//    DispatchQueue.global().async {
-//      do {
-//        let imageData: Data? = try Data(contentsOf: url!)
-//        DispatchQueue.main.async {
-//          if let data = imageData {
-//            self.image = UIImage(data: data)
-//          } else {
-//            self.image = defaultUIImage
-//          }
-//        }
-//      }
-//      catch {
-//        DispatchQueue.main.async {
-//          self.image = defaultUIImage
-//        }
-//      }
-//    }
-//  }
-//}
-
-//struct TeratrailUser: Codable {
-//  let id: String
-//  let imageUrl: String // ①
-//
-//  enum CodingKeys: String, CodingKey {
-//      case id
-//      case imageUrl = "profile_image_url" // ②
-//  }
-//}
-//
-//struct TeratrailArticle: Codable {
-//  let title: String
-//  let url: String
-//  let user: TeratrailUser // ⓵
-//}
-
-//extension ViewController: UITableViewDelegate {
-//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//    let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//    // ③indexPathを使用してarticlesから選択されたarticleを取得
-//    //let article = articles[indexPath.row]
-//    // ④urlとtitleを代入
-//    webViewController.url = "http://www.google.com/"
-//    //webViewController.url = article.url
-//    //webViewController.title = article.title
-//    navigationController?.pushViewController(webViewController, animated: true)
-//  }
-//}
 

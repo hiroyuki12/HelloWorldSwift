@@ -1,5 +1,5 @@
 //
-//  QiitaViewController.swift
+//  NoteViewController.swift
 //  HelloWorldSwift
 //
 //  Created by hiroyuki on 2020/04/12.
@@ -10,6 +10,45 @@ import Foundation
 import WebKit
 import SQLite3
 
+struct NoteArticlesStruct: Codable {
+  var data: DataStruct
+  
+  struct DataStruct: Codable {
+//    var category_id: Int
+    var notes: [NotesStruct]
+
+    struct NotesStruct: Codable {
+//      var id: Int
+//      var name: String  // title
+      var tweet_text: String  // title | user name
+      var publish_at: String
+      var user: UserStruct
+      var hashtag_notes: [HashTagNotesStruct]
+      var twitter_share_url: String
+//      var pictures: [PicturesStruct]
+      var like_count: Int
+//      var eyecatch: String  // NG
+//      var sp_eyecatch: String  // NG
+      
+      struct UserStruct: Codable {
+        var user_profile_image_path: String
+      }
+      
+      struct HashTagNotesStruct: Codable {
+        var hashtag: HashTagStruct
+
+        struct HashTagStruct: Codable {
+          var name: String
+        }
+      }
+      
+//      struct PicturesStruct: Codable {
+//        var thumbnail_url: String
+//      }
+    }
+  }
+}
+
 class NoteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
@@ -19,13 +58,12 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   var isLoading = false;
   
-  var articles: [[String: Any]] = []
+  var notes: [NoteArticlesStruct.DataStruct.NotesStruct] = []
   
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
   var tag = "tech"
-//    let tag = "flutter"
   
   let tagSwift    = "swift"
   let tagFlutter  = "flutter"
@@ -79,59 +117,17 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
 //      print ("response!!!!!")
 //      print(response!)
+      guard let data = data else {
+        return
+      }
       do {
-        // ([String : Any]) 3 key/value pairs
-        let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]
+        let noteArticles = try JSONDecoder().decode(NoteArticlesStruct.self, from: data)  // Codable
+//        print("AA")
+//        print(noteArticles.data.notes[0])
         
-        //print(json)  // ok
-//        print("json questions  !!!!!!!!!!!!!")
-        //print(json["questions"]!)  // ok
-        
-        // ([Dictionary<String, Any>.Element]) 3 values
-        let articles = json.map { (article) in
-          return article
-        }
-      
-        //print(articles)  // ok
-        
-        // questionsのデータをself.articlesに入れる(meta,questions,tags)
-        for (key, value) in articles {
-          if(key == "data") {
-            let datas = value as! [String: Any]
-            
-            // questionsのデータをself.articlesに入れる(meta,questions,tags)
-            for (key, value) in datas {
-              if(key == "contents") {
-                let contentsValue = value as! [Any]
-                
-                var contentsValue2 =  contentsValue.map { (article) -> [String: Any] in
-                      return article as! [String: Any]
-                  }
-                  let articles_tmp = self.articles  // 一時退避
-                contentsValue2 = articles_tmp + contentsValue2  // 末尾に追加
-                  self.articles = contentsValue2 //追加
-              }
-              else if(key == "notes") {
-                let contentsValue = value as! [Any]
-                
-                var contentsValue2 =  contentsValue.map { (article) -> [String: Any] in
-                      return article as! [String: Any]
-                  }
-                  let articles_tmp = self.articles  // 一時退避
-                contentsValue2 = articles_tmp + contentsValue2  // 末尾に追加
-                  self.articles = contentsValue2 //追加
-              }
-              
-            }
-          }
-        }
-      
-//        print(articles[1]["title"]!)
-//        print("BBBBBB")
-//        print("count: \(json.count)") //追加
-        
-        //print("savePage : \(self.savedPage)")
-        //print("self.articles Set End!")
+        let notes_temp = self.notes  // 一時退避
+        self.notes = notes_temp + noteArticles.data.notes
+//        print("self.notes Set End!")
         
         DispatchQueue.main.async {
           self.table.reloadData()
@@ -155,64 +151,39 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
-    let article = articles[indexPath.row]
+    let note = notes[indexPath.row]
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
-//    textTitle.text = article["name"]! as? String // data->notes->name
-    textTitle.text = article["tweet_text"]! as? String // data->notes->tweet_text
+    textTitle.text = note.tweet_text // data->notes->tweet_text
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as! UILabel
-//    textDetailText.text = article["publish_at"]! as? String  // data->notes->publish_at  (tech)
-    textDetailText.text = daysAgo((article["publish_at"]! as? String)!)  // data->notes->publish_at  (tech)
-//    textDetailText.text = article["publishAt"]! as? String  // data->notes->publish_at  (popular)
+    textDetailText.text = daysAgo(note.publish_at)  // data->notes->publish_at  (tech)
     // セルに表示する画像を設定する
-    let articleUser = article["user"] as AnyObject?  // data->notes->->user
-    let profileImageUrl = articleUser?["user_profile_image_path"]  // data->notes->user->user_profile_image_path
+    let profileImageUrl = note.user.user_profile_image_path  // data->notes->user->user_profile_image_path
     let profileImage = cell.viewWithTag(1) as! UIImageView
     if profileImageUrl != nil {  // if profileImageUrl not nil
-      let myUrl: URL? = URL(string: profileImageUrl as! String)
+      let myUrl: URL? = URL(string: profileImageUrl)
       profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     }
     // セルに表示するタグを設定する
     let hasTagText = cell.viewWithTag(4) as! UILabel
-    for (key, value) in article {
-      if(key == "hashtag_notes") {  // data->notes->hashtag_notes
-        let arrayHashtagNotes = value as! [Any]
-        let distHashtagNotes =  arrayHashtagNotes.map { (article) -> [String: Any] in
-          return article as! [String: Any]
-        }
-        var tag:String = ""
-        if(distHashtagNotes.count > 0)
-        {
-          let hashtag = distHashtagNotes[0]
-          let tag1 = hashtag["hashtag"]! as! [String: Any]  // data->notes->hashtag_notes->hashtag
-          let tag2 = tag1["name"]  // data->notes->hashtag_notes->hashtag->name
-          tag = tag2 as! String
-        }
-        if(distHashtagNotes.count > 1)
-        {
-          let hashtag = distHashtagNotes[1]
-          let tag1 = hashtag["hashtag"]! as! [String: Any]
-          let tag2 = tag1["name"] as! String
-          tag += " " + tag2
-        }
-        if(distHashtagNotes.count > 2)
-        {
-          let hashtag = distHashtagNotes[2]
-          let tag1 = hashtag["hashtag"]! as! [String: Any]
-          let tag2 = tag1["name"] as! String
-          tag += " " + tag2
-        }
-        if(distHashtagNotes.count > 3)
-        {
-          let hashtag = distHashtagNotes[3]
-          let tag1 = hashtag["hashtag"]! as! [String: Any]
-          let tag2 = tag1["name"] as! String
-          tag += " " + tag2
-        }
-        hasTagText.text = tag
-      }
+    var tag:String = ""
+    if(note.hashtag_notes.count > 0) {
+      tag = note.hashtag_notes[0].hashtag.name
     }
+    if(note.hashtag_notes.count > 1) {
+      tag += " " + note.hashtag_notes[1].hashtag.name
+    }
+    if(note.hashtag_notes.count > 2) {
+      tag += " " + note.hashtag_notes[2].hashtag.name
+    }
+    if(note.hashtag_notes.count > 3) {
+      tag += " " + note.hashtag_notes[3].hashtag.name
+    }
+    if(note.hashtag_notes.count > 4) {
+      tag += " " + note.hashtag_notes[4].hashtag.name
+    }
+    hasTagText.text = tag
     return cell
   }
   
@@ -229,7 +200,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   // Cellの個数を設定
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return articles.count
+    return notes.count
   }
   
   // Loadボタン押下
@@ -251,14 +222,15 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.notes.removeAll()
+        
         if(self.tag == self.tagSwift) {
           self.tag = self.tagFlutter
         }
         else {
           self.tag = self.tagSwift
         }
-  //      self.savedPage = 1
+        self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -268,7 +240,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.notes.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -280,7 +252,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.notes.removeAll()
         self.tag = self.tagSwift
         self.savedPage = 50
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -292,7 +264,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
+        self.notes.removeAll()
         self.tag = self.tagFlutter
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -322,7 +294,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     handler:{
       (action:UIAlertAction!) -> Void in
       
-      self.articles.removeAll()
+      self.notes.removeAll()
       self.savedPage = self.sqliteSavedPage
       self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
       self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -339,7 +311,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   }
 
   func swiftPage1Action() {
-    articles.removeAll()
+    notes.removeAll()
     tag = tagFlutter
     savedPage = 1
     myload(page: savedPage, perPage: 20, tag: tag)
@@ -349,23 +321,8 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
-    
     //戻る
     dismiss(animated: true, completion: nil)
-    /*
-    //savedPage  //現在のページ
-    print("start tapSave.")
-    print("savedPage: " + String(savedPage))
-    
-    // mysql delete
-    tapDelete(savedPage)
-    // mysql insert
-    tapSave(savedPage)
-    
-    sqliteSavedPage = savedPage;
-    print("sqliteSavedPage: " + String(sqliteSavedPage))
-    */
-    
   }
   
   // nameが1のデータをdelete。引数のpageは未使用。
@@ -424,15 +381,6 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
-    tapRead(savedPage)
-    
-    articles.removeAll()
-    //savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-    
-//    print ("finish tapLoad!")
   }
   
   func tapRead(_ page: Int) {
@@ -459,7 +407,6 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
 //    print ("finish tapRead!")
   }
   
-  
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
     savedPage -= 1
@@ -474,16 +421,15 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
 //    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
 //    popUp()
     
-    let article = articles[indexPath.row]
-    let url = article["twitter_share_url"]! as? String // data->notes->twitter_share_url
+    let note = notes[indexPath.row]
+    let url = note.twitter_share_url // data->notes->twitter_share_url
     
-    let newStr = url!.replacingOccurrences(of: "https://twitter.com/intent/tweet?url=", with: "")
-    let array1 = newStr.components(separatedBy: "&")  // ,で分割する
-    print(array1[0])
-    print("BBB")
+    let newStr = url.replacingOccurrences(of: "https://twitter.com/intent/tweet?url=", with: "")
+    let array1 = newStr.components(separatedBy: "&")  // &で分割する
+//    print(array1[0])
+//    print("BBB")
     
     let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-    //webView.url = "https://teratail.com/questions/" + String(articles[indexPath.row]["id"] as! Int)
     webView.url = array1[0]
 
     self.present(webView, animated: true, completion: nil)
@@ -511,60 +457,3 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
   */
   
 }
-
-// 指定URLから画像を読み込み、セットする
-// defaultUIImageには、URLからの読込に失敗した時の画像を指定する
-//extension UIImageView {
-//  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) -> Void {
-//    if url == nil {
-//      self.image = defaultUIImage
-//      return
-//    }
-//
-//    DispatchQueue.global().async {
-//      do {
-//        let imageData: Data? = try Data(contentsOf: url!)
-//        DispatchQueue.main.async {
-//          if let data = imageData {
-//            self.image = UIImage(data: data)
-//          } else {
-//            self.image = defaultUIImage
-//          }
-//        }
-//      }
-//      catch {
-//        DispatchQueue.main.async {
-//          self.image = defaultUIImage
-//        }
-//      }
-//    }
-//  }
-//}
-//struct TeratrailUser: Codable {
-//  let id: String
-//  let imageUrl: String // ①
-//
-//  enum CodingKeys: String, CodingKey {
-//      case id
-//      case imageUrl = "profile_image_url" // ②
-//  }
-//}
-//
-//struct TeratrailArticle: Codable {
-//  let title: String
-//  let url: String
-//  let user: TeratrailUser // ⓵
-//}
-//extension ViewController: UITableViewDelegate {
-//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//    let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//    // ③indexPathを使用してarticlesから選択されたarticleを取得
-//    //let article = articles[indexPath.row]
-//    // ④urlとtitleを代入
-//    webViewController.url = "http://www.google.com/"
-//    //webViewController.url = article.url
-//    //webViewController.title = article.title
-//    navigationController?.pushViewController(webViewController, animated: true)
-//  }
-//}

@@ -12,16 +12,16 @@ import WebKit
 import SQLite3
 
 struct QiitaArticleStruct: Codable {
-  var coediting: Bool
-  var comments_count: Int
+//  var coediting: Bool
+//  var comments_count: Int
   var created_at: String
-  var id: String
-  var likes_count: Int
-//  var private: Bool
-  var reactions_count: Int
+//  var id: String
+//  var likes_count: Int
+//  var private: Bool  //
+//  var reactions_count: Int
   var tags: [TagsStruct]
   var title: String
-  var updated_at: String
+//  var updated_at: String
   var url: String
   var user: UserStruct
   
@@ -30,10 +30,10 @@ struct QiitaArticleStruct: Codable {
   }
   struct UserStruct: Codable {
     var id: String
-    var items_count: Int
-    var permanent_id: Int
+//    var items_count: Int
+//    var permanent_id: Int
     var profile_image_url: String
-    var team_only: Bool
+//    var team_only: Bool
   }
 }
 
@@ -51,13 +51,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "swift"
+  var tag = "Swift"
 //    let tag = "flutter"
   
-  let tagSwift      = "swift"
-  let tagFirebase   = "firebase"
-  let tagFirestore  = "firestore"
-  let tagFlutter    = "flutter"
+  let tagSwift      = "Swift"
+  let tagFirebase   = "Firebase"
+  let tagFirestore  = "Firestore"
+  let tagFlutter    = "Flutter"
   
   var savedPage = 1
   var perPage = 20
@@ -124,7 +124,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let articles = articles_tmp + qiitaArticles
         
         self.articles = articles
-        //print("savePage : \(self.savedPage)")
         //print("self.articles Set End!")
         
         DispatchQueue.main.async {
@@ -531,18 +530,4 @@ extension String {
         return String(suffix(from: i))
     }
 }
-
-//extension ViewController: UITableViewDelegate {
-//  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//    let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//    // ③indexPathを使用してarticlesから選択されたarticleを取得
-//    //let article = articles[indexPath.row]
-//    // ④urlとtitleを代入
-//    webViewController.url = "http://www.google.com/"
-//    //webViewController.url = article.url
-//    //webViewController.title = article.title
-//    navigationController?.pushViewController(webViewController, animated: true)
-//  }
-//}
 

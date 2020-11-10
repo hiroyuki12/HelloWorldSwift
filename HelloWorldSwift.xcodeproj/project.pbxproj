@@ -15,7 +15,6 @@
 		2E685892244F220A0023AE5A /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685891244F220A0023AE5A /* SubViewController.swift */; };
 		2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */; };
 		2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685899245527330023AE5A /* LocationNameViewController.swift */; };
-		2E6858DA24556ED50023AE5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2E6858D924556ED50023AE5A /* GoogleService-Info.plist */; };
 		2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */; };
 		2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DD2457018F0023AE5A /* DropboxViewController.swift */; };
 		2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */; };
@@ -34,6 +33,7 @@
 		2EC8F4EF254CFF470084E423 /* AlamofireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */; };
 		2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53B25514CED0084E423 /* SwiftUIView.swift */; };
 		2EC8F53F2556B9040084E423 /* MyDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53E2556B9040084E423 /* MyDatePicker.swift */; };
+		2EC8F55B255840EC0084E423 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */; };
 		2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCA8682520914B00A9E8BE /* NoteViewController.swift */; };
 		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
@@ -63,7 +63,6 @@
 		2E685891244F220A0023AE5A /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
 		2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteViewController.swift; sourceTree = "<group>"; };
 		2E685899245527330023AE5A /* LocationNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameViewController.swift; sourceTree = "<group>"; };
-		2E6858D924556ED50023AE5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewController.swift; sourceTree = "<group>"; };
 		2E6858DD2457018F0023AE5A /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRollViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +81,7 @@
 		2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireViewController.swift; sourceTree = "<group>"; };
 		2EC8F53B25514CED0084E423 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		2EC8F53E2556B9040084E423 /* MyDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDatePicker.swift; sourceTree = "<group>"; };
+		2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
 		2EDCA8682520914B00A9E8BE /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeratrailViewController.swift; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */,
-				2E6858D924556ED50023AE5A /* GoogleService-Info.plist */,
+				2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */,
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7D2243767D9005215DD /* Info.plist */,
@@ -297,7 +297,7 @@
 				2EE5C7CE243767D9005215DD /* Assets.xcassets in Resources */,
 				2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */,
 				2E685890244F21550023AE5A /* Sub.storyboard in Resources */,
-				2E6858DA24556ED50023AE5A /* GoogleService-Info.plist in Resources */,
+				2EC8F55B255840EC0084E423 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

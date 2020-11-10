@@ -160,9 +160,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2MY-Yx-EOm">
-                                <rect key="frame" x="95" y="698" width="38" height="30"/>
+                                <rect key="frame" x="94" y="698" width="40" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="share"/>
+                                <state key="normal" title="Share"/>
                                 <connections>
                                     <action selector="tapShare:" destination="AsD-n6-BBo" eventType="touchUpInside" id="64Z-jY-MG6"/>
                                 </connections>
@@ -170,7 +170,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebU-ZJ-7W9">
                                 <rect key="frame" x="20" y="698" width="34" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="back"/>
+                                <state key="normal" title="Back"/>
                                 <connections>
                                     <action selector="tapBack:" destination="AsD-n6-BBo" eventType="touchUpInside" id="zME-Gs-PaO"/>
                                 </connections>
@@ -523,10 +523,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aer-yj-uZg">
-                                <rect key="frame" x="194" y="681" width="33" height="28"/>
+                                <rect key="frame" x="193" y="681" width="35" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="close"/>
+                                <state key="normal" title="Close"/>
                                 <connections>
                                     <action selector="tapClose:" destination="b40-tZ-aZD" eventType="touchUpInside" id="HeB-6e-1m5"/>
                                 </connections>
@@ -855,10 +855,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czp-9o-4Ue">
-                                <rect key="frame" x="194" y="681" width="33" height="28"/>
+                                <rect key="frame" x="193" y="681" width="35" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="close"/>
+                                <state key="normal" title="Close"/>
                                 <connections>
                                     <action selector="tapClose:" destination="lxg-QE-Tcd" eventType="touchUpInside" id="uws-hm-SNg"/>
                                 </connections>
