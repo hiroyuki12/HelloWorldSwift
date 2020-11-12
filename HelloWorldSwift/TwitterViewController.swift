@@ -74,14 +74,14 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     doOAuthTwitter()
     
-    print("start")
-    let TWITTER_CONSUMER_KEY = Constants.twitterAPIkey
-    let TWITTER_CONSUMER_SECRET = Constants.twitterAPIsecretKey
-    let TWITTER_ACCESS_TOKEN = Constants.twitterAccessToken
-    let TWITTER_ACCESS_TOKEN_SECRET = Constants.twitterAccessTokenSecret
+//    print("start")
+//    let TWITTER_CONSUMER_KEY = Constants.twitterAPIkey
+//    let TWITTER_CONSUMER_SECRET = Constants.twitterAPIsecretKey
+//    let TWITTER_ACCESS_TOKEN = Constants.twitterAccessToken
+//    let TWITTER_ACCESS_TOKEN_SECRET = Constants.twitterAccessTokenSecret
 //    let accessToken = SwifterCredential.OAuthAccessToken(key: TWITTER_ACCESS_TOKEN, secret: TWITTER_ACCESS_TOKEN_SECRET)
 //    let credential = SwifterCredential(accessToken: accessToken)
-    let swifter = Swifter(consumerKey: TWITTER_CONSUMER_KEY, consumerSecret: TWITTER_CONSUMER_SECRET)
+//    let swifter = Swifter(consumerKey: TWITTER_CONSUMER_KEY, consumerSecret: TWITTER_CONSUMER_SECRET)
 //    swifter.client.credential = credential
 //    swifter.postStatusUpdate("swifter-test", inReplyToStatusID: nil, lat: nil, long: nil, placeID: nil, displayCoordinates: nil, trimUser: nil, success: {
 //        (status) in
@@ -92,23 +92,24 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
 //    }
     
     //login処理
-    // swifter構造体の宣言
-//    let swifter = Swifter(consumerKey: Constants.twitterAPIkey, consumerSecret: Constants.twitterAPIsecretKey, appOnly: true)
+//    swifter構造体の宣言
+//    let swifter = Swifter(consumerKey: Constants.twitterAPIkey, consumerSecret: Constants.twitterAPIsecretKey)
     
 //    swifter.authorize(
-//        withCallback: URL(string:"app-HelloWorldSwift://success")!,
-//        presentingFrom: self,
-//        success: { accessToken, response in
-//            guard let accessToken = accessToken else {
-//                return
-//            }
-//            let oAuthToken = accessToken.key
-//            let secret = accessToken.secret
-////            UserDefaults.standard.set(oAuthToken, forKey: "oAuthToken")
-////            UserDefaults.standard.set(secret, forKey: "secret")
-//    }, failure: { error in
+//      withCallback: URL(string:"TwitterLoginSampleOAuth://")!,
+//      presentingFrom: self,
+//      success: { accessToken, response in
+//        guard let accessToken = accessToken else {
+//          return
+//        }
+////        let oAuthToken = accessToken.key
+////        let secret = accessToken.secret
+//        //            UserDefaults.standard.set(oAuthToken, forKey: "oAuthToken")
+//        //            UserDefaults.standard.set(secret, forKey: "secret")
+//        print("success authorize !!!")
+//      }, failure: { error in
 //        print(error)
-//     })
+//      })
     
     // のちに使う変数
 //    var twitterTokenKey:String!
@@ -127,14 +128,6 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
 //      }
 //    )
     
-    // こっちは、連携中のユーザーのフォローしてるユーザーのツイートを時系列順に。
-    swifter.getHomeTimeline(count: 5,success: { json in
-        // 成功時の処理
-        print(json)
-    }, failure: { error in
-        // 失敗時の処理
-        print(error)
-    })
 
     // こっちは、@~~~で指定したユーザーのツイートを時系列順に取得。
 //    swifter.getTimeline(for: .screenName("naoya"),success: { json in
@@ -198,6 +191,21 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
                               print(credential.oauthTokenSecret)
                               self.showAlert(credential: credential)
                               print("success")
+                              
+                              let swifter = Swifter(consumerKey: Constants.twitterAPIkey,
+                                                consumerSecret: Constants.twitterAPIsecretKey,
+                                                oauthToken: credential.oauthToken,
+                                                oauthTokenSecret: credential.oauthTokenSecret)
+                              
+                              // こっちは、連携中のユーザーのフォローしてるユーザーのツイートを時系列順に。
+                              swifter.getHomeTimeline(count: 5,success: { json in
+                                  // 成功時の処理
+                                  print(json)
+                              }, failure: { error in
+                                  // 失敗時の処理
+                                  print(error)
+                              })
+                              
                             case .failure(let error):
                               print(error.localizedDescription)
                               print("failure")
@@ -238,6 +246,7 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
                                   style: UIAlertAction.Style.default, handler: nil))
     self.present(alert, animated: true, completion: nil)
   }
+  
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
