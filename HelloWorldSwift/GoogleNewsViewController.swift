@@ -110,6 +110,10 @@ class GoogleNewsViewController: UIViewController, UITableViewDelegate, UITableVi
     //print("viewDidLoad End!")
   }
   
+  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくなる
+  }
+  
   func getArticles() {
     Alamofire.request("https://qiita.com/api/v2/items", method: .get)
       .responseJSON {response in

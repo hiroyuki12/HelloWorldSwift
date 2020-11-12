@@ -33,6 +33,10 @@ class WebViewController: UIViewController {
     }
   }
   
+  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくなる
+  }
+  
   @IBAction func tapClose(_ sender: Any) {
     //戻る
     dismiss(animated: true, completion: nil)

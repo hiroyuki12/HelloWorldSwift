@@ -7,4 +7,6 @@ target 'HelloWorldSwift' do
   pod 'Firebase/Database'
   pod 'Firebase/Firestore'
   pod 'Firebase/Auth'
+  pod 'Swifter', :git => 'https://github.com/mattdonnelly/Swifter.git'
+  pod 'OAuthSwift'
 end

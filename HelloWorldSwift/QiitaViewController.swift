@@ -51,6 +51,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
+  let app = "qiita"
+  
   var tag = "Swift"
 //    let tag = "flutter"
   
@@ -94,6 +96,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    self.view.addGestureRecognizer(recognizer)
     
     //print("viewDidLoad End!")
+  }
+  
+  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
@@ -208,7 +214,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage, self.tag)
+    tapRead(self.savedPage, self.tag + self.app)
     
     popUp()
   }
@@ -283,9 +289,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print("savedPage: " + String(self.savedPage))
         
         // mysql delete
-        self.tapDelete(self.savedPage, self.tag)
+        self.tapDelete(self.savedPage, self.tag + self.app)
         // mysql insert
-        self.tapSave(self.savedPage, self.tag)
+        self.tapSave(self.savedPage, self.tag + self.app)
         
         self.sqliteSavedPage = self.savedPage;
         print("sqliteSavedPage: " + String(self.sqliteSavedPage))

@@ -44,6 +44,8 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
+  let app = "StackOverflow"
+  
   var tag = "swift"
   
   let tagSwift      = "swift"
@@ -86,6 +88,10 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
 //    self.view.addGestureRecognizer(recognizer)
     
     //print("viewDidLoad End!")
+  }
+  
+  override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
+      isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
@@ -216,7 +222,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   
   // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage)
+    tapRead(self.savedPage, self.tag + self.app)
     
     popUp()
   }
@@ -280,13 +286,14 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
       })
     alertController.addAction(flutterPage1Action)
   
-    let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
+    let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
+        
         // mysql delete
-        self.tapDelete(self.savedPage)
+        self.tapDelete(self.savedPage, self.tag + self.app)
         // mysql insert
-        self.tapSave(self.savedPage)
+        self.tapSave(self.savedPage, self.tag + self.app)
         
         self.sqliteSavedPage = self.savedPage;
 //        print("sqliteSavedPage: " + String(self.sqliteSavedPage))
@@ -294,7 +301,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
       })
     alertController.addAction(saveSwiftPageAction)
   
-    let loadSwiftPageAction = UIAlertAction(title: "Load Swift Page ! " + String(self.sqliteSavedPage), style: .default,
+    let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
     handler:{
       (action:UIAlertAction!) -> Void in
       
@@ -330,23 +337,17 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     dismiss(animated: true, completion: nil)
   }
   
-  // nameが1のデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int) {
+  // nameがtagのデータをdelete。引数のpageは未使用。
+  func tapDelete(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = ?"
+    let queryString = "DELETE FROM  Heroes WHERE name = " + "\"" + tag + "\""
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
 //      let errmsg = String(cString: sqlite3_errmsg(db)!)
 //      print("error preparing delte: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に1をセット
-    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
@@ -358,22 +359,16 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   }
   
   // nameが1、powerrankが引数のpageの文字列で、insert
-  func tapSave(_ page: Int) {
+  func tapSave(_ page: Int, _ tag: String) {
     //creating a statement
     var stmt: OpaquePointer?
     //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (\"" + tag + "\"," + String(page) + ")"
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
 //      let errmsg = String(cString: sqlite3_errmsg(db)!)
 //      print("error preparing insert: \(errmsg)")
       return
-    }
-    //binding the parameters 1つ目の?に2をセット
-    if sqlite3_bind_text(stmt, 1, String(page), -1, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure binding: \(errmsg)")
-        return
     }
     //executing the query to insert values
     if sqlite3_step(stmt) != SQLITE_DONE {
@@ -388,9 +383,10 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
   @IBAction func tapLoad(_ sender: Any) {
   }
   
-  func tapRead(_ page: Int) {
+  func tapRead(_ page: Int, _ tag: String) {
+    sqliteSavedPage = 0
     //this is our select query
-    let queryString = "SELECT * FROM Heroes"
+    let queryString = "SELECT * FROM Heroes Where name = \"" + tag + "\""
     //statement pointer
     var stmt:OpaquePointer?
     //preparing the query
@@ -402,9 +398,9 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     //traversing through all the records
     while(sqlite3_step(stmt) == SQLITE_ROW){
       //let id = sqlite3_column_int(stmt, 0)
-//      let name = String(cString: sqlite3_column_text(stmt, 1))
+      let name = String(cString: sqlite3_column_text(stmt, 1))
       let powerrank = sqlite3_column_int(stmt, 2)
-//      print("name:" + name + ", powerrank:" + String(powerrank))
+      print("name:" + name + ", powerrank:" + String(powerrank))
         //adding values to list
 //        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
       sqliteSavedPage = Int(powerrank)

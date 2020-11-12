@@ -23,7 +23,7 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>boxsdk-BOX_CLIENT_ID</string>
+				<string>TwitterLoginSampleOAuth</string>
 			</array>
 		</dict>
 		<dict>
