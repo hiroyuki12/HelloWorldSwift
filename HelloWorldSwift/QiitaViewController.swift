@@ -57,6 +57,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
+  let tagiOS        = "iOS"
   let tagFirebase   = "Firebase"
   let tagFirestore  = "Firestore"
   let tagFlutter    = "Flutter"
@@ -222,11 +223,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/Firebase/Firestore/Flutter", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/iOS/Firebase/Firestore/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagiOS
+        }
+        else if(self.tag == self.tagiOS) {
           self.tag = self.tagFirebase
         }
         else if(self.tag == self.tagFirebase) {
