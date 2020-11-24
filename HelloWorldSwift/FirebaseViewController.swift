@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseDatabase
-import FirebaseFirestore
-import FirebaseAuth
+//import Firebase
+//import FirebaseDatabase
+//import FirebaseFirestore
+//import FirebaseAuth
 
 class FirebaseViewController: UIViewController {
   @IBOutlet weak var txtId: UITextField!
@@ -21,7 +21,7 @@ class FirebaseViewController: UIViewController {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    let ref = Database.database().reference()
+//    let ref = Database.database().reference()
 
     // Add
 //    // KeyValue型の配列を用意しておきます。
@@ -64,13 +64,13 @@ class FirebaseViewController: UIViewController {
   }
   
   @IBAction func tapAdd(_ sender: Any) {
-    let ref = Database.database().reference()
-
-    // Add
-//    // KeyValue型の配列を用意しておきます。
-    let bluray = ["id":txtId.text, "content": txtContent.text, "crate": txtCreateDate.text]
-//    // データを追加します。idは自動で設定してくれます。
-    ref.child("Bluray").childByAutoId().setValue(bluray)
+//    let ref = Database.database().reference()
+//
+//    // Add
+////    // KeyValue型の配列を用意しておきます。
+//    let bluray = ["id":txtId.text, "content": txtContent.text, "crate": txtCreateDate.text]
+////    // データを追加します。idは自動で設定してくれます。
+//    ref.child("Bluray").childByAutoId().setValue(bluray)
     
     txtContent.text = ""
   }
@@ -83,51 +83,51 @@ class FirebaseViewController: UIViewController {
   // 「users」コレクションの作成（ドキュメント名指定）
   func creatUserCollectionDesignationDocument() {
     // FIRFirestoreインスタンスの作成
-    let db = Firestore.firestore()
-    
-    // "users"という名称のコレクションを作成
-    // "hoge"という名称のドキュメントを作成
-    // ["name": "hoge"]というデータを保存
-    db.collection("users").document("hoge").setData(["name": "hoge"]) { error in
-      if let error = error {
-        print("エラーが起きました")
-      }
-      else {
-        print("ドキュメント「hoge」が保存できました")
-      }
-    }
+//    let db = Firestore.firestore()
+//
+//    // "users"という名称のコレクションを作成
+//    // "hoge"という名称のドキュメントを作成
+//    // ["name": "hoge"]というデータを保存
+//    db.collection("users").document("hoge").setData(["name": "hoge"]) { error in
+//      if let error = error {
+//        print("エラーが起きました")
+//      }
+//      else {
+//        print("ドキュメント「hoge」が保存できました")
+//      }
+//    }
   }
   // usersコレクションの作成（ドキュメント名自動）
   func creatUserCollectionAutomaticDocument() {
-    let db = Firestore.firestore()
-    db.collection("users").addDocument(data: ["name": "hoge"]) { error in
-      if let error = error { print("エラーが起きました") }
-      else { print("ドキュメントが保存できました") }
-    }
+//    let db = Firestore.firestore()
+//    db.collection("users").addDocument(data: ["name": "hoge"]) { error in
+//      if let error = error { print("エラーが起きました") }
+//      else { print("ドキュメントが保存できました") }
+//    }
   }
   
   @IBAction func tapSignUp(_ sender: Any) {
-    Auth.auth().createUser(withEmail: "hiroyuki12@gmail.com", password: "pass") { [weak self] result, error in
-        guard let self = self else { return }
-        if let user = result?.user {
-            let req = user.createProfileChangeRequest()
-            req.displayName = "hiroyuki"
-            req.commitChanges() { [weak self] error in
-                guard let self = self else { return }
-                if error == nil {
-                    user.sendEmailVerification() { [weak self] error in
-                        guard let self = self else { return }
-                        if error == nil {
-                            // 仮登録完了画面へ遷移する処理
-                        }
-                        self.showErrorIfNeeded(error)
-                    }
-                }
-                self.showErrorIfNeeded(error)
-            }
-        }
-        self.showErrorIfNeeded(error)
-    }
+//    Auth.auth().createUser(withEmail: "hiroyuki12@gmail.com", password: "pass") { [weak self] result, error in
+//        guard let self = self else { return }
+//        if let user = result?.user {
+//            let req = user.createProfileChangeRequest()
+//            req.displayName = "hiroyuki"
+//            req.commitChanges() { [weak self] error in
+//                guard let self = self else { return }
+//                if error == nil {
+//                    user.sendEmailVerification() { [weak self] error in
+//                        guard let self = self else { return }
+//                        if error == nil {
+//                            // 仮登録完了画面へ遷移する処理
+//                        }
+//                        self.showErrorIfNeeded(error)
+//                    }
+//                }
+//                self.showErrorIfNeeded(error)
+//            }
+//        }
+//        self.showErrorIfNeeded(error)
+//    }
   }
   
   private func showErrorIfNeeded(_ errorOrNil: Error?) {

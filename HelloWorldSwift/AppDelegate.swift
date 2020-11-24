@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftyDropbox
-import Firebase
+//import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     DropboxClientsManager.setupWithAppKey("DROPBOX_APP_KEY")
-    FirebaseApp.configure()
+//    FirebaseApp.configure()
     return true
   }
 
