@@ -8,8 +8,16 @@
 
 import UIKit
 import BoxSDK
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
+  
+  @IBOutlet weak var button: UIButton!
+  @IBOutlet weak var label: UILabel!
+  
+  private let count: BehaviorRelay<Int> = BehaviorRelay(value: 0)
+  private let disposeBag: DisposeBag = DisposeBag()
   
   @IBAction func tapSub(_ sender: Any) {
     let storyboard = UIStoryboard(name: "Sub", bundle: nil)
@@ -25,6 +33,8 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
+    bindButtonToValue()
+    bindCountToText()
     
 //    let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
 //    //ダウンロード先URLを設定
@@ -49,9 +59,28 @@ class ViewController: UIViewController {
     //    }
   }
   
-  override func viewWillAppear(_ animated: Bool) {
+  // 1.の処理
+  private func bindButtonToValue() {
+    button.rx.tap
+      .subscribe(onNext: { [weak self] _ in
+                  self?.increment()})
+      .disposed(by: disposeBag)
   }
   
+  private func increment() {
+    count.accept(count.value + 1)
+  }
+  
+  // 2.の処理
+  private func bindCountToText() {
+    count.asObservable()
+      .subscribe(onNext: { [weak self] count in
+                  self?.label.text = String(count) })
+      .disposed(by: disposeBag)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+  }
   
 // ①セグエ実行前処理
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

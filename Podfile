@@ -9,4 +9,6 @@ target 'HelloWorldSwift' do
 #  pod 'Firebase/Auth'
   pod 'Swifter', :git => 'https://github.com/mattdonnelly/Swifter.git'
   pod 'OAuthSwift'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 end
