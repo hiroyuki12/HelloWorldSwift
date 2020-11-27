@@ -13,8 +13,8 @@ import RxCocoa
 
 class ViewController: UIViewController {
   
-  @IBOutlet weak var button: UIButton!
-  @IBOutlet weak var label: UILabel!
+//  @IBOutlet weak var button: UIButton!
+//  @IBOutlet weak var label: UILabel!
   
   private let count: BehaviorRelay<Int> = BehaviorRelay(value: 0)
   private let disposeBag: DisposeBag = DisposeBag()
@@ -61,10 +61,10 @@ class ViewController: UIViewController {
   
   // 1.の処理
   private func bindButtonToValue() {
-    button.rx.tap
-      .subscribe(onNext: { [weak self] _ in
-                  self?.increment()})
-      .disposed(by: disposeBag)
+//    button.rx.tap
+//      .subscribe(onNext: { [weak self] _ in
+//                  self?.increment()})
+//      .disposed(by: disposeBag)
   }
   
   private func increment() {
@@ -73,10 +73,10 @@ class ViewController: UIViewController {
   
   // 2.の処理
   private func bindCountToText() {
-    count.asObservable()
-      .subscribe(onNext: { [weak self] count in
-                  self?.label.text = String(count) })
-      .disposed(by: disposeBag)
+//    count.asObservable()
+//      .subscribe(onNext: { [weak self] count in
+//                  self?.label.text = String(count) })
+//      .disposed(by: disposeBag)
   }
   
   override func viewWillAppear(_ animated: Bool) {

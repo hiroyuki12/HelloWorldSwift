@@ -107,10 +107,22 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     var rowHeight = 0
     
+    var w = 0.0
+    var h = 0.0
+    
+    let myUrl2 = jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][0]["media_url"].string
+    if myUrl2 != nil {
+      w = jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][0]["sizes"]["large"]["w"].double ?? 0
+      h = jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][0]["sizes"]["large"]["h"].double ?? 0
+    }
+    
     let myUrl = jsonArray[indexPath.row]["entities"]["media"][0]["media_url"].string
     if myUrl != nil {
-      let w = jsonArray[indexPath.row]["entities"]["media"][0]["sizes"]["large"]["w"].double ?? 0
-      let h = jsonArray[indexPath.row]["entities"]["media"][0]["sizes"]["large"]["h"].double ?? 0
+      w = jsonArray[indexPath.row]["entities"]["media"][0]["sizes"]["large"]["w"].double ?? 0
+      h = jsonArray[indexPath.row]["entities"]["media"][0]["sizes"]["large"]["h"].double ?? 0
+    }
+    
+    if w != 0.0 {
       if w < h {
         if h / w < 1.2 {
           rowHeight = Int(Double(662) * h / w)
@@ -333,25 +345,56 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
     let myUrl: URL? = URL(string: jsonArray[indexPath.row]["user"]["profile_image_url"].string ?? "")
     profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     
+    let isQuoteStatus = jsonArray[indexPath.row]["is_quote_status"].bool
+//    print(text)
+//    print(isQuoteStatus)
+    
+    guard isQuoteStatus != nil else {
+      return cell
+    }
     // セルに表示する画像1を設定する
     let profileImage2 = cell.viewWithTag(5) as! UIImageView
-    let myUrl2: URL? = URL(string: jsonArray[indexPath.row]["entities"]["media"][0]["media_url"].string ?? "")
-    profileImage2.loadImageAsynchronously(url: myUrl2, defaultUIImage: nil)
+    if(!isQuoteStatus!) {
+      let myUrl2: URL? = URL(string: jsonArray[indexPath.row]["entities"]["media"][0]["media_url"].string ?? "")
+      profileImage2.loadImageAsynchronously(url: myUrl2, defaultUIImage: nil)
+    }
+    else {
+      let myUrl2: URL? = URL(string: jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][0]["media_url"].string ?? "")
+      profileImage2.loadImageAsynchronously(url: myUrl2, defaultUIImage: nil)
+    }
     
     // セルに表示する画像2を設定する
     let profileImage3 = cell.viewWithTag(6) as! UIImageView
-    let myUrl3: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][1]["media_url"].string ?? "")
-    profileImage3.loadImageAsynchronously(url: myUrl3, defaultUIImage: nil)
+    if(!isQuoteStatus!) {
+      let myUrl3: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][1]["media_url"].string ?? "")
+      profileImage3.loadImageAsynchronously(url: myUrl3, defaultUIImage: nil)
+    }
+    else {
+      let myUrl3: URL? = URL(string: jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][1]["media_url"].string ?? "")
+      profileImage3.loadImageAsynchronously(url: myUrl3, defaultUIImage: nil)
+    }
     
     // セルに表示する画像3を設定する
     let profileImage4 = cell.viewWithTag(7) as! UIImageView
-    let myUrl4: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][2]["media_url"].string ?? "")
-    profileImage4.loadImageAsynchronously(url: myUrl4, defaultUIImage: nil)
+    if(!isQuoteStatus!) {
+      let myUrl4: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][2]["media_url"].string ?? "")
+      profileImage4.loadImageAsynchronously(url: myUrl4, defaultUIImage: nil)
+    }
+    else {
+      let myUrl4: URL? = URL(string: jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][2]["media_url"].string ?? "")
+      profileImage4.loadImageAsynchronously(url: myUrl4, defaultUIImage: nil)
+    }
     
     // セルに表示する画像4を設定する
     let profileImage5 = cell.viewWithTag(8) as! UIImageView
-    let myUrl5: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][3]["media_url"].string ?? "")
-    profileImage5.loadImageAsynchronously(url: myUrl5, defaultUIImage: nil)
+    if(!isQuoteStatus!) {
+      let myUrl5: URL? = URL(string: jsonArray[indexPath.row]["extended_entities"]["media"][3]["media_url"].string ?? "")
+      profileImage5.loadImageAsynchronously(url: myUrl5, defaultUIImage: nil)
+    }
+    else {
+      let myUrl5: URL? = URL(string: jsonArray[indexPath.row]["quoted_status"]["extended_entities"]["media"][3]["media_url"].string ?? "")
+      profileImage5.loadImageAsynchronously(url: myUrl5, defaultUIImage: nil)
+    }
     
     // セルに表示する作成日を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel

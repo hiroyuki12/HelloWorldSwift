@@ -120,25 +120,11 @@
                                     <segue destination="s1B-O6-stT" kind="show" id="zku-RG-1pi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wID-1v-P8R">
-                                <rect key="frame" x="312" y="379" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sD-f1-ge9">
-                                <rect key="frame" x="330" y="417" width="11" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="button" destination="wID-1v-P8R" id="pET-Av-MXP"/>
-                        <outlet property="label" destination="4sD-f1-ge9" id="8TF-ht-NYa"/>
                         <outlet property="labelLocation" destination="7dt-Re-jiD" id="z3Z-xx-ZnF"/>
                         <outlet property="labelLocation2" destination="fyf-LL-x0q" id="jCD-ZF-gCr"/>
                     </connections>
