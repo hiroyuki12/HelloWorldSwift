@@ -28,12 +28,12 @@
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
 		2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */; };
+		2EAE8A49257132B2004B2455 /* MastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAE8A48257132B2004B2455 /* MastodonViewController.swift */; };
 		2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4E825471D790084E423 /* FeedlyViewController.swift */; };
 		2EC8F4EC254C75810084E423 /* GithubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EB254C75810084E423 /* GithubViewController.swift */; };
 		2EC8F4EF254CFF470084E423 /* AlamofireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */; };
 		2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53B25514CED0084E423 /* SwiftUIView.swift */; };
 		2EC8F53F2556B9040084E423 /* MyDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53E2556B9040084E423 /* MyDatePicker.swift */; };
-		2EC8F55B255840EC0084E423 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */; };
 		2EC8F55F255C275B0084E423 /* TwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F55E255C275B0084E423 /* TwitterViewController.swift */; };
 		2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCA8682520914B00A9E8BE /* NoteViewController.swift */; };
 		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
@@ -77,12 +77,12 @@
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNewsViewController.swift; sourceTree = "<group>"; };
+		2EAE8A48257132B2004B2455 /* MastodonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
 		2EC8F4E825471D790084E423 /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		2EC8F4EB254C75810084E423 /* GithubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubViewController.swift; sourceTree = "<group>"; };
 		2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireViewController.swift; sourceTree = "<group>"; };
 		2EC8F53B25514CED0084E423 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		2EC8F53E2556B9040084E423 /* MyDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDatePicker.swift; sourceTree = "<group>"; };
-		2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2EC8F55E255C275B0084E423 /* TwitterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterViewController.swift; sourceTree = "<group>"; };
 		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
 		2EDCA8682520914B00A9E8BE /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
@@ -159,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */,
-				2EC8F55A255840EC0084E423 /* GoogleService-Info.plist */,
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7D2243767D9005215DD /* Info.plist */,
@@ -168,6 +167,7 @@
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
 				2EC8F55E255C275B0084E423 /* TwitterViewController.swift */,
+				2EAE8A48257132B2004B2455 /* MastodonViewController.swift */,
 				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
 				2EA0956B2534858B0020332B /* StackOverflowViewController.swift */,
 				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
@@ -300,7 +300,6 @@
 				2EE5C7CE243767D9005215DD /* Assets.xcassets in Resources */,
 				2EE5C7CC243767D5005215DD /* Main.storyboard in Resources */,
 				2E685890244F21550023AE5A /* Sub.storyboard in Resources */,
-				2EC8F55B255840EC0084E423 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +401,7 @@
 				2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
+				2EAE8A49257132B2004B2455 /* MastodonViewController.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
 				2EED15D2252C989000DEF8F8 /* Constants.swift in Sources */,
 			);

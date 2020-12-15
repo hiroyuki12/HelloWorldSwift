@@ -32,7 +32,9 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
   let app = "twitter"
   
   var screenName = "twitter"
-//    let tag = "flutter"
+  
+  var screenNameTwitter = "twitter"
+  var screenNameTwitterJp = "twitterjp"
   
   let tagSwift      = "Swift"
   let tagFirebase   = "Firebase"
@@ -465,17 +467,11 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
         (action:UIAlertAction!) -> Void in
         self.jsonArray.removeAll()
         self.maxId = "0"
-        if(self.screenName == "twitter") {
-          self.screenName = "twitterjp"
-        }
-        else if(self.screenName == self.tagFirebase) {
-          self.screenName = self.tagFirestore
-        }
-        else if(self.screenName == self.tagFirestore) {
-          self.screenName = self.tagFlutter
+        if(self.screenName == self.screenNameTwitter) {
+          self.screenName = self.screenNameTwitterJp
         }
         else {
-          self.screenName = "twitter"
+          self.screenName = self.screenNameTwitter
         }
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.screenName)

@@ -57,9 +57,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
+  let tagXcode        = "Xcode"
   let tagiOS        = "iOS"
-  let tagFirebase   = "Firebase"
-  let tagFirestore  = "Firestore"
+//  let tagFirebase   = "Firebase"
+//  let tagFirestore  = "Firestore"
   let tagFlutter    = "Flutter"
   
   var savedPage = 1
@@ -223,22 +224,22 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/iOS/Firebase/Firestore/Flutter", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/Xcode/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
         if(self.tag == self.tagSwift) {
-          self.tag = self.tagiOS
+          self.tag = self.tagXcode
         }
-        else if(self.tag == self.tagiOS) {
-          self.tag = self.tagFirebase
-        }
-        else if(self.tag == self.tagFirebase) {
-          self.tag = self.tagFirestore
-        }
-        else if(self.tag == self.tagFirestore) {
+        else if(self.tag == self.tagXcode) {
           self.tag = self.tagFlutter
         }
+//        else if(self.tag == self.tagFirebase) {
+//          self.tag = self.tagFirestore
+//        }
+//        else if(self.tag == self.tagFirestore) {
+//          self.tag = self.tagFlutter
+//        }
         else {
           self.tag = self.tagSwift
         }
