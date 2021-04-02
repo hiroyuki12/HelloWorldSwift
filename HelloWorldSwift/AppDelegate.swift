@@ -15,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+    //先にiPhoneにDropboxアプリをインストール
+    //Info.plistにdb-DROPBOX_APP_KEYを設定、下記にも設定して実行するとSign inできた。
+    //DROPBOX_APP_KEYは実際のApp keyに置き換え
+    //一度Sign inした後はダミーのkeyに変更してもSign inせずにDownloadできる。
     DropboxClientsManager.setupWithAppKey("DROPBOX_APP_KEY")
 //    FirebaseApp.configure()
     return true
