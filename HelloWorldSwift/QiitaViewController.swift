@@ -53,15 +53,17 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   let app = "qiita"
   
-  var tag = "Swift"
+//  var tag = "Swift"
+  var tag = "React"
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
-  let tagXcode        = "Xcode"
+  let tagXcode      = "Xcode"
   let tagiOS        = "iOS"
 //  let tagFirebase   = "Firebase"
 //  let tagFirestore  = "Firestore"
   let tagFlutter    = "Flutter"
+  let tagReact      = "React"
   
   var savedPage = 1
   var perPage = 20
@@ -224,11 +226,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/Xcode/Flutter", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagReact
+        }
+        else if(self.tag == self.tagReact) {
           self.tag = self.tagXcode
         }
         else if(self.tag == self.tagXcode) {
@@ -274,17 +279,29 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       })
     alertController.addAction(swiftPage50Action)
   
-    let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
+    let reactPage1Action = UIAlertAction(title: "React page1/20posts", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
-        self.tag = self.tagFlutter
+        self.tag = self.tagReact
         self.savedPage = 1
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
       })
-    alertController.addAction(flutterPage1Action)
+    alertController.addAction(reactPage1Action)
+    
+    let reactPage50Action = UIAlertAction(title: "React page50/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagReact
+        self.savedPage = 50
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(reactPage50Action)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
