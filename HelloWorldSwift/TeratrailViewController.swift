@@ -52,7 +52,8 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   let tagFirebase   = "Firebase"
 //  let tagFirestore  = "firestore"
   let tagFlutter    = "Flutter"
-  
+  let tagReact    = "React.js"
+    
   var savedPage = 1
   var perPage = 20
   
@@ -215,11 +216,14 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/Firebase/Flutter", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/React.js/Firebase/Flutter", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.questions.removeAll()
         if(self.tag == self.tagSwift) {
+          self.tag = self.tagReact
+        }
+        else if(self.tag == self.tagReact) {
           self.tag = self.tagFirebase
         }
         else if(self.tag == self.tagFirebase) {

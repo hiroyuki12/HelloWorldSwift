@@ -54,7 +54,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let app = "qiita"
   
 //  var tag = "Swift"
-  var tag = "React"
+  var tag = "Swift"
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
