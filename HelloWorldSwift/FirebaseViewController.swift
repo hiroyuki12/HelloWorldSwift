@@ -9,8 +9,9 @@
 import UIKit
 //import Firebase
 //import FirebaseDatabase
-//import FirebaseFirestore
 //import FirebaseAuth
+
+//import FirebaseFirestore
 
 class FirebaseViewController: UIViewController {
   @IBOutlet weak var txtId: UITextField!
