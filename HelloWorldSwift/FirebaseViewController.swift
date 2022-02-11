@@ -11,7 +11,7 @@ import UIKit
 //import FirebaseDatabase
 //import FirebaseAuth
 
-import FirebaseFirestore
+//import FirebaseFirestore
 
 class FirebaseViewController: UIViewController {
   @IBOutlet weak var txtId: UITextField!
@@ -61,12 +61,12 @@ class FirebaseViewController: UIViewController {
 //      }
 //    }
     
-      
-          let db = Firestore.firestore()
-          db.collection("users").addDocument(data: ["name": "hoge2"]) { error in
-            if let error = error { print("エラーが起きました") }
-            else { print("ドキュメントが保存できました") }
-          }
+    // Firestore add data
+//    let db = Firestore.firestore()
+//    db.collection("users").addDocument(data: ["name": "hoge2"]) { error in
+//    if let error = error { print("エラーが起きました") }
+//    else { print("ドキュメントが保存できました") }
+//    }
       
     print("finished !!!")
   }
