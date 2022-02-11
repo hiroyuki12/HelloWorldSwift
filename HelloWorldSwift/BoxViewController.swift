@@ -82,13 +82,13 @@ class BoxViewController: UIViewController, ASWebAuthenticationPresentationContex
   @objc func downloadBoxFile() {
     //let client = BoxSDK.getClient(token: "BOX_DEVELOPER_TOKEN")
     guard let client = self.client2 else { return }
-    
+      
     // List contents of app folder
     if(flgFolderChange) {
       flgFolderChange = false
       self.stopTimer()
       // List contents of app folder
-      client.folders.listItems(folderId: folderId, sort: .name, direction: .ascending) { results in
+      client.folders.listItems(folderId: folderId, usemarker: false, marker: "", offset: 0, limit: 100, sort: .name, direction: .ascending) { results in
         switch results {  // switch 1
         case let .success(iterator):
           self.fileIds = []

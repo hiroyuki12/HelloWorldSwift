@@ -1,8 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
-  - BoxSDK (4.1.0):
-    - BoxSDK/Core (= 4.1.0)
-  - BoxSDK/Core (4.1.0)
+  - BoxSDK (4.4.0):
+    - BoxSDK/Core (= 4.4.0)
+  - BoxSDK/Core (4.4.0)
   - OAuthSwift (2.1.0)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
@@ -43,7 +43,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  BoxSDK: b6b3cdc40e9cb1df31608dab2b69ec178680af2e
+  BoxSDK: 041d5ae9c4045dda753a6ef550e96c75940281dc
   OAuthSwift: ab1675598273e04355e0282459c328e65c9ddacd
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
@@ -53,4 +53,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 11d25ed1451c06b8accde293e2e6fd238032e0b5
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2
