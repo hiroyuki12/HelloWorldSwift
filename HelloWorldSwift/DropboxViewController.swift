@@ -98,7 +98,8 @@ class DropboxViewController: UIViewController {
   var maxCount:UInt32 = 2000  // 2,000より大きいとエラー
   var fileName = "/アプリ/Photo Watch/1396713410486.jpg"
 //  var fileName = "/携帯/docomoF505i/100f505i-1/f1000001.jpg"
-  var folderName = ""
+//  var folderName = ""
+  var folderName = "2012/"
   var flgFolderChange = true
   var finishListFolder = false
   
@@ -122,7 +123,8 @@ class DropboxViewController: UIViewController {
             self.filenames = []
             for entry in result.entries {
               // Check that file is a photo (by file extension)
-              if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png") {
+              if entry.name.hasSuffix(".jpg") || entry.name.hasSuffix(".png")
+                    || entry.name.hasSuffix(".jpeg") {
                 // Add photo!
                 self.filenames?.append(entry.name)
               }
@@ -225,6 +227,15 @@ class DropboxViewController: UIViewController {
         folderName = "1/"
       }
       else if(folderName == "1/") {
+        folderName = "2013/"
+      }
+      else if(folderName == "2012/") {
+        folderName = "2013/"
+      }
+      else if(folderName == "2013/") {
+        folderName = "2014/"
+      }
+      else if(folderName == "2014/") {
         folderName = ""
       }
       flgFolderChange = true
