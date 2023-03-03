@@ -366,7 +366,7 @@
     private func popUp() {
       let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-      let flutterSwiftAction = UIAlertAction(title: "drikin/mazzo", style: .default,
+      let drikinMazzoAction = UIAlertAction(title: "drikin/mazzo", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
@@ -382,9 +382,9 @@
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
         })
-      alertController.addAction(flutterSwiftAction)
+      alertController.addAction(drikinMazzoAction)
 
-      let swiftPage1Action = UIAlertAction(title: "mstdn.guru/mstdn.jp", style: .default,
+      let guruJpAction = UIAlertAction(title: "mstdn.guru/mstdn.jp", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
@@ -400,22 +400,9 @@
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
         })
-      alertController.addAction(swiftPage1Action)
+      alertController.addAction(guruJpAction)
 //
-      let swiftPage50Action = UIAlertAction(title: "Qiitadon", style: .default,
-        handler:{
-          (action:UIAlertAction!) -> Void in
-          self.articles.removeAll()
-          self.tag = self.tagQiita
-          self.savedPage = 1
-          self.maxId = "999999999999999999"
-          self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-          self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-               "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-        })
-      alertController.addAction(swiftPage50Action)
-//
-      let flutterPage1Action = UIAlertAction(title: "Pawoo", style: .default,
+      let pawooAction = UIAlertAction(title: "Pawoo", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
@@ -426,9 +413,9 @@
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
         })
-      alertController.addAction(flutterPage1Action)
+      alertController.addAction(pawooAction)
 //
-      let saveSwiftPageAction = UIAlertAction(title: "mstdn.social/mastodon.cloud", style: .default,
+      let socialCloudAction = UIAlertAction(title: "mstdn.social/mastodon.cloud", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
@@ -445,23 +432,8 @@
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
 
         })
-      alertController.addAction(saveSwiftPageAction)
+      alertController.addAction(socialCloudAction)
 //
-//      let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
-//      handler:{
-//        (action:UIAlertAction!) -> Void in
-//
-//        self.articles.removeAll()
-//        self.savedPage = self.sqliteSavedPage
-//        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-//        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-//              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-//
-//        print ("finish tapLoad!")
-//
-//      })
-//      alertController.addAction(loadSwiftPageAction)
-    
       let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
       alertController.addAction(cancelAction)
 
