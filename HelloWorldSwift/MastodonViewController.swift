@@ -70,14 +70,15 @@
   //    let tag = "flutter"
     
     let tagDrikin     = "drikin"
-    let tagMazzo     = "mazzo"
+    let tagMazzo      = "mazzo"
     
-    let tagGuru       = "mstdn.guru"
-    let tagJp         = "mstdn.jp"
-    let tagQiita       = "qiitadon"
-    let tagPawoo       = "pawoo"
+    let tagGuru         = "mstdn.guru"
+    let tagJp           = "mstdn.jp"
+    let tagQiita        = "qiitadon"
+    let tagPawoo        = "pawoo"
+    let tagPawooAiIlust = "pawoo #ai"
     let tagSocial       = "social"
-    let tagCloud       = "cloud"
+    let tagCloud        = "cloud"
     
     let tagFirebase   = "Firebase"
     let tagFirestore  = "Firestore"
@@ -147,6 +148,9 @@
       }
       else if tag == tagPawoo {
         str1 = "https://pawoo.net/api/v1/timelines/public?local=true&max_id=" + self.maxId  // pawoo
+      }
+      else if tag == tagPawooAiIlust {
+        str1 = "https://pawoo.net/api/v1/timelines/tag/ai?limit=10"  // pawoo #AIイラスト
       }
       else if tag == tagSocial {
         str1 = "https://mstdn.social/api/v1/timelines/public?local=true&max_id=" + self.maxId  // pawoo
@@ -402,18 +406,31 @@
         })
       alertController.addAction(guruJpAction)
 //
-      let pawooAction = UIAlertAction(title: "Pawoo", style: .default,
+        let pawooAction = UIAlertAction(title: "Pawoo", style: .default,
+          handler:{
+            (action:UIAlertAction!) -> Void in
+            self.articles.removeAll()
+            self.tag = self.tagPawoo
+            self.savedPage = 1
+            self.maxId = "999999999999999999"
+            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+            self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+                 "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+          })
+        alertController.addAction(pawooAction)
+//
+      let pawooAiIlust = UIAlertAction(title: "Pawoo #ai", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
-          self.tag = self.tagPawoo
+          self.tag = self.tagPawooAiIlust
           self.savedPage = 1
           self.maxId = "999999999999999999"
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
         })
-      alertController.addAction(pawooAction)
+      alertController.addAction(pawooAiIlust)
 //
       let socialCloudAction = UIAlertAction(title: "mstdn.social/mastodon.cloud", style: .default,
         handler:{
