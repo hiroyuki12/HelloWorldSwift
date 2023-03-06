@@ -25,6 +25,7 @@
 		2E7D68C024412F31008C962B /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68BF24412F31008C962B /* MapKitViewController.swift */; };
 		2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C92442704D008C962B /* QiitaViewController.swift */; };
 		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
+		2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E91DED129B622A000BADB8B /* MisskeyViewController.swift */; };
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
 		2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */; };
@@ -74,6 +75,7 @@
 		2E7D68BF24412F31008C962B /* MapKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewController.swift; sourceTree = "<group>"; };
 		2E7D68C92442704D008C962B /* QiitaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaViewController.swift; sourceTree = "<group>"; };
 		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
+		2E91DED129B622A000BADB8B /* MisskeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MisskeyViewController.swift; sourceTree = "<group>"; };
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNewsViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 		2EE5C7C3243767D5005215DD /* HelloWorldSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2E91DED129B622A000BADB8B /* MisskeyViewController.swift */,
 				2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */,
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
@@ -394,6 +397,7 @@
 				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
 				2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
+				2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */,
 				2EC8F55F255C275B0084E423 /* TwitterViewController.swift in Sources */,
 				2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */,
 				2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */,
@@ -563,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -588,7 +592,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
