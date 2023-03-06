@@ -8,8 +8,11 @@
 
 import UIKit
 import SwiftyDropbox
+import WebKit
 
 class MisskeyViewController: UIViewController {
+  @IBOutlet weak var wkWebView: WKWebView!
+    
   @IBOutlet weak var textField: UITextField!
   //イメージビューを追加
   let myImageView = UIImageView()
@@ -37,9 +40,15 @@ class MisskeyViewController: UIViewController {
   
   // SignInボタンタップ時
   @IBAction func TapSignIn(_ sender: Any) {
-    signInDropbox()
+    signInMisskey()
   }
   
+  @objc func signInMisskey(){
+    if let url = URL(string: "https://misskey.io/") {
+      self.wkWebView.load(URLRequest(url: url))
+    }
+  }
+    
   @objc func signInDropbox(){
     if let _ = DropboxClientsManager.authorizedClient {
       //既にログイン済みだとクラッシュするのでログアウト
