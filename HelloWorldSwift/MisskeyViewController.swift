@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyDropbox
 import WebKit
+import Foundation
 
 class MisskeyViewController: UIViewController {
   @IBOutlet weak var wkWebView: WKWebView!
@@ -46,6 +47,7 @@ class MisskeyViewController: UIViewController {
   @objc func signInMisskey(){
     if let url = URL(string: "https://misskey.io/") {
       self.wkWebView.load(URLRequest(url: url))
+      self.wkWebView.allowsBackForwardNavigationGestures = true  // スワイプで進む、戻るを有効にする
     }
   }
     
@@ -63,7 +65,24 @@ class MisskeyViewController: UIViewController {
   
   // Saveボタンタップ時
   @IBAction func TapSave(_ sender: Any) {
-    saveText()
+    //saveText()
+    /* //let url: URL = URL(string: "https://misskey.io/api/notes/local-timeline")!
+    let url: URL = URL(string: "https://mstdn.guru/api/v1/accounts/1/statuses")!
+    let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
+      // コンソールに出力
+      //print("data: \(String(describing: data))")
+      //print("response: \(String(describing: response))")
+      //print("error: \(String(describing: error))")
+      do{
+        let couponData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+          print(couponData) // Jsonの中身を表示
+      }
+      catch {
+        print(error)
+      }
+    })
+    task.resume()
+    //getLocalTimeline(limit: 10, untilId: "") */
   }
   @objc func saveText() {
     let tmpURL = NSURL(fileURLWithPath: NSTemporaryDirectory())
