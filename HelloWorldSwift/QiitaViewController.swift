@@ -179,7 +179,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   // Saveボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
-    //savedPage  //現在のページ
+    dismiss(animated: true, completion: nil)
+
+    /* //savedPage  //現在のページ
     print("start tapSave.")
     print("savedPage: " + String(savedPage))
     
@@ -189,8 +191,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     tapSave(savedPage)
     
     sqliteSavedPage = savedPage;
-    print("sqliteSavedPage: " + String(sqliteSavedPage))
-    
+    print("sqliteSavedPage: " + String(sqliteSavedPage)) */
   }
   
   // nameが1のデータをdelete。引数のpageは未使用。
