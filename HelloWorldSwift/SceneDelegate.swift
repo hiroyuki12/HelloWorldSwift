@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAuthSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -51,3 +52,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+// Twitter
+extension SceneDelegate {
+  // コールバック処理
+  //
+  // - Parameter url: URL
+  func applicationHandle(url: URL) {
+    if (url.host == "oauth-callback") {
+      // URLを指定する場合はここで設定する
+      OAuthSwift.handle(url: url)
+    } else {
+      OAuthSwift.handle(url: url)
+    }
+  }
+}
