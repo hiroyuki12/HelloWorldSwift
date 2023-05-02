@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E0A9C2429FF84A500DBFDE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C2329FF84A500DBFDE0 /* Constants.swift */; };
+		2E0A9C2729FF850600DBFDE0 /* OAuthSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0A9C2629FF850600DBFDE0 /* OAuthSwift */; };
+		2E0A9C2929FF85C800DBFDE0 /* TwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C2829FF85C800DBFDE0 /* TwitterViewController.swift */; };
+		2E0A9C2C29FF87A000DBFDE0 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0A9C2B29FF87A000DBFDE0 /* Swifter */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
@@ -57,6 +61,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2E0A9C2329FF84A500DBFDE0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2E0A9C2829FF85C800DBFDE0 /* TwitterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterViewController.swift; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -100,6 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E0A9C2C29FF87A000DBFDE0 /* Swifter in Frameworks */,
+				2E0A9C2729FF850600DBFDE0 /* OAuthSwift in Frameworks */,
 				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,9 +161,11 @@
 		2EE5C7C3243767D5005215DD /* HelloWorldSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2E0A9C2329FF84A500DBFDE0 /* Constants.swift */,
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
 				2EE5C7C6243767D5005215DD /* SceneDelegate.swift */,
 				2EE5C7C8243767D5005215DD /* ViewController.swift */,
+				2E0A9C2829FF85C800DBFDE0 /* TwitterViewController.swift */,
 				2E685891244F220A0023AE5A /* SubViewController.swift */,
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
@@ -219,6 +229,10 @@
 			dependencies = (
 			);
 			name = HelloWorldSwift;
+			packageProductDependencies = (
+				2E0A9C2629FF850600DBFDE0 /* OAuthSwift */,
+				2E0A9C2B29FF87A000DBFDE0 /* Swifter */,
+			);
 			productName = HelloWorldSwift;
 			productReference = 2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */;
 			productType = "com.apple.product-type.application";
@@ -291,6 +305,10 @@
 				Base,
 			);
 			mainGroup = 2EE5C7B8243767D5005215DD;
+			packageReferences = (
+				2E0A9C2529FF850600DBFDE0 /* XCRemoteSwiftPackageReference "OAuthSwift" */,
+				2E0A9C2A29FF87A000DBFDE0 /* XCRemoteSwiftPackageReference "Swifter" */,
+			);
 			productRefGroup = 2EE5C7C2243767D5005215DD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -336,12 +354,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E0A9C2929FF85C800DBFDE0 /* TwitterViewController.swift in Sources */,
 				2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */,
 				2E7D68C2244130D3008C962B /* BatteryViewController.swift in Sources */,
 				2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */,
 				2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2E7D68C6244241AD008C962B /* NowViewController.swift in Sources */,
+				2E0A9C2429FF84A500DBFDE0 /* Constants.swift in Sources */,
 				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
@@ -537,7 +557,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -555,7 +575,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwift123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -686,6 +706,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2E0A9C2529FF850600DBFDE0 /* XCRemoteSwiftPackageReference "OAuthSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OAuthSwift/OAuthSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		2E0A9C2A29FF87A000DBFDE0 /* XCRemoteSwiftPackageReference "Swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mattdonnelly/Swifter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2E0A9C2629FF850600DBFDE0 /* OAuthSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E0A9C2529FF850600DBFDE0 /* XCRemoteSwiftPackageReference "OAuthSwift" */;
+			productName = OAuthSwift;
+		};
+		2E0A9C2B29FF87A000DBFDE0 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E0A9C2A29FF87A000DBFDE0 /* XCRemoteSwiftPackageReference "Swifter" */;
+			productName = Swifter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2EE5C7B9243767D5005215DD /* Project object */;
 }
