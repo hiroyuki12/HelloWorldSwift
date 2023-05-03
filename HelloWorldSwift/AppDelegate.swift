@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyDropbox
 //import Firebase
 
 @UIApplicationMain
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Sign inして画像を表示できた。
     //DROPBOX_APP_KEYは実際のApp keyに置き換え
     //一度Sign inした後はダミーのkeyに変更してもSign inせずにDownloadできる。
+      DropboxClientsManager.setupWithAppKey("DROPBOX_APP_KEY")
 //    FirebaseApp.configure()
     return true
   }
