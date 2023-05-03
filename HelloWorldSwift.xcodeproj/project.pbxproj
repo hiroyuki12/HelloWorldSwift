@@ -12,6 +12,7 @@
 		2E0A9C2929FF85C800DBFDE0 /* TwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C2829FF85C800DBFDE0 /* TwitterViewController.swift */; };
 		2E0A9C2C29FF87A000DBFDE0 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0A9C2B29FF87A000DBFDE0 /* Swifter */; };
 		2E0A9C302A02448400DBFDE0 /* MastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C2F2A02448400DBFDE0 /* MastodonViewController.swift */; };
+		2E0A9C322A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
@@ -65,6 +66,7 @@
 		2E0A9C2329FF84A500DBFDE0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2E0A9C2829FF85C800DBFDE0 /* TwitterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterViewController.swift; sourceTree = "<group>"; };
 		2E0A9C2F2A02448400DBFDE0 /* MastodonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
+		2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		2EE5C7C3243767D5005215DD /* HelloWorldSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */,
 				2E0A9C2F2A02448400DBFDE0 /* MastodonViewController.swift */,
 				2E0A9C2329FF84A500DBFDE0 /* Constants.swift */,
 				2EE5C7C4243767D5005215DD /* AppDelegate.swift */,
@@ -358,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E0A9C2929FF85C800DBFDE0 /* TwitterViewController.swift in Sources */,
+				2E0A9C322A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift in Sources */,
 				2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */,
 				2E7D68C2244130D3008C962B /* BatteryViewController.swift in Sources */,
 				2E7D68BB24411C8A008C962B /* WebViewController.swift in Sources */,
