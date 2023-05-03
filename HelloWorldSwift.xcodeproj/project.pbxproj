@@ -15,6 +15,7 @@
 		2E0A9C322A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */; };
 		2E0A9C342A02459E00DBFDE0 /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C332A02459E00DBFDE0 /* FeedlyViewController.swift */; };
 		2E0A9C372A02486500DBFDE0 /* SwiftyDropbox in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0A9C362A02486500DBFDE0 /* SwiftyDropbox */; };
+		2E0A9C392A024BD800DBFDE0 /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A9C382A024BD800DBFDE0 /* DropboxViewController.swift */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
 		2E68588E244EF2E90023AE5A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588D244EF2E90023AE5A /* Log.swift */; };
@@ -70,6 +71,7 @@
 		2E0A9C2F2A02448400DBFDE0 /* MastodonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
 		2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2E0A9C332A02459E00DBFDE0 /* FeedlyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
+		2E0A9C382A024BD800DBFDE0 /* DropboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		2EE5C7C3243767D5005215DD /* HelloWorldSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2E0A9C382A024BD800DBFDE0 /* DropboxViewController.swift */,
 				2E0A9C332A02459E00DBFDE0 /* FeedlyViewController.swift */,
 				2E0A9C312A02452B00DBFDE0 /* HatenaBookmarkFavoriteViewController.swift */,
 				2E0A9C2F2A02448400DBFDE0 /* MastodonViewController.swift */,
@@ -394,6 +397,7 @@
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
 				2EE5C7C7243767D5005215DD /* SceneDelegate.swift in Sources */,
+				2E0A9C392A024BD800DBFDE0 /* DropboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
