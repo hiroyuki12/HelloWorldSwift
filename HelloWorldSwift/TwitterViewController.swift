@@ -50,7 +50,7 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
   
   var isLoading = false;
   
-  var articles: [QiitaArticleStruct] = []  // Codable
+  var articles: [TweetStruct] = []  // Codable
   
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
@@ -262,7 +262,7 @@ class TwitterViewController: UIViewController, UITableViewDelegate, UITableViewD
         return
       }
       do {
-        let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)  // Codable
+        let qiitaArticles = try JSONDecoder().decode([TweetStruct].self, from: data)  // Codable
         
         // 一時退避
         let articles_tmp = self.articles
