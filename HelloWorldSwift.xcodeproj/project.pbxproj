@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E0447EB2A02510700C314E0 /* SwiftyDropbox in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0447EA2A02510700C314E0 /* SwiftyDropbox */; };
+		2E0447EE2A02528300C314E0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0447ED2A02528300C314E0 /* Alamofire */; };
 		2E64BD662461033800DAE6C9 /* NasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E64BD652461033800DAE6C9 /* NasViewController.swift */; };
 		2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685889244DDD060023AE5A /* AddViewController.swift */; };
 		2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E68588B244DDF2D0023AE5A /* ListViewController.swift */; };
@@ -28,14 +30,11 @@
 		2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E91DED129B622A000BADB8B /* MisskeyViewController.swift */; };
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
-		2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */; };
 		2EAE8A49257132B2004B2455 /* MastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAE8A48257132B2004B2455 /* MastodonViewController.swift */; };
 		2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4E825471D790084E423 /* FeedlyViewController.swift */; };
 		2EC8F4EC254C75810084E423 /* GithubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EB254C75810084E423 /* GithubViewController.swift */; };
-		2EC8F4EF254CFF470084E423 /* AlamofireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */; };
 		2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53B25514CED0084E423 /* SwiftUIView.swift */; };
 		2EC8F53F2556B9040084E423 /* MyDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53E2556B9040084E423 /* MyDatePicker.swift */; };
-		2EC8F55F255C275B0084E423 /* TwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F55E255C275B0084E423 /* TwitterViewController.swift */; };
 		2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCA8682520914B00A9E8BE /* NoteViewController.swift */; };
 		2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */; };
 		2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7C4243767D5005215DD /* AppDelegate.swift */; };
@@ -46,16 +45,10 @@
 		2EE5C7D1243767D9005215DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7CF243767D9005215DD /* LaunchScreen.storyboard */; };
 		2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F4243819FC005215DD /* TableViewCell.swift */; };
 		2EE5C7F7243819FC005215DD /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EE5C7F5243819FC005215DD /* TableViewCell.xib */; };
-		2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */; };
 		2EED15D2252C989000DEF8F8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EED15D1252C989000DEF8F8 /* Constants.swift */; };
-		5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		097EEE2D41B5C80DF5BEFB62 /* Pods-HelloWorldSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwiftTests.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwiftTests/Pods-HelloWorldSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
-		0B02B5E7613C805DF04691C5 /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		25B0DA2BD218A715E4D5549C /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2E64BD652461033800DAE6C9 /* NasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NasViewController.swift; sourceTree = "<group>"; };
 		2E64BD692461097800DAE6C9 /* SMBClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SMBClient.framework; path = Carthage/Build/iOS/SMBClient.framework; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -78,15 +71,11 @@
 		2E91DED129B622A000BADB8B /* MisskeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MisskeyViewController.swift; sourceTree = "<group>"; };
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
-		2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNewsViewController.swift; sourceTree = "<group>"; };
 		2EAE8A48257132B2004B2455 /* MastodonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
 		2EC8F4E825471D790084E423 /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		2EC8F4EB254C75810084E423 /* GithubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubViewController.swift; sourceTree = "<group>"; };
-		2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireViewController.swift; sourceTree = "<group>"; };
 		2EC8F53B25514CED0084E423 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		2EC8F53E2556B9040084E423 /* MyDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDatePicker.swift; sourceTree = "<group>"; };
-		2EC8F55E255C275B0084E423 /* TwitterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterViewController.swift; sourceTree = "<group>"; };
-		2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.release.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.release.xcconfig"; sourceTree = "<group>"; };
 		2EDCA8682520914B00A9E8BE /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeratrailViewController.swift; sourceTree = "<group>"; };
 		2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorldSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,13 +92,8 @@
 		2EE5C7E8243767D9005215DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2EE5C7F4243819FC005215DD /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		2EE5C7F5243819FC005215DD /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
-		2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxViewController.swift; sourceTree = "<group>"; };
 		2EED15D1252C989000DEF8F8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2EFE34D824CA8C7A00717ECC /* HelloWorldSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HelloWorldSwift.entitlements; sourceTree = "<group>"; };
-		41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorldSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E0DBAFDC05CDC60BAA815BD /* Pods-HelloWorldSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift.debug.xcconfig"; sourceTree = "<group>"; };
-		A53647C944B063F4184FD45D /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwift-HelloWorldSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwift-HelloWorldSwiftUITests/Pods-HelloWorldSwift-HelloWorldSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E06538B16F8CDCB9809B0FE2 /* Pods-HelloWorldSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorldSwiftTests.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorldSwiftTests/Pods-HelloWorldSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +102,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E7D68BE244127D9008C962B /* WebKit.framework in Frameworks */,
-				5E673781A8361D53453F121C /* Pods_HelloWorldSwift.framework in Frameworks */,
+				2E0447EE2A02528300C314E0 /* Alamofire in Frameworks */,
+				2E0447EB2A02510700C314E0 /* SwiftyDropbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,9 +115,6 @@
 			children = (
 				2E64BD692461097800DAE6C9 /* SMBClient.framework */,
 				2E7D68BD244127D9008C962B /* WebKit.framework */,
-				0715ED55C54058B23241B320 /* Pods_HelloWorldSwift.framework */,
-				0B02B5E7613C805DF04691C5 /* Pods_HelloWorldSwift_HelloWorldSwiftUITests.framework */,
-				41ADC07DC44B6593948A98C0 /* Pods_HelloWorldSwiftTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,12 +151,10 @@
 				2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */,
 				2E685899245527330023AE5A /* LocationNameViewController.swift */,
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
-				2EC8F55E255C275B0084E423 /* TwitterViewController.swift */,
 				2EAE8A48257132B2004B2455 /* MastodonViewController.swift */,
 				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
 				2EA0956B2534858B0020332B /* StackOverflowViewController.swift */,
 				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
-				2EED15CD252B60CC00DEF8F8 /* BoxViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
@@ -196,10 +176,8 @@
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 				2EDCA8682520914B00A9E8BE /* NoteViewController.swift */,
 				2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */,
-				2EA09623253F14FB0020332B /* GoogleNewsViewController.swift */,
 				2EC8F4E825471D790084E423 /* FeedlyViewController.swift */,
 				2EC8F4EB254C75810084E423 /* GithubViewController.swift */,
-				2EC8F4EE254CFF470084E423 /* AlamofireViewController.swift */,
 				2EC8F53B25514CED0084E423 /* SwiftUIView.swift */,
 				2EC8F53E2556B9040084E423 /* MyDatePicker.swift */,
 			);
@@ -227,12 +205,6 @@
 		FD1AD91AC5F5EFFEC82FC685 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5E0DBAFDC05CDC60BAA815BD /* Pods-HelloWorldSwift.debug.xcconfig */,
-				2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */,
-				A53647C944B063F4184FD45D /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.debug.xcconfig */,
-				25B0DA2BD218A715E4D5549C /* Pods-HelloWorldSwift-HelloWorldSwiftUITests.release.xcconfig */,
-				E06538B16F8CDCB9809B0FE2 /* Pods-HelloWorldSwiftTests.debug.xcconfig */,
-				097EEE2D41B5C80DF5BEFB62 /* Pods-HelloWorldSwiftTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -244,11 +216,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2EE5C7EB243767D9005215DD /* Build configuration list for PBXNativeTarget "HelloWorldSwift" */;
 			buildPhases = (
-				98BB6DA03591A4592488054D /* [CP] Check Pods Manifest.lock */,
 				2EE5C7BD243767D5005215DD /* Sources */,
 				2EE5C7BE243767D5005215DD /* Frameworks */,
 				2EE5C7BF243767D5005215DD /* Resources */,
-				774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */,
 				2E64BD6D246109A600DAE6C9 /* Run Script */,
 			);
 			buildRules = (
@@ -256,6 +226,10 @@
 			dependencies = (
 			);
 			name = HelloWorldSwift;
+			packageProductDependencies = (
+				2E0447EA2A02510700C314E0 /* SwiftyDropbox */,
+				2E0447ED2A02528300C314E0 /* Alamofire */,
+			);
 			productName = HelloWorldSwift;
 			productReference = 2EE5C7C1243767D5005215DD /* HelloWorldSwift.app */;
 			productType = "com.apple.product-type.application";
@@ -284,6 +258,10 @@
 				Base,
 			);
 			mainGroup = 2EE5C7B8243767D5005215DD;
+			packageReferences = (
+				2E0447E92A02510700C314E0 /* XCRemoteSwiftPackageReference "SwiftyDropbox" */,
+				2E0447EC2A02528300C314E0 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 2EE5C7C2243767D5005215DD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -327,45 +305,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
-		774BEF7B723ED5005E9F147D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorldSwift/Pods-HelloWorldSwift-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		98BB6DA03591A4592488054D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelloWorldSwift-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -379,7 +318,6 @@
 				2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */,
 				2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */,
 				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
-				2EED15CE252B60CC00DEF8F8 /* BoxViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
 				2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */,
@@ -395,13 +333,10 @@
 				2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */,
 				2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */,
 				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
-				2EA09624253F14FB0020332B /* GoogleNewsViewController.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */,
-				2EC8F55F255C275B0084E423 /* TwitterViewController.swift in Sources */,
 				2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */,
 				2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */,
-				2EC8F4EF254CFF470084E423 /* AlamofireViewController.swift in Sources */,
 				2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,
@@ -551,7 +486,6 @@
 		};
 		2EE5C7EC243767D9005215DD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E0DBAFDC05CDC60BAA815BD /* Pods-HelloWorldSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
@@ -576,7 +510,6 @@
 		};
 		2EE5C7ED243767D9005215DD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2ECA7B8D8301E29E5A8083C7 /* Pods-HelloWorldSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
@@ -621,6 +554,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2E0447E92A02510700C314E0 /* XCRemoteSwiftPackageReference "SwiftyDropbox" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dropbox/SwiftyDropbox";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+		2E0447EC2A02528300C314E0 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2E0447EA2A02510700C314E0 /* SwiftyDropbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E0447E92A02510700C314E0 /* XCRemoteSwiftPackageReference "SwiftyDropbox" */;
+			productName = SwiftyDropbox;
+		};
+		2E0447ED2A02528300C314E0 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2E0447EC2A02528300C314E0 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2EE5C7B9243767D5005215DD /* Project object */;
 }

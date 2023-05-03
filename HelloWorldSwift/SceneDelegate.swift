@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import SwiftyDropbox
-import OAuthSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -27,19 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let url = URLContexts.first?.url else {
       return
     }
-
-    if let authResult = DropboxClientsManager.handleRedirectURL(url) {
-      switch authResult {
-      case .success:
-        print("Success! User is logged into Dropbox.")
-      case .cancel:
-        print("Authorization flow was manually canceled by user!")
-      case .error(_, let description):
-        print("Error: \(description)")
-      }
-    }
-    
-    applicationHandle(url: url)
     
     return
   }
@@ -73,17 +58,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 }
 
-// Twitter
-extension SceneDelegate {
-  // コールバック処理
-  //
-  // - Parameter url: URL
-  func applicationHandle(url: URL) {
-    if (url.host == "oauth-callback") {
-      // URLを指定する場合はここで設定する
-      OAuthSwift.handle(url: url)
-    } else {
-      OAuthSwift.handle(url: url)
-    }
-  }
-}
