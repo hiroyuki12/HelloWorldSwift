@@ -18,23 +18,24 @@ struct NoteArticlesStruct: Codable {
         var notes: [NotesStruct]
         
         struct NotesStruct: Codable {
-            // String? に変更（null を許容する）
-            var tweet_text: String?
+            var id: Int?
+            var name: String?       // ★ これが本来のタイトル（今回のJSONの "name" に対応）
+            var tweet_text: String? // 今回 null が返ってきている項目
             var publish_at: String?
             var user: UserStruct
             var hashtag_notes: [HashTagNotesStruct]
             var twitter_share_url: String?
-            var like_count: Int? // 念のためここもオプショナルに
+            var like_count: Int?
             
             struct UserStruct: Codable {
-                var user_profile_image_path: String? // null対策
+                var user_profile_image_path: String?
             }
             
             struct HashTagNotesStruct: Codable {
                 var hashtag: HashTagStruct
                 
                 struct HashTagStruct: Codable {
-                    var name: String? // null対策
+                    var name: String?
                 }
             }
         }
@@ -125,9 +126,12 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let note = notes[indexPath.row]
         
-        // タイトル (nilなら空文字を入れる)
+        // タイトルの表示（最優先を note.name に変更）
         if let textTitle = cell.viewWithTag(2) as? UILabel {
-            textTitle.text = note.tweet_text ?? "タイトルなし"
+            // 1. name（記事タイトル）があれば使う
+            // 2. なければ tweet_text を使う
+            // 3. どちらもなければ "タイトルなし"
+            textTitle.text = note.name ?? note.tweet_text ?? "タイトルなし"
         }
         
         // 作成日
@@ -137,19 +141,17 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // プロフィール画像
         if let profileImage = cell.viewWithTag(1) as? UIImageView {
-            // user_profile_image_path もオプショナルなので、nil結合演算子かif letで安全にURL化
             if let profileImageUrl = note.user.user_profile_image_path,
                let myUrl = URL(string: profileImageUrl) {
                 profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
             } else {
-                profileImage.image = nil // あるいはデフォルト画像
+                profileImage.image = nil
             }
         }
         
         // タグ
         if let hasTagText = cell.viewWithTag(4) as? UILabel {
-            // nameがnilの場合は "不明なタグ" にフォールバック
-            let tagNames = note.hashtag_notes.prefix(5).map { $0.hashtag.name ?? "タグなし" }
+            let tagNames = note.hashtag_notes.prefix(5).map { $0.hashtag.name ?? "" }.filter { !$0.isEmpty }
             hasTagText.text = tagNames.joined(separator: " ")
         }
         
