@@ -18,7 +18,6 @@
 		2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */; };
 		2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E685899245527330023AE5A /* LocationNameViewController.swift */; };
 		2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */; };
-		2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DD2457018F0023AE5A /* DropboxViewController.swift */; };
 		2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */; };
 		2E7D68B72440A14F008C962B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B62440A14F008C962B /* LocationViewController.swift */; };
 		2E7D68B92440B260008C962B /* FaceIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68B82440B260008C962B /* FaceIDViewController.swift */; };
@@ -31,7 +30,6 @@
 		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
 		2EAE8A49257132B2004B2455 /* MastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAE8A48257132B2004B2455 /* MastodonViewController.swift */; };
-		2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4E825471D790084E423 /* FeedlyViewController.swift */; };
 		2EC8F4EC254C75810084E423 /* GithubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EB254C75810084E423 /* GithubViewController.swift */; };
 		2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53B25514CED0084E423 /* SwiftUIView.swift */; };
 		2EC8F53F2556B9040084E423 /* MyDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F53E2556B9040084E423 /* MyDatePicker.swift */; };
@@ -59,7 +57,6 @@
 		2E6858932451BEAB0023AE5A /* SQLiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteViewController.swift; sourceTree = "<group>"; };
 		2E685899245527330023AE5A /* LocationNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameViewController.swift; sourceTree = "<group>"; };
 		2E6858DB245570AC0023AE5A /* FirebaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewController.swift; sourceTree = "<group>"; };
-		2E6858DD2457018F0023AE5A /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		2E6858DF245A8CE90023AE5A /* CameraRollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRollViewController.swift; sourceTree = "<group>"; };
 		2E7D68B62440A14F008C962B /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		2E7D68B82440B260008C962B /* FaceIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceIDViewController.swift; sourceTree = "<group>"; };
@@ -72,7 +69,6 @@
 		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2EAE8A48257132B2004B2455 /* MastodonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
-		2EC8F4E825471D790084E423 /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		2EC8F4EB254C75810084E423 /* GithubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubViewController.swift; sourceTree = "<group>"; };
 		2EC8F53B25514CED0084E423 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		2EC8F53E2556B9040084E423 /* MyDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDatePicker.swift; sourceTree = "<group>"; };
@@ -154,7 +150,6 @@
 				2EAE8A48257132B2004B2455 /* MastodonViewController.swift */,
 				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
 				2EA0956B2534858B0020332B /* StackOverflowViewController.swift */,
-				2E6858DD2457018F0023AE5A /* DropboxViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
@@ -176,7 +171,6 @@
 				2E64BD652461033800DAE6C9 /* NasViewController.swift */,
 				2EDCA8682520914B00A9E8BE /* NoteViewController.swift */,
 				2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */,
-				2EC8F4E825471D790084E423 /* FeedlyViewController.swift */,
 				2EC8F4EB254C75810084E423 /* GithubViewController.swift */,
 				2EC8F53B25514CED0084E423 /* SwiftUIView.swift */,
 				2EC8F53E2556B9040084E423 /* MyDatePicker.swift */,
@@ -320,7 +314,6 @@
 				2E6858942451BEAB0023AE5A /* SQLiteViewController.swift in Sources */,
 				2EE5C7C9243767D5005215DD /* ViewController.swift in Sources */,
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
-				2EC8F4E925471D790084E423 /* FeedlyViewController.swift in Sources */,
 				2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */,
 				2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */,
 				2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */,
@@ -336,7 +329,6 @@
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */,
 				2E6858E0245A8CE90023AE5A /* CameraRollViewController.swift in Sources */,
-				2E6858DE2457018F0023AE5A /* DropboxViewController.swift in Sources */,
 				2EC8F53C25514CED0084E423 /* SwiftUIView.swift in Sources */,
 				2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */,
 				2E68589A245527330023AE5A /* LocationNameViewController.swift in Sources */,

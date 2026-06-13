@@ -85,18 +85,18 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //    let str2:String = "c59b3cef-0fa1-414c-8aca-dc9678aaa85f"  // hbfav2 category
 //    let str2:String = "9b810adf-9db6-4600-8377-b04aec630ffc"  // hatenastuff category
     
-    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/" + category + "&continuation=" + continuation
+//    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/" + category + "&continuation=" + continuation
 //    let str1:String = "https://cloud.feedly.com/v3/streams/contents?streamId=user/" + Constants.feedlyUserId + "/category/hbfav&continuation=" + continuation
     
 //    let str5:String = "&limit="
 //    let str6:String = String(perPage)
 
-    let str7:String = str1
+//    let str7:String = str1
     
-    let url: URL = URL(string: str7)!
-    var request = URLRequest(url: url)
-    request.setValue(Constants.feedlyDeveloperToken, forHTTPHeaderField: "Authorization")
-    let task: URLSessionTask  = URLSession.shared.dataTask(with: request, completionHandler: {data, response, error in
+//    let url: URL = URL(string: str7)!
+//    var request = URLRequest(url: url)
+//    request.setValue(Constants.feedlyDeveloperToken, forHTTPHeaderField: "Authorization")
+//    let task: URLSessionTask  = URLSession.shared.dataTask(with: request, completionHandler: {data, response, error in
       do {
         // ([String : Any]) 3 key/value pairs
         let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: Any]

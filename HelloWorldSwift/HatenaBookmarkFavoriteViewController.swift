@@ -16,10 +16,10 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
   
-  var keyToken = Constants.key
+//  var keyToken = Constants.key
   
-  var feedUrl = URL(string: Constants.favoriteUrl)!
-  let feedUrlFavorite = URL(string: Constants.favoriteUrl)!
+//  var feedUrl = URL(string: Constants.favoriteUrl)!
+//  let feedUrlFavorite = URL(string: Constants.favoriteUrl)!
   let feedUrlSwift = URL(string: "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=1")
   let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
   let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
@@ -64,7 +64,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
-    parser = XMLParser(contentsOf: feedUrl)
+//    parser = XMLParser(contentsOf: feedUrl)
 //    print(feedUrl)
     parser.delegate = self
     parser.parse()
@@ -218,23 +218,23 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
                                             self.feedItems.removeAll()
                                             if(self.tag == self.tagFav) {
                                               self.tag = self.tagSwift
-                                              self.feedUrl = self.feedUrlSwift!
+//                                              self.feedUrl = self.feedUrlSwift!
                                               //print(self.feedUrlHotentry)
                                             }
                                             else if(self.tag == self.tagSwift) {
                                               self.tag = self.tagHotentry
-                                              self.feedUrl = self.feedUrlHotentry!
+//                                              self.feedUrl = self.feedUrlHotentry!
                                             }
                                             else if(self.tag == self.tagHotentry) {
                                               self.tag = self.tagIT
-                                              self.feedUrl = self.feedUrlIT!
+//                                              self.feedUrl = self.feedUrlIT!
                                             }
                                             else {
                                               self.tag = self.tagFav
-                                              self.feedUrl = self.feedUrlFavorite
+//                                              self.feedUrl = self.feedUrlFavorite
                                             }
                                             //      self.savedPage = 1
-                                            self.parser = XMLParser(contentsOf: self.feedUrl)
+//                                            self.parser = XMLParser(contentsOf: self.feedUrl)
                                             self.parser.delegate = self
                                             self.parser.parse()
                                             self.table.reloadData()
@@ -441,8 +441,8 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
           savedPage += 1
           print(savedPage)
           let url = "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage)
-          self.feedUrl = URL(string: url)!
-          self.parser = XMLParser(contentsOf: self.feedUrl)
+//          self.feedUrl = URL(string: url)!
+//          self.parser = XMLParser(contentsOf: self.feedUrl)
           self.parser.delegate = self
           self.parser.parse()
           self.table.reloadData()
