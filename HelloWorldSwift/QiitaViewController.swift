@@ -54,7 +54,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let app = "qiita"
   
 //  var tag = "Swift"
-  var tag = "Swift"
+  var tag = "Codex"
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
@@ -80,6 +80,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     table.rowHeight = 70
     
     myload(page: savedPage, perPage: perPage, tag: tag)
+    textPage.text =  String(tag) + " Page " + String(savedPage) +
+      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
     //print("myload (viewDidLoad)")
     
     //sqlite start
@@ -229,163 +231,25 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter/Codex/ClaudeCode/Gemini", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        if(self.tag == self.tagSwift) {
-          self.tag = self.tagReact
-        }
-        else if(self.tag == self.tagReact) {
-          self.tag = self.tagXcode
-        }
-        else if(self.tag == self.tagXcode) {
-          self.tag = self.tagFlutter
-        }
-        else if(self.tag == self.tagFlutter) {
-          self.tag = self.tagCodex
-        }
-        else if(self.tag == self.tagCodex) {
-          self.tag = self.tagClaudeCode
-        }
-        else if(self.tag == self.tagClaudeCode) {
-          self.tag = self.tagGemini
-        }
-//        else if(self.tag == self.tagFirebase) {
-//          self.tag = self.tagFirestore
-//        }
-//        else if(self.tag == self.tagFirestore) {
-//          self.tag = self.tagFlutter
-//        }
-        else {
-          self.tag = self.tagSwift
-        }
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(flutterSwiftAction)
+    func addTagAction(title: String, tag: String, page: Int) {
+      let tagAction = UIAlertAction(title: title, style: .default,
+        handler:{
+          (action:UIAlertAction!) -> Void in
+          self.articles.removeAll()
+          self.tag = tag
+          self.savedPage = page
+          self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+          self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+               "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+        })
+      alertController.addAction(tagAction)
+    }
 
-    let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagSwift
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(swiftPage1Action)
-  
-    let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagSwift
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(swiftPage50Action)
-  
-    let reactPage1Action = UIAlertAction(title: "React page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagReact
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(reactPage1Action)
-    
-    let reactPage50Action = UIAlertAction(title: "React page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagReact
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(reactPage50Action)
-
-    let codexPage1Action = UIAlertAction(title: "Codex page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagCodex
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(codexPage1Action)
-
-    let codexPage50Action = UIAlertAction(title: "Codex page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagCodex
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(codexPage50Action)
-
-    let claudeCodePage1Action = UIAlertAction(title: "ClaudeCode page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagClaudeCode
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(claudeCodePage1Action)
-
-    let claudeCodePage50Action = UIAlertAction(title: "ClaudeCode page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagClaudeCode
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(claudeCodePage50Action)
-
-    let geminiPage1Action = UIAlertAction(title: "Gemini page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagGemini
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(geminiPage1Action)
-
-    let geminiPage50Action = UIAlertAction(title: "Gemini page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.articles.removeAll()
-        self.tag = self.tagGemini
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      })
-    alertController.addAction(geminiPage50Action)
+    addTagAction(title: "Codex", tag: tagCodex, page: 1)
+    addTagAction(title: "ClaudeCode", tag: tagClaudeCode, page: 1)
+    addTagAction(title: "Gemini", tag: tagGemini, page: 1)
+    addTagAction(title: "Swift", tag: tagSwift, page: 1)
+    addTagAction(title: "React", tag: tagReact, page: 1)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
