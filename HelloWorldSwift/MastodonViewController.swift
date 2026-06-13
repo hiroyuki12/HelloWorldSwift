@@ -24,6 +24,7 @@
     var content: String
   //  var updated_at: String
     var uri: String
+    var url: String?
     var replies_count: Int?
     var reblogs_count: Int
     var favourites_count: Int
@@ -36,6 +37,7 @@
     
     struct ReblogStruct: Codable {
       var uri: String
+      var url: String?
       var content: String
       var account: AccountStruct
     }
@@ -64,9 +66,9 @@
     var sqliteSavedPage = 0
     var sqlliteSavedPerPage = 0
     
-    let app = "qiita"
+    let app = "mastodon"
     
-    var tag = "drikin"
+    var tag = "mstdn.social"
   //    let tag = "flutter"
     
     let tagDrikin     = "drikin"
@@ -77,8 +79,8 @@
     let tagQiita        = "qiitadon"
     let tagPawoo        = "pawoo"
     let tagPawooAiIlust = "pawoo #ai"
-    let tagSocial       = "social"
-    let tagCloud        = "cloud"
+    let tagSocial       = "mstdn.social"
+    let tagCloud        = "mastodon.cloud"
     
     let tagFirebase   = "Firebase"
     let tagFirestore  = "Firestore"
@@ -86,7 +88,7 @@
     
     var savedPage = 1
     var perPage = 20
-    var maxId = "999999999999999999"
+    var maxId = ""
     
     // 起動時処理
     override func viewDidLoad() {
@@ -97,6 +99,8 @@
       table.rowHeight = 110
       
       myload(page: savedPage, perPage: perPage, tag: tag)
+      textPage.text =  String(tag) + " Page " + String(savedPage) +
+        "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
       //print("myload (viewDidLoad)")
       
       //sqlite start
@@ -132,34 +136,37 @@
       }
       var str1 = ""
       if tag == tagDrikin {
-        str1 = "https://mstdn.guru/api/v1/accounts/1/statuses?max_id=" + self.maxId  // drikin
+        str1 = "https://mstdn.guru/api/v1/accounts/1/statuses?limit=" + String(perPage)  // drikin
       }
       else if tag == tagMazzo {
-        str1 = "https://mstdn.guru/api/v1/accounts/2/statuses?max_id=" + self.maxId  // mazzo
+        str1 = "https://mstdn.guru/api/v1/accounts/2/statuses?limit=" + String(perPage)  // mazzo
       }
       else if tag == tagGuru {
-        str1 = "https://mstdn.guru/api/v1/timelines/public?local=true&max_id=" + self.maxId
+        str1 = "https://mstdn.guru/api/v1/timelines/public?local=true&limit=" + String(perPage)
       }
       else if tag == tagJp {
-        str1 = "https://mstdn.jp/api/v1/timelines/public?local=true&max_id=" + self.maxId
+        str1 = "https://mstdn.jp/api/v1/timelines/public?local=true&limit=" + String(perPage)
       }
       else if tag == tagQiita {
-        str1 = "https://qiitadon.com/api/v1/timelines/public?local=true&max_id=" + self.maxId  // qiitadon
+        str1 = "https://qiitadon.com/api/v1/timelines/public?local=true&limit=" + String(perPage)  // qiitadon
       }
       else if tag == tagPawoo {
-        str1 = "https://pawoo.net/api/v1/timelines/public?local=true&max_id=" + self.maxId  // pawoo
+        str1 = "https://pawoo.net/api/v1/timelines/public?local=true&limit=" + String(perPage)  // pawoo
       }
       else if tag == tagPawooAiIlust {
         str1 = "https://pawoo.net/api/v1/timelines/tag/ai?limit=10"  // pawoo #AIイラスト
       }
       else if tag == tagSocial {
-        str1 = "https://mstdn.social/api/v1/timelines/public?local=true&max_id=" + self.maxId  // pawoo
+        str1 = "https://mstdn.social/api/v1/timelines/public?local=true&limit=" + String(perPage)
       }
       else if tag == tagCloud {
-        str1 = "https://mastodon.cloud/api/v1/timelines/public?local=true&max_id=" + self.maxId  // pawoo
+        str1 = "https://mastodon.cloud/api/v1/timelines/public?local=true&limit=" + String(perPage)
       }
       else {
-        str1 = "https://mstdn.guru/api/v1/timelines/public?local=true&max_id=" + self.maxId
+        str1 = "https://mstdn.social/api/v1/timelines/public?local=true&limit=" + String(perPage)
+      }
+      if !self.maxId.isEmpty {
+        str1 += "&max_id=" + self.maxId
       }
 
 //      let str2:String = String(tag)
@@ -174,6 +181,10 @@
       
       let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
         guard let data = data else {
+          DispatchQueue.main.async {
+            self.textPage.text = String(self.tag) + " load error"
+            self.isLoading = false
+          }
           return
         }
 //        print("AA")
@@ -184,8 +195,8 @@
 //          print(mastodonArticles[0])
 //          print(mastodonArticles[0].account.id)
           
-        if mastodonArticles.count > 19 {
-          self.maxId = mastodonArticles[19].id
+        if let lastArticle = mastodonArticles.last {
+          self.maxId = lastArticle.id
         }
 
           // 一時退避
@@ -206,6 +217,10 @@
         catch {
           print("error-1")
           print(error)
+          DispatchQueue.main.async {
+            self.textPage.text = String(self.tag) + " load error"
+            self.isLoading = false
+          }
         }
       })
       
@@ -381,7 +396,7 @@
             self.tag = self.tagDrikin
           }
           self.savedPage = 1
-          self.maxId = "999999999999999999"
+          self.maxId = ""
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -399,7 +414,7 @@
             self.tag = self.tagGuru
           }
           self.savedPage = 1
-          self.maxId = "999999999999999999"
+          self.maxId = ""
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -412,7 +427,7 @@
             self.articles.removeAll()
             self.tag = self.tagPawoo
             self.savedPage = 1
-            self.maxId = "999999999999999999"
+            self.maxId = ""
             self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
             self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                  "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -425,7 +440,7 @@
           self.articles.removeAll()
           self.tag = self.tagPawooAiIlust
           self.savedPage = 1
-          self.maxId = "999999999999999999"
+          self.maxId = ""
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -443,7 +458,7 @@
             self.tag = self.tagSocial
           }
           self.savedPage = 1
-          self.maxId = "999999999999999999"
+          self.maxId = ""
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
           self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -559,10 +574,10 @@
       
       let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
   //    webView.url = articles[indexPath.row].url as? String ?? "http://www.yahoo.co.jp"
-      webView.url = articles[indexPath.row].uri
+      webView.url = articles[indexPath.row].url ?? articles[indexPath.row].uri
       
-      if articles[indexPath.row].reblog != nil {
-        webView.url = articles[indexPath.row].reblog?.uri
+      if let reblog = articles[indexPath.row].reblog {
+        webView.url = reblog.url ?? reblog.uri
       }
       
       self.present(webView, animated: true, completion: nil)
@@ -591,4 +606,3 @@
     */
     
   }
-
