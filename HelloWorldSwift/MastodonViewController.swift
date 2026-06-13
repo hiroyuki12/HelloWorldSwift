@@ -68,14 +68,14 @@
     
     let app = "mastodon"
     
-    var tag = "mstdn.social"
+    var tag = "mstdn.jp"
   //    let tag = "flutter"
     
     let tagDrikin     = "drikin"
     let tagMazzo      = "mazzo"
-    
-    let tagGuru         = "mstdn.guru"
+      
     let tagJp           = "mstdn.jp"
+    let tagGuru         = "mstdn.guru"
     let tagQiita        = "qiitadon"
     let tagPawoo        = "pawoo"
     let tagPawooAiIlust = "pawoo #ai"
@@ -135,7 +135,10 @@
         return
       }
       var str1 = ""
-      if tag == tagDrikin {
+      if tag == tagJp {
+          str1 = "https://mstdn.jp/api/v1/timelines/public?local=true&limit=" + String(perPage)
+      }
+      else if tag == tagDrikin {
         str1 = "https://mstdn.guru/api/v1/accounts/1/statuses?limit=" + String(perPage)  // drikin
       }
       else if tag == tagMazzo {
@@ -143,9 +146,6 @@
       }
       else if tag == tagGuru {
         str1 = "https://mstdn.guru/api/v1/timelines/public?local=true&limit=" + String(perPage)
-      }
-      else if tag == tagJp {
-        str1 = "https://mstdn.jp/api/v1/timelines/public?local=true&limit=" + String(perPage)
       }
       else if tag == tagQiita {
         str1 = "https://qiitadon.com/api/v1/timelines/public?local=true&limit=" + String(perPage)  // qiitadon
@@ -403,15 +403,15 @@
         })
       alertController.addAction(drikinMazzoAction)
 
-      let guruJpAction = UIAlertAction(title: "mstdn.guru/mstdn.jp", style: .default,
+      let guruJpAction = UIAlertAction(title: "mstdn.jp/mstdn.guru", style: .default,
         handler:{
           (action:UIAlertAction!) -> Void in
           self.articles.removeAll()
-          if self.tag == self.tagGuru {
-            self.tag = self.tagJp
+          if self.tag == self.tagJp {
+            self.tag = self.tagGuru
           }
           else {
-            self.tag = self.tagGuru
+            self.tag = self.tagJp
           }
           self.savedPage = 1
           self.maxId = ""
