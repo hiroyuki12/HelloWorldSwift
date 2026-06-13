@@ -64,6 +64,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //  let tagFirestore  = "Firestore"
   let tagFlutter    = "Flutter"
   let tagReact      = "React"
+  let tagCodex      = "Codex"
   
   var savedPage = 1
   var perPage = 20
@@ -226,7 +227,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter/Codex", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
@@ -238,6 +239,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         else if(self.tag == self.tagXcode) {
           self.tag = self.tagFlutter
+        }
+        else if(self.tag == self.tagFlutter) {
+          self.tag = self.tagCodex
         }
 //        else if(self.tag == self.tagFirebase) {
 //          self.tag = self.tagFirestore
@@ -302,6 +306,30 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
       })
     alertController.addAction(reactPage50Action)
+
+    let codexPage1Action = UIAlertAction(title: "Codex page1/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagCodex
+        self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(codexPage1Action)
+
+    let codexPage50Action = UIAlertAction(title: "Codex page50/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagCodex
+        self.savedPage = 50
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(codexPage50Action)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
@@ -558,4 +586,3 @@ extension String {
         return String(suffix(from: i))
     }
 }
-
