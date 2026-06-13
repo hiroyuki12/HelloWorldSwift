@@ -65,6 +65,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let tagFlutter    = "Flutter"
   let tagReact      = "React"
   let tagCodex      = "Codex"
+  let tagClaudeCode = "ClaudeCode"
+  let tagGemini     = "Gemini"
   
   var savedPage = 1
   var perPage = 20
@@ -227,7 +229,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   private func popUp() {
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
-    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter/Codex", style: .default,
+    let flutterSwiftAction = UIAlertAction(title: "Swift/React/Xcode/Flutter/Codex/ClaudeCode/Gemini", style: .default,
       handler:{
         (action:UIAlertAction!) -> Void in
         self.articles.removeAll()
@@ -242,6 +244,12 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         else if(self.tag == self.tagFlutter) {
           self.tag = self.tagCodex
+        }
+        else if(self.tag == self.tagCodex) {
+          self.tag = self.tagClaudeCode
+        }
+        else if(self.tag == self.tagClaudeCode) {
+          self.tag = self.tagGemini
         }
 //        else if(self.tag == self.tagFirebase) {
 //          self.tag = self.tagFirestore
@@ -330,6 +338,54 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
       })
     alertController.addAction(codexPage50Action)
+
+    let claudeCodePage1Action = UIAlertAction(title: "ClaudeCode page1/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagClaudeCode
+        self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(claudeCodePage1Action)
+
+    let claudeCodePage50Action = UIAlertAction(title: "ClaudeCode page50/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagClaudeCode
+        self.savedPage = 50
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(claudeCodePage50Action)
+
+    let geminiPage1Action = UIAlertAction(title: "Gemini page1/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagGemini
+        self.savedPage = 1
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(geminiPage1Action)
+
+    let geminiPage50Action = UIAlertAction(title: "Gemini page50/20posts", style: .default,
+      handler:{
+        (action:UIAlertAction!) -> Void in
+        self.articles.removeAll()
+        self.tag = self.tagGemini
+        self.savedPage = 50
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      })
+    alertController.addAction(geminiPage50Action)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
       handler:{
