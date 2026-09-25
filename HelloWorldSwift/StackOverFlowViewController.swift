@@ -167,8 +167,8 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     
     let profileImageUrl = item.owner?.profile_image // items->owner->profile_image
     let profileImage = cell.viewWithTag(1) as! UIImageView
-    if profileImageUrl != nil {  // if profileImageUrl not nil
-      let myUrl: URL? = URL(string: profileImageUrl as! String)
+    if let profileImageUrl = profileImageUrl {  // if profileImageUrl not nil
+      let myUrl: URL? = URL(string: profileImageUrl)
       profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     }
     // セルに表示する回答数とタグを設定する

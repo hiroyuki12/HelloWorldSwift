@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>)
   {
     // コールバックで来たURLの取得
-    guard let url = URLContexts.first?.url else {
+    guard URLContexts.first?.url != nil else {
       return
     }
     

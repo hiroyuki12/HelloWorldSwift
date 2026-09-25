@@ -140,7 +140,7 @@ class FirebaseViewController: UIViewController {
   
   private func showErrorIfNeeded(_ errorOrNil: Error?) {
       // エラーがなければ何もしません
-      guard let error = errorOrNil else { return }
+      guard errorOrNil != nil else { return }
       
       let message = "エラーが起きました" // ここは後述しますが、とりあえず固定文字列
       let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)

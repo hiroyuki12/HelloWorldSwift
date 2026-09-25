@@ -45,7 +45,7 @@ class LocationNameViewController: UIViewController {
     isLoading = true
     
     // マネージャの設定
-    let status = CLLocationManager.authorizationStatus()
+    let status = CLLocationManager().authorizationStatus
     
     if status == .denied {
       showAlert()
@@ -117,7 +117,7 @@ class LocationNameViewController: UIViewController {
 //    locationManager.requestAlwaysAuthorization()
     
     // マネージャの設定
-    let status = CLLocationManager.authorizationStatus()
+    let status = locationManager.authorizationStatus
     // ステータスごとの処理
     if status == .authorizedWhenInUse {
       locationManager.delegate = self

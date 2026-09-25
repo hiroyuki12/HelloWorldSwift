@@ -27,7 +27,7 @@
 		2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C92442704D008C962B /* QiitaViewController.swift */; };
 		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
 		2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E91DED129B622A000BADB8B /* MisskeyViewController.swift */; };
-		2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverflowViewController.swift */; };
+		2EA0956C2534858B0020332B /* StackOverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverFlowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
 		2EAE8A49257132B2004B2455 /* MastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAE8A48257132B2004B2455 /* MastodonViewController.swift */; };
 		2EC8F4EC254C75810084E423 /* GithubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8F4EB254C75810084E423 /* GithubViewController.swift */; };
@@ -66,7 +66,7 @@
 		2E7D68C92442704D008C962B /* QiitaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaViewController.swift; sourceTree = "<group>"; };
 		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
 		2E91DED129B622A000BADB8B /* MisskeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MisskeyViewController.swift; sourceTree = "<group>"; };
-		2EA0956B2534858B0020332B /* StackOverflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverflowViewController.swift; sourceTree = "<group>"; };
+		2EA0956B2534858B0020332B /* StackOverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverFlowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
 		2EAE8A48257132B2004B2455 /* MastodonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonViewController.swift; sourceTree = "<group>"; };
 		2EC8F4EB254C75810084E423 /* GithubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubViewController.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 				2E7D68C92442704D008C962B /* QiitaViewController.swift */,
 				2EAE8A48257132B2004B2455 /* MastodonViewController.swift */,
 				2EE4C619251C9C2B006D03ED /* TeratrailViewController.swift */,
-				2EA0956B2534858B0020332B /* StackOverflowViewController.swift */,
+				2EA0956B2534858B0020332B /* StackOverFlowViewController.swift */,
 				2E7D68CB24427D9B008C962B /* MyTableViewController.swift */,
 				2EE5C7F4243819FC005215DD /* TableViewCell.swift */,
 				2EE5C7F5243819FC005215DD /* TableViewCell.xib */,
@@ -316,7 +316,7 @@
 				2E685892244F220A0023AE5A /* SubViewController.swift in Sources */,
 				2EE4C61A251C9C2B006D03ED /* TeratrailViewController.swift in Sources */,
 				2E68588A244DDD060023AE5A /* AddViewController.swift in Sources */,
-				2EA0956C2534858B0020332B /* StackOverflowViewController.swift in Sources */,
+				2EA0956C2534858B0020332B /* StackOverFlowViewController.swift in Sources */,
 				2EC8F4EC254C75810084E423 /* GithubViewController.swift in Sources */,
 				2EE5C7F6243819FC005215DD /* TableViewCell.swift in Sources */,
 				2EC8F53F2556B9040084E423 /* MyDatePicker.swift in Sources */,
@@ -483,10 +483,7 @@
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -507,10 +504,7 @@
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5SAFS85A5A;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

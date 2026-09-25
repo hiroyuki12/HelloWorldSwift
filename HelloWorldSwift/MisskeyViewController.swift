@@ -56,11 +56,13 @@ class MisskeyViewController: UIViewController {
       //既にログイン済みだとクラッシュするのでログアウト
       DropboxClientsManager.unlinkClients()
     }
-    DropboxClientsManager.authorizeFromController(UIApplication.shared,
-                                                  controller: self,
-                                                  openURL: { (url: URL) -> Void in
-                                                    UIApplication.shared.openURL(url)
-    })
+    DropboxClientsManager.authorizeFromControllerV2(UIApplication.shared,
+                                                    controller: self,
+                                                    loadingStatusDelegate: nil,
+                                                    openURL: { (url: URL) -> Void in
+                                                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                                    },
+                                                    scopeRequest: nil)
   }
   
   // Saveボタンタップ時

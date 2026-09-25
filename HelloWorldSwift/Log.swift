@@ -32,8 +32,9 @@ class Log {
 
         guard let data = text.data(using: .utf8) else { return false }
 
-        let result = data.withUnsafeBytes {
-            stream.write($0, maxLength: data.count)
+        let result = data.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Int in
+            guard let baseAddress = buffer.bindMemory(to: UInt8.self).baseAddress else { return 0 }
+            return stream.write(baseAddress, maxLength: buffer.count)
         }
 
         return (result > 0)

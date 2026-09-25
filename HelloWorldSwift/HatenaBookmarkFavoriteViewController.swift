@@ -440,7 +440,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
           isLoading = true
           savedPage += 1
           print(savedPage)
-          let url = "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage)
+//          let url = "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage)
 //          self.feedUrl = URL(string: url)!
 //          self.parser = XMLParser(contentsOf: self.feedUrl)
           self.parser.delegate = self

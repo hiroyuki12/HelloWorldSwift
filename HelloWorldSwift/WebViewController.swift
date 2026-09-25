@@ -53,7 +53,7 @@ class WebViewController: UIViewController {
     let shareWebsite = NSURL(string: url)!
 //    let shareImage = UIImage(named: "shareSample.png")!
     
-    let activityItems = [shareText, shareWebsite] as [Any]
+    let activityItems = [shareText ?? "", shareWebsite] as [Any]
     
     // 初期化処理
     let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
@@ -75,9 +75,9 @@ class WebViewController: UIViewController {
   }
   
   @IBAction func tapSafari(_ sender: Any) {
-    let url2 = NSURL(string: url)
-    if UIApplication.shared.canOpenURL(url2 as! URL) {
-      UIApplication.shared.open(url2! as URL, options: [:], completionHandler: nil)
+    guard let url2 = URL(string: url) else { return }
+    if UIApplication.shared.canOpenURL(url2) {
+      UIApplication.shared.open(url2, options: [:], completionHandler: nil)
     }
   }
   
