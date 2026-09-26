@@ -26,6 +26,7 @@
 		2E7D68C024412F31008C962B /* MapKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68BF24412F31008C962B /* MapKitViewController.swift */; };
 		2E7D68CA2442704D008C962B /* QiitaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68C92442704D008C962B /* QiitaViewController.swift */; };
 		2E7D68CC24427D9B008C962B /* MyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7D68CB24427D9B008C962B /* MyTableViewController.swift */; };
+		2E8BA9043067ACA500D95399 /* RSSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8BA9033067ACA500D95399 /* RSSParser.swift */; };
 		2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E91DED129B622A000BADB8B /* MisskeyViewController.swift */; };
 		2EA0956C2534858B0020332B /* StackOverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA0956B2534858B0020332B /* StackOverFlowViewController.swift */; };
 		2EA09618253A81900020332B /* HatenaBookmarkFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */; };
@@ -65,6 +66,7 @@
 		2E7D68BF24412F31008C962B /* MapKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitViewController.swift; sourceTree = "<group>"; };
 		2E7D68C92442704D008C962B /* QiitaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaViewController.swift; sourceTree = "<group>"; };
 		2E7D68CB24427D9B008C962B /* MyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewController.swift; sourceTree = "<group>"; };
+		2E8BA9033067ACA500D95399 /* RSSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSParser.swift; sourceTree = "<group>"; };
 		2E91DED129B622A000BADB8B /* MisskeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MisskeyViewController.swift; sourceTree = "<group>"; };
 		2EA0956B2534858B0020332B /* StackOverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackOverFlowViewController.swift; sourceTree = "<group>"; };
 		2EA09617253A81900020332B /* HatenaBookmarkFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HatenaBookmarkFavoriteViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				2EC8F4EB254C75810084E423 /* GithubViewController.swift */,
 				2EC8F53B25514CED0084E423 /* SwiftUIView.swift */,
 				2EC8F53E2556B9040084E423 /* MyDatePicker.swift */,
+				2E8BA9033067ACA500D95399 /* RSSParser.swift */,
 			);
 			path = HelloWorldSwift;
 			sourceTree = "<group>";
@@ -234,8 +237,9 @@
 		2EE5C7B9243767D5005215DD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 2700;
 				ORGANIZATIONNAME = hiroyuki;
 				TargetAttributes = {
 					2EE5C7C0243767D5005215DD = {
@@ -325,6 +329,7 @@
 				2EE5C7C5243767D5005215DD /* AppDelegate.swift in Sources */,
 				2E6858DC245570AC0023AE5A /* FirebaseViewController.swift in Sources */,
 				2EDCA8692520914B00A9E8BE /* NoteViewController.swift in Sources */,
+				2E8BA9043067ACA500D95399 /* RSSParser.swift in Sources */,
 				2E68588E244EF2E90023AE5A /* Log.swift in Sources */,
 				2E68588C244DDF2D0023AE5A /* ListViewController.swift in Sources */,
 				2E91DED229B622A000BADB8B /* MisskeyViewController.swift in Sources */,
@@ -395,8 +400,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5SAFS85A5A;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -416,6 +423,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -456,8 +464,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5SAFS85A5A;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -470,6 +480,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -482,10 +493,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -503,10 +513,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HelloWorldSwift/HelloWorldSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5SAFS85A5A;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HelloWorldSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

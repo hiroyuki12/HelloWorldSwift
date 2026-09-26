@@ -11,35 +11,18 @@ import Foundation
 import WebKit
 import SQLite3
 
-class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, XMLParserDelegate  {
+class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
-  
-//  var keyToken = Constants.key
-  
-//  var feedUrl = URL(string: Constants.favoriteUrl)!
-//  let feedUrlFavorite = URL(string: Constants.favoriteUrl)!
-  let feedUrlSwift = URL(string: "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=1")
+
+  // お気に入りのRSSはユーザー固有のURLのため未設定（設定されるまで Fav は空表示）
+  let feedUrlFavorite: URL? = nil
   let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
   let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
-//  let feedUrlBookmark = URL(string: "http://b.hatena.ne.jp/naoya/rss?page=2")
-  
+
   var feedItems = [FeedItem]()
-  
-  var currentElementName : String! // RSSパース中の現在の要素名
-  
-  // Favorite
-  let ITEM_ELEMENT_NAME = "item"
-  let TITLE_ELEMENT_NAME = "title"
-  let LINK_ELEMENT_NAME   = "link"
-  let BOOKMARKCOUNT_ELEMENT_NAME   = "hatena:bookmarkcount"
-  let CREATOR_ELEMENT_NAME   = "dc:creator"
-  let DATE_ELEMENT_NAME   = "dc:date"
-  
-  // Hotentry
-  let IMAGE_ELEMENT_NAME   = "hatena:imageurl"
-  
+
   var db: OpaquePointer?
   
   var isLoading = false;
@@ -56,22 +39,16 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
   var savedPage = 1
   var perPage = 20
-  
-  var parser: XMLParser!
-  
+
   // 起動時処理
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    // Do any additional setup after loading the view.
-//    parser = XMLParser(contentsOf: feedUrl)
-//    print(feedUrl)
-    parser.delegate = self
-    parser.parse()
-    
+
     // セルの高さを設定
     table.rowHeight = 70
-    
+
+    loadFeed()
+
     //sqlite start
     let fileUrl = try!
       FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
@@ -91,10 +68,49 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     //print("viewDidLoad End!")
   }
   
-  func myload() {
-    
+  // 現在の tag / savedPage に対応する RSS のURL
+  private func feedUrl() -> URL? {
+    switch tag {
+    case tagSwift:
+      return URL(string: "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage))
+    case tagHotentry:
+      return feedUrlHotentry
+    case tagIT:
+      return feedUrlIT
+    default:
+      return feedUrlFavorite
+    }
   }
-  
+
+  // RSS を非同期に取得して feedItems の末尾に追加する
+  private func loadFeed() {
+    updatePageText()
+    guard let url = feedUrl() else {
+      textPage.text = String(tag) + " (URL未設定)"
+      isLoading = false
+      return
+    }
+    let requestedTag = tag
+    let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+      let items = data.map { RSSParser.parse($0) } ?? []
+      DispatchQueue.main.async {
+        guard let self = self else { return }
+        // 読み込み中に tag が切り替わった場合は古い結果を捨てる
+        if requestedTag == self.tag {
+          self.feedItems += items
+          self.table.reloadData()
+        }
+        self.isLoading = false
+      }
+    }
+    task.resume()
+  }
+
+  private func updatePageText() {
+    textPage.text = String(tag) + " Page " + String(savedPage) +
+      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+  }
+
   // Cellの中身を設定
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // セルを取得する
@@ -108,82 +124,37 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     let textDetailText = cell.viewWithTag(3) as! UILabel
     textDetailText.text = feedItem.bookmarkcount + " users"
     // セルに表示する画像を設定する
-    //https://cdn.profile-image.st-hatena.com/users/laiso/profile.gif
-    if(feedItem.creator != nil) {  // Farorite
-      let profileImageUrl = "https://cdn.profile-image.st-hatena.com/users/" + feedItem.creator + "/profile.gif"// items->thumbnail
-      let profileImage = cell.viewWithTag(1) as! UIImageView
-      let myUrl: URL? = URL(string: profileImageUrl)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    let profileImage = cell.viewWithTag(1) as! UIImageView
+    var imageUrl: String?
+    if let creator = feedItem.creator {  // Favorite
+      imageUrl = "https://cdn.profile-image.st-hatena.com/users/" + creator + "/profile.gif"
     }
-    if(feedItem.imageurl != nil) {  // Hotentry, IT
-      let profileImageUrl = feedItem.imageurl! // items->thumbnail
-      let profileImage = cell.viewWithTag(1) as! UIImageView
-      let myUrl: URL? = URL(string: profileImageUrl)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    if let imageurl = feedItem.imageurl {  // Hotentry, IT
+      imageUrl = imageurl
+    }
+    if let imageUrl = imageUrl {
+      profileImage.loadImageAsynchronously(url: URL(string: imageUrl), defaultUIImage: nil)
+    } else {
+      profileImage.image = nil  // 再利用セルの古い画像を消す
     }
     // セルに表示するブックマークしたユーザー、日を設定する
     let tagsText = cell.viewWithTag(4) as! UILabel
-    if(feedItem.creator != nil) {
-//      tagsText.text = feedItem.creator + " " + feedItem.date + "+09.00"
-      tagsText.text = feedItem.creator + " " + daysAgo(feedItem.date)
+    let ago = daysAgo(feedItem.date ?? "")
+    if let creator = feedItem.creator {
+      tagsText.text = creator + " " + ago
     }
     else {
-      tagsText.text = daysAgo(feedItem.date)
+      tagsText.text = ago
     }
-    //    let replayCount = article["answer_count"] as? Int  // items->answer_count
-    //    let pvCount = article["view_count"] as? Int  // items->view_count
-    //    var arr = article["tags"] as? [String]  // items->tags
-    //    let count = arr!.count
-    ////    let tag1name = arr?.first!
-    //    let tag1name = "回答数 "  String(replayCount!)  " / PV数 "  String(pvCount!)
-    //       " / "  (arr?[0])!
-//    tagsText.text = feedItem.creator + " " + feedItem.date + "+09.00"
-    //    if(count > 1) {
-    //      arr?.removeFirst()
-    //      let tag2name = arr?[0]
-    //      tagsText.text = tag1name  ","  tag2name!
-    //      if(count > 2) {
-    //        arr?.removeFirst()
-    //        let tag3name = arr?[0]
-    //        tagsText.text = tag1name  ","  tag2name!  ","  tag3name!
-    //        if(count > 3) {
-    //          arr?.removeFirst()
-    //          let tag4name = arr?[0]
-    //          tagsText.text = tag1name  ","  tag2name!  ","  tag3name!  ","  tag4name!
-    //          if(count > 4) {
-    //            arr?.removeFirst()
-    //            let tag5name = arr?[0]
-    //            tagsText.text = tag1name  ","  tag2name!  ","  tag3name!  ","  tag4name!  ","  tag5name!
-    //          }
-    //        }
-    //      }
-    //    }
     return cell
   }
-  
+
+  // dc:date（例: 2020-10-15T12:34:56+09:00）を「◯時間前」形式にする。解析できなければ空文字
   func daysAgo(_ data: String) -> String {
-    //    print(data)
-    let calendar = Calendar.current
-    
-    let hour = Int(data[11...12])! + 9
-    if (hour < 24) {
-      let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
-      if let date = calendar.date(from: dateComponents) {
-        //print("\(date)      \(date.timeAgo())")
-        return date.timeAgo()
-      }
+    guard let date = ISO8601DateFormatter().date(from: data) else {
+      return ""
     }
-    else {
-      let hour = Int(data[11...12])! + 9 - 24
-      let day = Int(data[8...9])! + 1  // 31 + 1
-      let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: day, hour: hour, minute: Int(data[14...15]), second: Int(data[17...18]))
-      if let date = calendar.date(from: dateComponents) {
-        //print("\(date)      \(date.timeAgo())")
-        return date.timeAgo()
-      }
-    }
-    
-    return ""
+    return date.timeAgo()
   }
   
   // Cellの個数を設定
@@ -214,33 +185,22 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     let flutterSwiftAction = UIAlertAction(title: "Fav/Swift/Hotentry/IT", style: .default,
                                            handler:{
                                             (action:UIAlertAction!) -> Void in
-//                                            self.articles.removeAll()
                                             self.feedItems.removeAll()
                                             if(self.tag == self.tagFav) {
                                               self.tag = self.tagSwift
-//                                              self.feedUrl = self.feedUrlSwift!
-                                              //print(self.feedUrlHotentry)
                                             }
                                             else if(self.tag == self.tagSwift) {
                                               self.tag = self.tagHotentry
-//                                              self.feedUrl = self.feedUrlHotentry!
                                             }
                                             else if(self.tag == self.tagHotentry) {
                                               self.tag = self.tagIT
-//                                              self.feedUrl = self.feedUrlIT!
                                             }
                                             else {
                                               self.tag = self.tagFav
-//                                              self.feedUrl = self.feedUrlFavorite
                                             }
-                                            //      self.savedPage = 1
-//                                            self.parser = XMLParser(contentsOf: self.feedUrl)
-                                            self.parser.delegate = self
-                                            self.parser.parse()
+                                            self.savedPage = 1
                                             self.table.reloadData()
-                                            //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                            self.textPage.text = String(self.tag) + " Page " + String(self.savedPage) +
-                                              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+                                            self.loadFeed()
                                            })
     alertController.addAction(flutterSwiftAction)
     
@@ -429,7 +389,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
       self.present(webView, animated: true, completion: nil)
     }
     else {
-      print(feedItem.url ?? "")
+      print(feedItem.url)
     }
     
   }
@@ -437,65 +397,13 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     if(tag == tagSwift) {
         if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
-          isLoading = true
+          isLoading = true  // 読み込み完了時に loadFeed() が false に戻す
           savedPage += 1
-          print(savedPage)
-//          let url = "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage)
-//          self.feedUrl = URL(string: url)!
-//          self.parser = XMLParser(contentsOf: self.feedUrl)
-          self.parser.delegate = self
-          self.parser.parse()
-          self.table.reloadData()
-//          //myload(page: savedPage, perPage: 20, tag: tag)
-//          //print("myload(List End)")
-//
-          textPage.text =  String(tag) + " Page " + String(savedPage) +
-            "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-          isLoading = false
+          loadFeed()
         }
     }
   }
-  
-  func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-    self.currentElementName = nil
-    //print(elementName)
-    if elementName == ITEM_ELEMENT_NAME {
-      self.feedItems.append(FeedItem())
-    } else {
-      currentElementName = elementName
-    }
-  }
-  
-  func parser(_ parser: XMLParser, foundCharacters string: String) {
-    if self.feedItems.count > 0 {
-      let lastItem = self.feedItems[self.feedItems.count - 1]
-      switch self.currentElementName {
-      case TITLE_ELEMENT_NAME:
-        let tmpString = lastItem.title
-        lastItem.title = (tmpString != nil) ? tmpString! + string : string
-      case LINK_ELEMENT_NAME:
-        lastItem.url = string
-      case BOOKMARKCOUNT_ELEMENT_NAME:
-        lastItem.bookmarkcount = string
-      case CREATOR_ELEMENT_NAME:
-        lastItem.creator = string
-      case DATE_ELEMENT_NAME:
-        lastItem.date = string
-      case IMAGE_ELEMENT_NAME:
-        lastItem.imageurl = string
-      default: break
-      }
-    }
-  }
-  
-  func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-    self.currentElementName = nil
-  }
-  
-  func parserDidEndDocument(_ parser: XMLParser) {
-    //      self.tableView.reloadData()
-  }
-  
+
   /*
    // MARK: - Navigation
    
@@ -505,15 +413,5 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
    // Pass the selected object to the new view controller.
    }
    */
-  
-}
 
-class FeedItem {
-  var title: String!
-  var url: String!
-  var bookmarkcount: String!
-  var creator: String!
-  var date: String!
-  
-  var imageurl: String!
 }
