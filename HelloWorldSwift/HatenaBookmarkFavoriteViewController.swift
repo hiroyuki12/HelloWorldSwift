@@ -282,6 +282,23 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   func swiftPage1Action() {
   }
   
+  // qキーで画面を閉じる
+  override var keyCommands: [UIKeyCommand]? {
+    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:) as (Any) -> Void))
+    command.wantsPriorityOverSystemBehavior = true
+    return [command]
+  }
+
+  // キー入力を受け取るためにファーストレスポンダーになる
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    becomeFirstResponder()
+  }
+
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
     //戻る

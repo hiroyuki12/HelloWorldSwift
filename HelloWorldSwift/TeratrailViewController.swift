@@ -321,6 +321,23 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
           "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
+  // qキーで画面を閉じる
+  override var keyCommands: [UIKeyCommand]? {
+    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:)))
+    command.wantsPriorityOverSystemBehavior = true
+    return [command]
+  }
+
+  // キー入力を受け取るためにファーストレスポンダーになる
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    becomeFirstResponder()
+  }
+
   // Closeボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
     //戻る

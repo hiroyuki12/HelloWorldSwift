@@ -16,6 +16,14 @@ class WebViewController: UIViewController {
   // ①表示するURLを持っておく public 外部から変更
   var url: String!
 
+  // qキーで画面を閉じる
+  override var keyCommands: [UIKeyCommand]? {
+    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapClose(_:)))
+    // WKWebViewより先にキー入力を受け取る
+    command.wantsPriorityOverSystemBehavior = true
+    return [command]
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     

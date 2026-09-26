@@ -305,6 +305,25 @@ class MisskeyViewController: UIViewController {
     downloadDropboxFile()
   }
   
+  // qキーで画面を閉じる
+  override var keyCommands: [UIKeyCommand]? {
+    // テキスト入力中はqキーで閉じない
+    guard !textField.isFirstResponder else { return nil }
+    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapClose(_:)))
+    command.wantsPriorityOverSystemBehavior = true
+    return [command]
+  }
+
+  // キー入力を受け取るためにファーストレスポンダーになる
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    becomeFirstResponder()
+  }
+
   // Closeボタンタップ時
   @IBAction func tapClose(_ sender: Any) {
     stopTimer()

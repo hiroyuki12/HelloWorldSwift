@@ -220,6 +220,23 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         popUp()
     }
     
+    // qキーで画面を閉じる
+    override var keyCommands: [UIKeyCommand]? {
+        let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:)))
+        command.wantsPriorityOverSystemBehavior = true
+        return [command]
+    }
+
+    // キー入力を受け取るためにファーストレスポンダーになる
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        becomeFirstResponder()
+    }
+
     @IBAction func tapSave(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
