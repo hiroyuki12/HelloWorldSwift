@@ -54,7 +54,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let app = "qiita"
   
 //  var tag = "Swift"
-  var tag = "Codex"
+//  var tag = "Codex"
+  var tag = "Fable5"
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
@@ -67,6 +68,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let tagCodex      = "Codex"
   let tagClaudeCode = "ClaudeCode"
   let tagGemini     = "Gemini"
+  let tagFable5     = "Fable5"
   
   var savedPage = 1
   var perPage = 20
@@ -245,6 +247,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       alertController.addAction(tagAction)
     }
 
+    addTagAction(title: "Fable5", tag: tagFable5, page: 1)
     addTagAction(title: "Codex", tag: tagCodex, page: 1)
     addTagAction(title: "ClaudeCode", tag: tagClaudeCode, page: 1)
     addTagAction(title: "Gemini", tag: tagGemini, page: 1)
@@ -287,6 +290,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
     alertController.addAction(cancelAction)
 
+    // iPad/Macでキー操作から表示した場合に備えて、ポップオーバーの表示位置を指定する
+    if let popover = alertController.popoverPresentationController {
+      popover.sourceView = view
+      popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+      popover.permittedArrowDirections = []
+    }
+
     present(alertController, animated: true, completion: nil)
   }
 
@@ -299,11 +309,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
           "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
-  // qキーで画面を閉じる
+  // qキーで画面を閉じる、mキーでメニューを表示する
   override var keyCommands: [UIKeyCommand]? {
     let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:)))
     command.wantsPriorityOverSystemBehavior = true
-    return [command]
+    let menuCommand = UIKeyCommand(input: "m", modifierFlags: [], action: #selector(next(_:)))
+    menuCommand.wantsPriorityOverSystemBehavior = true
+    return [command, menuCommand]
   }
 
   // キー入力を受け取るためにファーストレスポンダーになる
