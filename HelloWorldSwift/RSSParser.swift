@@ -39,6 +39,17 @@ final class RSSParser: NSObject, XMLParserDelegate {
 
   // 1つの要素の文字列が複数回に分けて渡されることがあるため、連結して保持する
   func parser(_ parser: XMLParser, foundCharacters string: String) {
+    appendCharacterData(string)
+  }
+
+  // CDATAセクションの文字列も連結して保持する
+  func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
+    if let string = String(data: CDATABlock, encoding: .utf8) {
+      appendCharacterData(string)
+    }
+  }
+
+  private func appendCharacterData(_ string: String) {
     guard !items.isEmpty, let elementName = currentElementName else { return }
     let index = items.count - 1
     switch elementName {

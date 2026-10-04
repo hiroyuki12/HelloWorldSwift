@@ -55,7 +55,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
 //  var tag = "Swift"
 //  var tag = "Codex"
-  var tag = "Fable5"
+  var tag = "ClaudeCode"
+//  var tag = "Fable5"
 //    let tag = "flutter"
   
   let tagSwift      = "Swift"
@@ -63,12 +64,13 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let tagiOS        = "iOS"
 //  let tagFirebase   = "Firebase"
 //  let tagFirestore  = "Firestore"
-  let tagFlutter    = "Flutter"
-  let tagReact      = "React"
-  let tagCodex      = "Codex"
-  let tagClaudeCode = "ClaudeCode"
-  let tagGemini     = "Gemini"
-  let tagFable5     = "Fable5"
+  let tagFlutter       = "Flutter"
+  let tagReact         = "React"
+  let tagCodex         = "Codex"
+  let tagClaudeCode    = "ClaudeCode"
+  let tagGemini        = "Gemini"
+  let tagGitHubCopilot = "GitHubCopilot"
+//  let tagFable5      = "Fable5"
   
   var savedPage = 1
   var perPage = 20
@@ -109,6 +111,12 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print("viewDidLoad End!")
   }
   
+  deinit {
+    if let db = db {
+      sqlite3_close(db)
+    }
+  }
+
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
@@ -117,47 +125,42 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     if page > 100 {
       return
     }
-    let str1:String = "http://qiita.com/api/v2/tags/"
-    let str2:String = String(tag)
-    let str3:String = "/items?page="
-    let str4:String = String(page)
-    let str5:String = "&per_page="
-    let str6:String = String(perPage)
-
-    let str7:String = str1 + str2 + str3 + str4 + str5 + str6
+    let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? tag
+    let urlString = "https://qiita.com/api/v2/tags/\(encodedTag)/items?page=\(page)&per_page=\(perPage)"
+    guard let url = URL(string: urlString) else {
+      self.isLoading = false
+      return
+    }
     
-    let url: URL = URL(string: str7)!
-    
-    let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
+    let requestedTag = tag
+    let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: { [weak self] data, response, error in
+      guard let self = self else { return }
       guard let data = data else {
+        DispatchQueue.main.async {
+          self.isLoading = false
+        }
         return
       }
       do {
         let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)  // Codable
         
-        // 一時退避
-        let articles_tmp = self.articles
-        // 末尾に追加
-        let articles = articles_tmp + qiitaArticles
-        
-        self.articles = articles
-        //print("self.articles Set End!")
-        
         DispatchQueue.main.async {
-          self.table.reloadData()
-          //print("reloadData End!")
+          // タグが切り替わっていないか確認し、メインスレッドで配列を更新 (Data Race防止)
+          if requestedTag == self.tag {
+            self.articles += qiitaArticles
+            self.table.reloadData()
+          }
           self.isLoading = false
-          //print("self.isLoading = false End!")
         }
       }
       catch {
-          //print(error)
+        DispatchQueue.main.async {
+          self.isLoading = false
+        }
       }
     })
     
     task.resume() //実行する
-    
-    //print("myload End!")
   }
   
   // Cellの中身を設定
@@ -165,49 +168,46 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
+    guard indexPath.row < articles.count else { return cell }
     let article = articles[indexPath.row]
     // セルに表示するタイトルを設定する
-    let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = article.title
+    let textTitle = cell.viewWithTag(2) as? UILabel
+    textTitle?.text = article.title
     // セルに表示する作成日を設定する
-    let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = daysAgo(article.created_at)
+    let textDetailText = cell.viewWithTag(3) as? UILabel
+    textDetailText?.text = daysAgo(article.created_at)
     // セルに表示する画像を設定する
     let profileImageUrl = article.user.profile_image_url
-    let profileImage = cell.viewWithTag(1) as! UIImageView
+    let profileImage = cell.viewWithTag(1) as? UIImageView
+    profileImage?.image = nil
     let myUrl: URL? = URL(string: profileImageUrl)
-    profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    profileImage?.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
     // セルに表示するタグを設定する
-    let tagsText = cell.viewWithTag(4) as! UILabel
-    let count = article.tags.count
-    tagsText.text = ""
-    var tags = ""
-    if(count > 0) {
-      tags = article.tags[0].name
-      if(count > 1) {
-        tags += "," + article.tags[1].name
-        if(count > 2) {
-          tags += "," + article.tags[2].name
-          if(count > 3) {
-            tags += "," + article.tags[3].name
-            if(count > 4) {
-              tags += "," + article.tags[4].name
-            }
-          }
-        }
-      }
-    }
-    tagsText.text = tags
+    let tagsText = cell.viewWithTag(4) as? UILabel
+    tagsText?.text = article.tags.prefix(5).map { $0.name }.joined(separator: ", ")
     return cell
   }
   
   func daysAgo(_ data: String) -> String {
-    //    print(data)
-    let calendar = Calendar.current
-    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
-    if let date = calendar.date(from: dateComponents) {
-      //        print("\(date)      \(date.timeAgo())")
+    let isoFormatter = ISO8601DateFormatter()
+    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    if let date = isoFormatter.date(from: data) ?? ISO8601DateFormatter().date(from: data) {
       return date.timeAgo()
+    }
+    if data.count >= 19 {
+      let calendar = Calendar.current
+      let dateComponents = DateComponents(
+        calendar: calendar,
+        year: Int(data[0...3]),
+        month: Int(data[5...6]),
+        day: Int(data[8...9]),
+        hour: Int(data[11...12]),
+        minute: Int(data[14...15]),
+        second: Int(data[17...18])
+      )
+      if let date = calendar.date(from: dateComponents) {
+        return date.timeAgo()
+      }
     }
     return ""
   }
@@ -235,8 +235,8 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func addTagAction(title: String, tag: String, page: Int) {
       let tagAction = UIAlertAction(title: title, style: .default,
-        handler:{
-          (action:UIAlertAction!) -> Void in
+        handler:{ [weak self] (action:UIAlertAction!) -> Void in
+          guard let self = self else { return }
           self.articles.removeAll()
           self.tag = tag
           self.savedPage = page
@@ -247,44 +247,39 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       alertController.addAction(tagAction)
     }
 
-    addTagAction(title: "Fable5", tag: tagFable5, page: 1)
-    addTagAction(title: "Codex", tag: tagCodex, page: 1)
     addTagAction(title: "ClaudeCode", tag: tagClaudeCode, page: 1)
+    addTagAction(title: "Codex", tag: tagCodex, page: 1)
     addTagAction(title: "Gemini", tag: tagGemini, page: 1)
+    addTagAction(title: "GitHubCopilot", tag: tagGitHubCopilot, page: 1)
     addTagAction(title: "Swift", tag: tagSwift, page: 1)
     addTagAction(title: "React", tag: tagReact, page: 1)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        //savedPage  //現在のページ
+      handler:{ [weak self] (action:UIAlertAction!) -> Void in
+        guard let self = self else { return }
         print("start tapSave.")
         print("savedPage: " + String(self.savedPage))
         
-        // mysql delete
+        // delete & insert
         self.tapDelete(self.savedPage, self.tag + self.app)
-        // mysql insert
         self.tapSave(self.savedPage, self.tag + self.app)
         
-        self.sqliteSavedPage = self.savedPage;
+        self.sqliteSavedPage = self.savedPage
         print("sqliteSavedPage: " + String(self.sqliteSavedPage))
-
       })
     alertController.addAction(saveSwiftPageAction)
   
     let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
-    handler:{
-      (action:UIAlertAction!) -> Void in
-      
-      self.articles.removeAll()
-      self.savedPage = self.sqliteSavedPage
-      self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-      self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-            "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      
-      print ("finish tapLoad!")
-
-    })
+      handler:{ [weak self] (action:UIAlertAction!) -> Void in
+        guard let self = self else { return }
+        self.articles.removeAll()
+        self.savedPage = self.sqliteSavedPage
+        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
+        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
+              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+        
+        print ("finish tapLoad!")
+      })
     alertController.addAction(loadSwiftPageAction)
   
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -300,18 +295,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     present(alertController, animated: true, completion: nil)
   }
 
-  func swiftPage1Action() {
-    articles.removeAll()
-    tag = tagFlutter
-    savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
-  }
-  
   // qキーで画面を閉じる、mキーでメニューを表示する
   override var keyCommands: [UIKeyCommand]? {
-    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:)))
+    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapClose(_:)))
     command.wantsPriorityOverSystemBehavior = true
     let menuCommand = UIKeyCommand(input: "m", modifierFlags: [], action: #selector(next(_:)))
     menuCommand.wantsPriorityOverSystemBehavior = true
@@ -328,52 +314,43 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     becomeFirstResponder()
   }
 
-  // Closeボタンタップ時
-  @IBAction func tapSave(_ sender: Any) {
-    //戻る
+  // Closeボタンタップ時 / qキー押下時
+  @IBAction func tapClose(_ sender: Any) {
     dismiss(animated: true, completion: nil)
+  }
+
+  // Storyboard互換用
+  @IBAction func tapSave(_ sender: Any) {
+    tapClose(sender)
   }
   
   // nameがtagのデータをdelete。引数のpageは未使用。
   func tapDelete(_ page: Int, _ tag: String) {
-    //creating a statement
     var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = " + "\"" + tag + "\""
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//      let errmsg = String(cString: sqlite3_errmsg(db)!)
-//      print("error preparing delte: \(errmsg)")
+    let queryString = "DELETE FROM Heroes WHERE name = ?"
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
       return
     }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure deleting hero: \(errmsg)")
-        return
+    defer {
+      sqlite3_finalize(stmt)
     }
-//    print ("finish tapDelete!")
+    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
+    _ = sqlite3_step(stmt)
   }
   
-  // nameが1、powerrankが引数のpageの文字列で、insert
+  // nameがtag、powerrankが引数のpageの文字列で、insert
   func tapSave(_ page: Int, _ tag: String) {
-    //creating a statement
     var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (\"" + tag + "\"," + String(page) + ")"
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//      let errmsg = String(cString: sqlite3_errmsg(db)!)
-//      print("error preparing insert: \(errmsg)")
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (?, ?)"
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
       return
     }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure inserting hero: \(errmsg)")
-        return
+    defer {
+      sqlite3_finalize(stmt)
     }
-//    print ("finish tapSave!")
+    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
+    sqlite3_bind_int(stmt, 2, Int32(page))
+    _ = sqlite3_step(stmt)
   }
   
   // Loadボタンタップ時
@@ -382,27 +359,20 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   func tapRead(_ page: Int, _ tag: String) {
     sqliteSavedPage = 0
-    //this is our select query
-    let queryString = "SELECT * FROM Heroes Where name = \"" + tag + "\""
-    //statement pointer
-    var stmt:OpaquePointer?
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("error preparing insert: \(errmsg)")
-        return
+    let queryString = "SELECT powerrank FROM Heroes WHERE name = ?"
+    var stmt: OpaquePointer?
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
+      return
     }
-    //traversing through all the records
-    while(sqlite3_step(stmt) == SQLITE_ROW){
-      //let id = sqlite3_column_int(stmt, 0)
-      let name = String(cString: sqlite3_column_text(stmt, 1))
-      let powerrank = sqlite3_column_int(stmt, 2)
-      print("name:" + name + ", powerrank:" + String(powerrank))
-        //adding values to list
-//        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
+    defer {
+      sqlite3_finalize(stmt)
+    }
+    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
+    while sqlite3_step(stmt) == SQLITE_ROW {
+      let powerrank = sqlite3_column_int(stmt, 0)
+      print("name:" + tag + ", powerrank:" + String(powerrank))
       sqliteSavedPage = Int(powerrank)
     }
-//    print ("finish tapRead!")
   }
   
   // Prevボタン押下
@@ -410,29 +380,25 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     savedPage -= 1
     myload(page: savedPage, perPage: 20, tag: tag)
     
-    textPage.text =  "swift Page " + String(savedPage) +
+    textPage.text =  String(tag) + " Page " + String(savedPage) +
       "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
   // セルをタップした時の処理
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
-//    popUp()
-    
-    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
-//    webView.url = articles[indexPath.row].url as? String ?? "http://www.yahoo.co.jp"
+    guard indexPath.row < articles.count else { return }
+    guard let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
+      return
+    }
     webView.url = articles[indexPath.row].url
-
-
     self.present(webView, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
+    if (self.table.contentSize.height > 0 && self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading) {
       isLoading = true
       savedPage += 1
       myload(page: savedPage, perPage: 20, tag: tag)
-      //print("myload(List End)")
       
       textPage.text =  String(tag) + " Page " + String(savedPage) +
         "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
@@ -454,29 +420,25 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 // 指定URLから画像を読み込み、セットする
 // defaultUIImageには、URLからの読込に失敗した時の画像を指定する
 extension UIImageView {
-  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) -> Void {
-    if url == nil {
+  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) {
+    guard let url = url else {
       self.image = defaultUIImage
       return
     }
 
-    DispatchQueue.global().async {
-      do {
-        let imageData: Data? = try Data(contentsOf: url!)
+    let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+      guard let self = self else { return }
+      if let data = data, let image = UIImage(data: data) {
         DispatchQueue.main.async {
-          if let data = imageData {
-            self.image = UIImage(data: data)
-          } else {
-            self.image = defaultUIImage
-          }
+          self.image = image
         }
-      }
-      catch {
+      } else {
         DispatchQueue.main.async {
           self.image = defaultUIImage
         }
       }
     }
+    task.resume()
   }
 }
 

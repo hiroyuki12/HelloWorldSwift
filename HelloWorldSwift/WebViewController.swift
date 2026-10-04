@@ -14,7 +14,7 @@ class WebViewController: UIViewController {
   @IBOutlet weak var wkWebView: WKWebView!
   
   // ①表示するURLを持っておく public 外部から変更
-  var url: String!
+  var url: String?
 
   // qキーで画面を閉じる
   override var keyCommands: [UIKeyCommand]? {
@@ -24,17 +24,21 @@ class WebViewController: UIViewController {
     return [command]
   }
 
+  // キー入力を受け取るためにファーストレスポンダーになる
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    becomeFirstResponder()
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Do any additional setup after loading the view.
-    //print("Hello!")
-    //print(url)
-    
-    if let url = URL(string: self.url!) {
-      //if let url = URL(string: "https://www.apple.com/jp/swift/") {  // URL文字列の表記間違いなどで、URL()がnilになる場合があるため、nilにならない場合のみ以下のload()が実行されるようにしている
+    if let urlString = self.url, let url = URL(string: urlString) {
       let request = URLRequest(url: url)
-      //self.wkWebView.load(URLRequest(url: url))
       wkWebView.load(request)
       // スワイプで進む、戻るを有効にする
       wkWebView.allowsBackForwardNavigationGestures = true
@@ -54,14 +58,11 @@ class WebViewController: UIViewController {
     wkWebView.goBack()
   }
   
-  
   @IBAction func tapShare(_ sender: Any) {
-    // 共有する項目
+    guard let urlString = url, let shareWebsite = URL(string: urlString) else { return }
     let shareText = wkWebView.title
-    let shareWebsite = NSURL(string: url)!
-//    let shareImage = UIImage(named: "shareSample.png")!
     
-    let activityItems = [shareText ?? "", shareWebsite] as [Any]
+    let activityItems: [Any] = [shareText ?? "", shareWebsite]
     
     // 初期化処理
     let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
@@ -77,16 +78,20 @@ class WebViewController: UIViewController {
     
     activityVC.excludedActivityTypes = excludedActivityTypes
     
+    // iPad 表示時のクラッシュ防止
+    if let popover = activityVC.popoverPresentationController {
+      popover.sourceView = view
+      popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+      popover.permittedArrowDirections = []
+    }
+
     // UIActivityViewControllerを表示
     self.present(activityVC, animated: true, completion: nil)
-    
   }
   
   @IBAction func tapSafari(_ sender: Any) {
-    guard let url2 = URL(string: url) else { return }
-    if UIApplication.shared.canOpenURL(url2) {
-      UIApplication.shared.open(url2, options: [:], completionHandler: nil)
-    }
+    guard let urlString = url, let url2 = URL(string: urlString) else { return }
+    UIApplication.shared.open(url2, options: [:], completionHandler: nil)
   }
   
   

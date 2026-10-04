@@ -18,8 +18,8 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
 
   // お気に入りのRSSはユーザー固有のURLのため未設定（設定されるまで Fav は空表示）
   let feedUrlFavorite: URL? = nil
-  let feedUrlHotentry = URL(string: "http://b.hatena.ne.jp/hotentry.rss")
-  let feedUrlIT = URL(string: "http://b.hatena.ne.jp/hotentry/it.rss")
+  let feedUrlHotentry = URL(string: "https://b.hatena.ne.jp/hotentry.rss")
+  let feedUrlIT = URL(string: "https://b.hatena.ne.jp/hotentry/it.rss")
 
   var feedItems = [FeedItem]()
 
@@ -39,6 +39,12 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
   var savedPage = 1
   var perPage = 20
+
+  deinit {
+    if let db = db {
+      sqlite3_close(db)
+    }
+  }
 
   // 起動時処理
   override func viewDidLoad() {
@@ -72,7 +78,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   private func feedUrl() -> URL? {
     switch tag {
     case tagSwift:
-      return URL(string: "http://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage))
+      return URL(string: "https://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage))
     case tagHotentry:
       return feedUrlHotentry
     case tagIT:
@@ -308,56 +314,30 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   
   // nameが1のデータをdelete。引数のpageは未使用。
   func tapDelete(_ page: Int) {
-    //creating a statement
     var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = ?"
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-      //      let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //      print("error preparing delte: \(errmsg)")
+    let queryString = "DELETE FROM Heroes WHERE name = ?"
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
       return
     }
-    //binding the parameters 1つ目の?に1をセット
-    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
-      //        let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //        print("failure binding: \(errmsg)")
-      return
+    defer {
+      sqlite3_finalize(stmt)
     }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-      //        let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //        print("failure deleting hero: \(errmsg)")
-      return
-    }
-    //    print ("finish tapDelete!")
+    sqlite3_bind_text(stmt, 1, "1", -1, nil)
+    _ = sqlite3_step(stmt)
   }
   
   // nameが1、powerrankが引数のpageの文字列で、insert
   func tapSave(_ page: Int) {
-    //creating a statement
     var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-      //      let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //      print("error preparing insert: \(errmsg)")
+    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1, ?)"
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
       return
     }
-    //binding the parameters 1つ目の?に2をセット
-    if sqlite3_bind_text(stmt, 1, String(page), -1, nil) != SQLITE_OK{
-      //        let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //        print("failure binding: \(errmsg)")
-      return
+    defer {
+      sqlite3_finalize(stmt)
     }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-      //        let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //        print("failure inserting hero: \(errmsg)")
-      return
-    }
-    //    print ("finish tapSave!")
+    sqlite3_bind_text(stmt, 1, String(page), -1, nil)
+    _ = sqlite3_step(stmt)
   }
   
   // Loadボタンタップ時
@@ -365,27 +345,18 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   }
   
   func tapRead(_ page: Int) {
-    //this is our select query
     let queryString = "SELECT * FROM Heroes"
-    //statement pointer
-    var stmt:OpaquePointer?
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-      //        let errmsg = String(cString: sqlite3_errmsg(db)!)
-      //        print("error preparing insert: \(errmsg)")
+    var stmt: OpaquePointer?
+    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
       return
     }
-    //traversing through all the records
-    while(sqlite3_step(stmt) == SQLITE_ROW){
-      //let id = sqlite3_column_int(stmt, 0)
-      //      let name = String(cString: sqlite3_column_text(stmt, 1))
+    defer {
+      sqlite3_finalize(stmt)
+    }
+    while sqlite3_step(stmt) == SQLITE_ROW {
       let powerrank = sqlite3_column_int(stmt, 2)
-      //      print("name:"  name  ", powerrank:"  String(powerrank))
-      //adding values to list
-      //        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
       sqliteSavedPage = Int(powerrank)
     }
-    //    print ("finish tapRead!")
   }
   
   
@@ -398,11 +369,14 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     //    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
     //    popUp()
     
-    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
+    guard indexPath.row < self.feedItems.count else { return }
+    guard let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
+      return
+    }
     let feedItem = self.feedItems[indexPath.row]
     webView.url = feedItem.url
     
-    if(webView.url.hasPrefix("http")) {
+    if webView.url?.hasPrefix("http") == true {
       self.present(webView, animated: true, completion: nil)
     }
     else {
