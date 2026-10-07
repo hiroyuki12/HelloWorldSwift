@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import WebKit
-import SQLite3
 
 struct TeratailArticlesStruct: Codable {
   var questions: [QuestionsStruct]
@@ -35,14 +34,13 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
   
-  var db: OpaquePointer?
-  
   var isLoading = false;
+  // 読み込み中にタグやページを切り替えた場合に、古いリクエストの結果を捨てるための番号
+  private var loadGeneration = 0
   
   var questions: [TeratailArticlesStruct.QuestionsStruct] = []
   
   var sqliteSavedPage = 0
-  var sqlliteSavedPerPage = 0
   
   let app = "Teratail"
   
@@ -61,34 +59,10 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    // Do any additional setup after loading the view.
     // セルの高さを設定
     table.rowHeight = 70
     
     myload(page: 1, perPage: perPage, tag: tag)
-    //print("myload (viewDidLoad)")
-    
-    //sqlite start
-    let fileUrl = try!
-      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
-    if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
-      //print("Error opening database. HeroDatabase.sqlite")
-      return
-    }
-    let createTableQuery = "create table if not exists Heroes (id integer primary key autoincrement, name text, powerrank integer)"
-    if sqlite3_exec(db, createTableQuery, nil, nil, nil) !=
-      SQLITE_OK{
-      //print("Error createing table Heros")
-      return
-    }
-    //print("SQLite Everything is fine!")
-    //sqlite end
-    
-//    let target = self.navigationController?.value(forKey: "_cachedInteractionController")
-//    let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
-//    self.view.addGestureRecognizer(recognizer)
-    
-    //print("viewDidLoad End!")
   }
   
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
@@ -96,47 +70,45 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
-    let str1:String = "https://teratail.com/api/v1/tags/"
-    let str2:String = String(tag)
-    let str3:String = "/questions?page="
-    let str4:String = String(page)
-    let str5:String = "&limit="
-    let str6:String = String(perPage)
-
-    let str7:String = str1 + str2 + str3 + str4 + str5 + str6
+    var components = URLComponents(string: "https://teratail.com/api/v1/tags/")
+    components?.path += tag + "/questions"
+    components?.queryItems = [URLQueryItem(name: "page", value: String(page)),
+                              URLQueryItem(name: "limit", value: String(perPage))]
+    guard let url = components?.url else { return }
     
-    let url: URL = URL(string: str7)!
-    
-    let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: {data, response, error in
-//      print ("response!!!!!")
-//      print(response!)
-      guard let data = data else {
-        return
-      }
-      do {
-        let teratailArticles = try JSONDecoder().decode(TeratailArticlesStruct.self, from: data)  // Codable
-//        print("AA")
-//        print(teratailArticles.questions[0])
-        
-        let articles2_tmp = self.questions  // 一時退避
-        self.questions = articles2_tmp + teratailArticles.questions
-        //print("self.questions Set End!")
-        
-        DispatchQueue.main.async {
+    isLoading = true
+    let generation = loadGeneration
+    let task: URLSessionTask  = URLSession.shared.dataTask(with: url, completionHandler: { [weak self] data, response, error in
+      // デコードはバックグラウンドで行い、配列の更新はメインスレッドで行う（データ競合防止）
+      let newQuestions = data.flatMap { try? JSONDecoder().decode(TeratailArticlesStruct.self, from: $0) }?.questions
+      DispatchQueue.main.async {
+        guard let self = self, generation == self.loadGeneration else { return }
+        if let newQuestions = newQuestions {
+          self.questions += newQuestions
           self.table.reloadData()
-          //print("reloadData End!")
-          self.isLoading = false
-          //print("self.isLoading = false End!")
         }
-      }
-      catch {
-          //print(error)
+        // 失敗時も解除しないと、以降スクロールで次のページを読み込めなくなる
+        self.isLoading = false
       }
     })
     
     task.resume() //実行する
-    
-    //print("myload End!")
+  }
+  
+  // 一覧を空にして、指定したタグ・ページを読み込み直す
+  private func reload(tag: String, page: Int) {
+    loadGeneration += 1
+    questions.removeAll()
+    table.reloadData()
+    self.tag = tag
+    savedPage = page
+    myload(page: savedPage, perPage: 20, tag: self.tag)
+    updatePageLabel()
+  }
+  
+  private func updatePageLabel() {
+    textPage.text =  String(tag) + " Page " + String(savedPage) +
+      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
   }
   
   // Cellの中身を設定
@@ -144,55 +116,29 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     // セルを取得する
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
+    guard indexPath.row < questions.count else { return cell }
     let question = questions[indexPath.row]
     // セルに表示するタイトルを設定する
-    let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = question.title // questions->title
+    let textTitle = cell.viewWithTag(2) as? UILabel
+    textTitle?.text = question.title // questions->title
     // セルに表示する作成日を設定する
-    let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = daysAgo(question.created)  // questions->created
-    // セルに表示する画像を設定する
-    let profileImageUrl = question.user?.photo  // questions->user?->photo
-    let profileImage = cell.viewWithTag(1) as! UIImageView
-    if profileImageUrl != nil {  // if profileImageUrl not nil
-      let myUrl: URL? = URL(string: profileImageUrl!)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    let textDetailText = cell.viewWithTag(3) as? UILabel
+    textDetailText?.text = daysAgo(question.created)  // questions->created
+    // セルに表示する画像を設定する（画像がなければ再利用セルの古い画像を消す）
+    let profileImage = cell.viewWithTag(1) as? UIImageView
+    profileImage?.loadImageAsynchronously(url: question.user.flatMap { URL(string: $0.photo) }, defaultUIImage: nil)
+    // セルに表示する回答数とタグ（最大5つ）を設定する
+    let tagsText = cell.viewWithTag(4) as? UILabel
+    var text = "回答数 " + String(question.count_reply) + " / PV数 " + String(question.count_pv)
+    if !question.tags.isEmpty {
+      text += " / " + question.tags.prefix(5).joined(separator: ",")
     }
-    // セルに表示する回答数とタグを設定する
-    let tagsText = cell.viewWithTag(4) as! UILabel
-    let replayCount = question.count_reply  // questions->count_reply
-    let pvCount = question.count_pv  // questions->count_pv
-    let count = question.tags.count
-    let tag1name = "回答数 " + String(replayCount) + " / PV数 " + String(pvCount) + " / " + question.tags[0]
-    tagsText.text = tag1name
-    if(count > 1) {
-      let tag2name = question.tags[1]
-      tagsText.text = tag1name + "," + tag2name
-      if(count > 2) {
-        let tag3name = question.tags[2]
-        tagsText.text = tag1name + "," + tag2name + "," + tag3name
-        if(count > 3) {
-          let tag4name = question.tags[3]
-          tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name
-          if(count > 4) {
-            let tag5name = question.tags[4]
-            tagsText.text = tag1name + "," + tag2name + "," + tag3name + "," + tag4name + "," + tag5name
-          }
-        }
-      }
-    }
+    tagsText?.text = text
     return cell
   }
   
   func daysAgo(_ data: String) -> String {
-    //    print(data)
-    let calendar = Calendar.current
-    let dateComponents = DateComponents(calendar: calendar, year: Int(data[0...3]), month: Int(data[5...6]), day: Int(data[8...9]), hour: Int(data[11...12]), minute: Int(data[14...15]), second: Int(data[17...18]))
-    if let date = calendar.date(from: dateComponents) {
-      //print("\(date)      \(date.timeAgo())")
-      return date.timeAgo()
-    }
-    return ""
+    return DateParser.localDateTime(data)?.timeAgo() ?? ""
   }
   
   // Cellの個数を設定
@@ -203,12 +149,11 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
   // Loadボタン押下
   @IBAction func load(_ sender: Any) {
     self.table.reloadData()
-    //print("reloadData(tap load button")
   }
   
   // Menuボタンタップ時
   @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage, self.tag + self.app)
+    sqliteSavedPage = PageStore.shared.page(for: tag + app)
     
     popUp()
   }
@@ -217,108 +162,72 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
 
     let flutterSwiftAction = UIAlertAction(title: "Swift/React.js/Firebase/Flutter", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.questions.removeAll()
+      handler:{ [weak self] _ in
+        guard let self = self else { return }
+        let nextTag: String
         if(self.tag == self.tagSwift) {
-          self.tag = self.tagReact
+          nextTag = self.tagReact
         }
         else if(self.tag == self.tagReact) {
-          self.tag = self.tagFirebase
+          nextTag = self.tagFirebase
         }
         else if(self.tag == self.tagFirebase) {
-          self.tag = self.tagFlutter
+          nextTag = self.tagFlutter
         }
-//        else if(self.tag == self.tagFirestore) {
-//          self.tag = self.tagFlutter
-//        }
         else {
-          self.tag = self.tagSwift
+          nextTag = self.tagSwift
         }
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+        self.reload(tag: nextTag, page: 1)
       })
     alertController.addAction(flutterSwiftAction)
 
     let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.questions.removeAll()
-        self.tag = self.tagSwift
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      handler:{ [weak self] _ in
+        guard let self = self else { return }
+        self.reload(tag: self.tagSwift, page: 1)
       })
     alertController.addAction(swiftPage1Action)
   
     let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.questions.removeAll()
-        self.tag = self.tagSwift
-        self.savedPage = 50
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      handler:{ [weak self] _ in
+        guard let self = self else { return }
+        self.reload(tag: self.tagSwift, page: 50)
       })
     alertController.addAction(swiftPage50Action)
   
     let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        self.questions.removeAll()
-        self.tag = self.tagFlutter
-        self.savedPage = 1
-        self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-        self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-             "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
+      handler:{ [weak self] _ in
+        guard let self = self else { return }
+        self.reload(tag: self.tagFlutter, page: 1)
       })
     alertController.addAction(flutterPage1Action)
   
     let saveSwiftPageAction = UIAlertAction(title: "Save " + self.tag + " Page ! " + String(self.savedPage), style: .default,
-      handler:{
-        (action:UIAlertAction!) -> Void in
-        
-        // mysql delete
-        self.tapDelete(self.savedPage, self.tag + self.app)
-        // mysql insert
-        self.tapSave(self.savedPage, self.tag + self.app)
-        
+      handler:{ [weak self] _ in
+        guard let self = self else { return }
+        PageStore.shared.save(page: self.savedPage, for: self.tag + self.app)
         self.sqliteSavedPage = self.savedPage
       })
     alertController.addAction(saveSwiftPageAction)
   
     let loadSwiftPageAction = UIAlertAction(title: "Load " + self.tag + " Page ! " + String(self.sqliteSavedPage), style: .default,
-    handler:{
-      (action:UIAlertAction!) -> Void in
-      
-      self.questions.removeAll()
-      self.savedPage = self.sqliteSavedPage
-      self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-      self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-            "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-      
-//      print ("finish tapLoad!")
-
-    })
+      handler:{ [weak self] _ in
+        guard let self = self, self.sqliteSavedPage > 0 else { return }
+        self.reload(tag: self.tag, page: self.sqliteSavedPage)
+      })
     alertController.addAction(loadSwiftPageAction)
   
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
     alertController.addAction(cancelAction)
 
-    present(alertController, animated: true, completion: nil)
-  }
+    // iPad/Macで表示した場合に備えて、ポップオーバーの表示位置を指定する
+    if let popover = alertController.popoverPresentationController {
+      popover.sourceView = view
+      popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+      popover.permittedArrowDirections = []
+    }
 
-  func swiftPage1Action() {
-    questions.removeAll()
-    tag = tagFlutter
-    savedPage = 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    textPage.text =  String(tag) + " Page " + String(savedPage) +
-          "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+    present(alertController, animated: true, completion: nil)
   }
   
   // qキーで画面を閉じる
@@ -344,118 +253,33 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     dismiss(animated: true, completion: nil)
   }
   
-  // nameがtagのデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int, _ tag: String) {
-    //creating a statement
-    var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "DELETE FROM  Heroes WHERE name = " + "\"" + tag + "\""
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//      let errmsg = String(cString: sqlite3_errmsg(db)!)
-//      print("error preparing delte: \(errmsg)")
-      return
-    }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure deleting hero: \(errmsg)")
-        return
-    }
-//    print ("finish tapDelete!")
-  }
-  
-  // nameが1、powerrankが引数のpageの文字列で、insert
-  func tapSave(_ page: Int, _ tag: String) {
-    //creating a statement
-    var stmt: OpaquePointer?
-    //the insert query
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (\"" + tag + "\"," + String(page) + ")"
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//      let errmsg = String(cString: sqlite3_errmsg(db)!)
-//      print("error preparing insert: \(errmsg)")
-      return
-    }
-    //executing the query to insert values
-    if sqlite3_step(stmt) != SQLITE_DONE {
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("failure inserting hero: \(errmsg)")
-        return
-    }
-//    print ("finish tapSave!")
-  }
-  
   // Loadボタンタップ時
   @IBAction func tapLoad(_ sender: Any) {
   }
   
-  func tapRead(_ page: Int, _ tag: String) {
-    sqliteSavedPage = 0
-    //this is our select query
-    let queryString = "SELECT * FROM Heroes Where name = \"" + tag + "\""
-    //statement pointer
-    var stmt:OpaquePointer?
-    //preparing the query
-    if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
-//        let errmsg = String(cString: sqlite3_errmsg(db)!)
-//        print("error preparing insert: \(errmsg)")
-        return
-    }
-    //traversing through all the records
-    while(sqlite3_step(stmt) == SQLITE_ROW){
-      //let id = sqlite3_column_int(stmt, 0)
-      let name = String(cString: sqlite3_column_text(stmt, 1))
-      let powerrank = sqlite3_column_int(stmt, 2)
-      print("name:" + name + ", powerrank:" + String(powerrank))
-        //adding values to list
-//        heroList.append(Hero(id: Int(id), name: String(describing: name), powerRanking: Int(powerrank)))
-      sqliteSavedPage = Int(powerrank)
-    }
-//    print ("finish tapRead!")
-  }
-  
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
-    savedPage -= 1
-    myload(page: savedPage, perPage: 20, tag: tag)
-    
-    textPage.text =  "swift Page " + String(savedPage) +
-      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+    guard savedPage > 1 else { return }
+    reload(tag: tag, page: savedPage - 1)
   }
   
   // セルをタップした時の処理
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
-//    popUp()
-    
-    let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as! WebViewController
+    guard indexPath.row < questions.count,
+          let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
+      return
+    }
     webView.url = "https://teratail.com/questions/" + String(questions[indexPath.row].id)
     
     self.present(webView, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
-      isLoading = true
+    if (self.table.contentSize.height > 0 && self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
       savedPage += 1
       myload(page: savedPage, perPage: 20, tag: tag)
-      //print("myload(List End)")
-      
-      textPage.text =  String(tag) + " Page " + String(savedPage) +
-        "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+      updatePageLabel()
     }
   }
   
-  /*
-  // MARK: - Navigation
-
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      // Get the new view controller using segue.destination.
-      // Pass the selected object to the new view controller.
-  }
-  */
-  
 }
-

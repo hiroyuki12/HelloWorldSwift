@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import WebKit
-import SQLite3
 
 class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
   @IBOutlet weak var table: UITableView!
@@ -23,8 +22,6 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
 
   var feedItems = [FeedItem]()
 
-  var db: OpaquePointer?
-  
   var isLoading = false;
   
   var sqliteSavedPage = 0
@@ -40,12 +37,6 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   var savedPage = 1
   var perPage = 20
 
-  deinit {
-    if let db = db {
-      sqlite3_close(db)
-    }
-  }
-
   // 起動時処理
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -54,24 +45,6 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     table.rowHeight = 70
 
     loadFeed()
-
-    //sqlite start
-    let fileUrl = try!
-      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
-    if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
-      //print("Error opening database. HeroDatabase.sqlite")
-      return
-    }
-    let createTableQuery = "create table if not exists Heroes (id integer primary key autoincrement, name text, powerrank integer)"
-    if sqlite3_exec(db, createTableQuery, nil, nil, nil) !=
-        SQLITE_OK{
-      //print("Error createing table Heros")
-      return
-    }
-    //print("SQLite Everything is fine!")
-    //sqlite end
-    
-    //print("viewDidLoad End!")
   }
   
   // 現在の tag / savedPage に対応する RSS のURL
@@ -157,7 +130,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
 
   // dc:date（例: 2020-10-15T12:34:56+09:00）を「◯時間前」形式にする。解析できなければ空文字
   func daysAgo(_ data: String) -> String {
-    guard let date = ISO8601DateFormatter().date(from: data) else {
+    guard let date = DateParser.iso8601(data) else {
       return ""
     }
     return date.timeAgo()
@@ -253,9 +226,6 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
                                               //        print("start tapSave.")
                                               //        print("savedPage: "  String(self.savedPage))
                                               
-                                              // mysql delete
-                                              self.tapDelete(self.savedPage)
-                                              // mysql insert
                                               self.tapSave(self.savedPage)
                                               
                                               self.sqliteSavedPage = self.savedPage;
@@ -312,32 +282,12 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     
   }
   
-  // nameが1のデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int) {
-    var stmt: OpaquePointer?
-    let queryString = "DELETE FROM Heroes WHERE name = ?"
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    sqlite3_bind_text(stmt, 1, "1", -1, nil)
-    _ = sqlite3_step(stmt)
-  }
-  
-  // nameが1、powerrankが引数のpageの文字列で、insert
+  // 保存ページのキー（以前のバージョンで保存したページも読めるよう、従来の name = 1 を使う）
+  private let pageStoreKey = "1"
+
+  // 保存ページを page で置き換える
   func tapSave(_ page: Int) {
-    var stmt: OpaquePointer?
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1, ?)"
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    sqlite3_bind_text(stmt, 1, String(page), -1, nil)
-    _ = sqlite3_step(stmt)
+    PageStore.shared.save(page: page, for: pageStoreKey)
   }
   
   // Loadボタンタップ時
@@ -345,20 +295,8 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   }
   
   func tapRead(_ page: Int) {
-    let queryString = "SELECT * FROM Heroes"
-    var stmt: OpaquePointer?
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    while sqlite3_step(stmt) == SQLITE_ROW {
-      let powerrank = sqlite3_column_int(stmt, 2)
-      sqliteSavedPage = Int(powerrank)
-    }
+    sqliteSavedPage = PageStore.shared.page(for: pageStoreKey)
   }
-  
   
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {

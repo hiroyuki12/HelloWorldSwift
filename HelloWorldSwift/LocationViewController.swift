@@ -18,10 +18,6 @@ class LocationViewController: UIViewController {
   var latitudeNow: String = ""
   // 経度
   var longitudeNow: String = ""
-  // 地名
-  var locationNameNow: String = ""
-  // 取得中
-  var isLoading: Bool = false
   
   // ロケーションマネージャ
   var locationManager: CLLocationManager!
@@ -36,20 +32,17 @@ class LocationViewController: UIViewController {
     setupLocationManager()
   }
   
-  let FMT_url_rev_geo = "https://www.finds.jp/ws/rgeocode.php?lat=%s&lon=%s&json"
-  
   // 位置情報を取得ボタンタップ時
   @IBAction func tapGetLocation(_ sender: Any) {
-    isLoading = true
-    
-    // マネージャの設定
-    let status = CLLocationManager().authorizationStatus
+    let status = locationManager.authorizationStatus
     
     if status == .denied {
       showAlert()
-    } else if status == .authorizedWhenInUse {
+    } else if status == .authorizedWhenInUse || status == .authorizedAlways {
       labelLocation.text = latitudeNow
       labelLocation2.text = longitudeNow
+      // まだ位置情報を受信していない
+      guard !latitudeNow.isEmpty, !longitudeNow.isEmpty else { return }
       
       let dt = Date()
       let dateFormatter = DateFormatter()
@@ -58,10 +51,11 @@ class LocationViewController: UIViewController {
       let data = dateFormatter.string(from: dt) + "," + latitudeNow + "," + longitudeNow + "\n"
       Log.writeToFile(file:"location.csv", text:data)
       
-      getLocationName()
-      // getLocationName の完了を待つ
-      while(isLoading) {}
-      locationName.text = locationNameNow
+      // 通信の完了をメインスレッドで待つと画面が固まる（失敗時は永久に固まる）ため、完了時にラベルを更新する
+      locationName.text = "取得中..."
+      getLocationName { [weak self] name in
+        self?.locationName.text = name ?? "地名を取得できませんでした"
+      }
     }
   }
   
@@ -77,40 +71,28 @@ class LocationViewController: UIViewController {
     print("Stop tap!")
   }
   
-  func getLocationName()
-  {
-//    let url = URL(string: String(format: FMT_url_rev_geo, self.latitudeNow, self.longitudeNow))!
-    let url = URL(string: String("https://www.finds.jp/ws/rgeocode.php?lat=" + latitudeNow + "&lon=" + longitudeNow + "&json"))!
-    let request = URLRequest(url: url)
-    let session = URLSession.shared
-    session.dataTask(with: request) {
-      (data, response, error) in
-      if error == nil, let data = data, let response = response as? HTTPURLResponse {
-        print("statusCode: \(response.statusCode)")
-        let jsonString: String = String(data: data, encoding: String.Encoding.utf8) ?? ""
-        let locationData =  jsonString.data(using: String.Encoding.utf8)!
-        do {
-          let items = try JSONSerialization.jsonObject(with: locationData) as! Dictionary<String, Any>
-          let result = items["result"] as! Dictionary<String, Any>
-          let prefecture = result["prefecture"] as! Dictionary<String, Any>
-          let municipality = result["municipality"] as! Dictionary<String, Any>
-          let local = result["local"] as! Array<Any>
-          let local0 = local[0] as! Dictionary<String, Any>
-          
-          let a = prefecture["pname"] as! String
-          let b = municipality["mname"] as! String
-          let c = local0["section"] as! String
-          self.locationNameNow = a + " " + b + " " + c
-          self.isLoading = false
-          
-          //self.locationName.text  = locationName  //NG
-//                self.locationName.text = prefecture["pname"] as! String
-//                self.locationName.text! += municipality["mname"] as! String
-//                self.locationName.text! += local0["section"] as! String
-        }
-        catch {
-            print(error)
-        }
+  // 緯度・経度から地名を取得する。completion はメインスレッドで呼ばれ、失敗時は nil
+  func getLocationName(completion: @escaping (String?) -> Void) {
+    var components = URLComponents(string: "https://www.finds.jp/ws/rgeocode.php")
+    components?.queryItems = [URLQueryItem(name: "lat", value: latitudeNow),
+                              URLQueryItem(name: "lon", value: longitudeNow),
+                              URLQueryItem(name: "json", value: nil)]
+    guard let url = components?.url else {
+      completion(nil)
+      return
+    }
+    URLSession.shared.dataTask(with: url) { data, response, error in
+      var name: String?
+      if let data = data,
+         let items = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+         let result = items["result"] as? [String: Any],
+         let prefecture = (result["prefecture"] as? [String: Any])?["pname"] as? String,
+         let municipality = (result["municipality"] as? [String: Any])?["mname"] as? String {
+        let section = ((result["local"] as? [Any])?.first as? [String: Any])?["section"] as? String
+        name = [prefecture, municipality, section].compactMap { $0 }.joined(separator: " ")
+      }
+      DispatchQueue.main.async {
+        completion(name)
       }
     }.resume()
   }
@@ -128,8 +110,10 @@ class LocationViewController: UIViewController {
     // マネージャの設定
     let status = locationManager.authorizationStatus
     // ステータスごとの処理
-    if status == .authorizedWhenInUse {
-      locationManager.delegate = self
+    // 初回は許可ダイアログの結果が後から届くため、許可状態にかかわらず delegate を設定する
+    // （許可された時点で locationManagerDidChangeAuthorization から取得を開始する）
+    locationManager.delegate = self
+    if status == .authorizedWhenInUse || status == .authorizedAlways {
       // 位置情報取得を開始
       locationManager.startUpdatingLocation()
     }
@@ -180,24 +164,33 @@ class LocationViewController: UIViewController {
 
 // 位置情報を取得
 extension LocationViewController: CLLocationManagerDelegate {
+  // 許可状態が変わった（初回の許可ダイアログで許可された等）ら取得を開始する
+  func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    let status = manager.authorizationStatus
+    if status == .authorizedWhenInUse || status == .authorizedAlways {
+      manager.startUpdatingLocation()
+    }
+  }
+
   // 位置情報が更新された際、位置情報を格納する
   // - Parameters:
   //   - manager: ロケーションマネージャ
   //   - locations: 位置情報
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-      let location = locations.first
-      let latitude = location?.coordinate.latitude
-      let longitude = location?.coordinate.longitude
+      // 配列の最後が最新の位置情報
+      guard let location = locations.last else { return }
+      let latitude = location.coordinate.latitude
+      let longitude = location.coordinate.longitude
       // 位置情報を格納する
-      self.latitudeNow = String(latitude!)
-      self.longitudeNow = String(longitude!)
+      self.latitudeNow = String(latitude)
+      self.longitudeNow = String(longitude)
     
     let dt = Date()
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yMMMdHms", options: 0, locale: Locale(identifier: "ja_JP"))
     
     print("didUpdateLocations")
-    let data = dateFormatter.string(from: dt) + "," + String(latitude!) + "," + String(longitude!) + "\n"
+    let data = dateFormatter.string(from: dt) + "," + String(latitude) + "," + String(longitude) + "\n"
     print(data)
     Log.writeToFile(file:"location.csv", text:data)
   }

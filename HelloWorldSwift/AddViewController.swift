@@ -9,7 +9,8 @@
 import UIKit
 
 // 内容を保存するための変数
-var TodoKobetsunonakami = [String]()
+// 起動直後に追加すると、以前に保存したリストが空の配列で上書きされて消えるため、保存済みの内容から始める
+var TodoKobetsunonakami: [String] = UserDefaults.standard.stringArray(forKey: "TodoList") ?? []
 
 class AddViewController: UIViewController {
   @IBOutlet weak var TodoTextField: UITextField!
@@ -26,9 +27,10 @@ class AddViewController: UIViewController {
     dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yMMMdHms", options: 0, locale: Locale(identifier: "ja_JP"))
     print(dateFormatter.string(from: dt))
     
-    TodoKobetsunonakami.append(TodoTextField.text! + "°C  " + dateFormatter.string(from: dt))
+    let text = (TodoTextField.text ?? "") + "°C  " + dateFormatter.string(from: dt)
+    TodoKobetsunonakami.append(text)
     
-    Log.write(TodoTextField.text! + "°C  " + dateFormatter.string(from: dt) + "\n")
+    Log.write(text + "\n")
     
     TodoTextField.text = ""
     UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )

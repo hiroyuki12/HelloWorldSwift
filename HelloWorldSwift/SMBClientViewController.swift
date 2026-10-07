@@ -68,12 +68,33 @@ class SMBClientViewController: UIViewController, NetBIOSNameServiceDelegate {
       self.servers = self.servers.filter { $0 != entry }
   }
   /// 接続処理
+  /// 認証情報はソースコードに書かず、接続のたびに入力してもらう
   func connect(){
-      let svr = self.servers.first!   // とりあえずテストとして最初のやつ
+      guard !self.servers.isEmpty else {
+          self.label.text = "先に Search でサーバーを検索してください"
+          return
+      }
+      let alert = UIAlertController(title: "SMB 認証", message: nil, preferredStyle: .alert)
+      alert.addTextField { $0.placeholder = "ユーザー名" }
+      alert.addTextField {
+          $0.placeholder = "パスワード"
+          $0.isSecureTextEntry = true
+      }
+      alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+      alert.addAction(UIAlertAction(title: "接続", style: .default, handler: { [weak self, weak alert] _ in
+          let name = alert?.textFields?[0].text ?? ""
+          let password = alert?.textFields?[1].text ?? ""
+          self?.connect(name: name, password: password)
+      }))
+      present(alert, animated: true, completion: nil)
+  }
+
+  private func connect(name: String, password: String) {
+      guard let svr = self.servers.first else { return }  // とりあえずテストとして最初のやつ
       // サーバ情報
       let smbServer = SMBServer(hostname: svr.name, ipAddress: svr.ipAddress)
       // 認証情報
-      let creds = SMBSession.Credentials.user(name: "hiroyuki", password: "muromuro")
+      let creds = SMBSession.Credentials.user(name: name, password: password)
       // セッション情報
       let session = SMBSession(server: smbServer, credentials: creds)
 

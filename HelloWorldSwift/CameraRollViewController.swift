@@ -46,9 +46,8 @@ extension CameraRollViewController: UIImagePickerControllerDelegate, UINavigatio
     // 写真を選んだ後に呼ばれる処理
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // 選択した写真を取得する
-        let image = info[.originalImage] as! UIImage
         // ビューに表示する
-        imageView.image = image
+        imageView.image = info[.originalImage] as? UIImage
         // 写真を選ぶビューを引っ込める
         self.dismiss(animated: true)
     }

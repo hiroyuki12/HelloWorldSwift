@@ -15,17 +15,9 @@ class NasViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-      // URLオブジェクトを作る
-      let imgUrl = NSURL(string: "https://cdn-ak.f.st-hatena.com/images/fotolife/f/fedora9/20200501/20200501150536.png");
-
-      // ファイルデータを作る
-      let file = NSData(contentsOf: imgUrl! as URL);
-
-      // イメージデータを作る
-      let img = UIImage(data:file! as Data)
-
-      // イメージビューに表示する
-      myImageView.image = img
+      // メインスレッドで同期的にダウンロードすると画面が固まり、通信失敗時はクラッシュするため非同期で読み込む
+      let imgUrl = URL(string: "https://cdn-ak.f.st-hatena.com/images/fotolife/f/fedora9/20200501/20200501150536.png")
+      myImageView.loadImageAsynchronously(url: imgUrl, defaultUIImage: nil)
     }
     
 

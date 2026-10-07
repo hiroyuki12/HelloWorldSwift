@@ -228,7 +228,6 @@
                                 <state key="normal" title="位置情報を取得"/>
                                 <connections>
                                     <action selector="tapGetLocation:" destination="Xo7-G8-8gh" eventType="touchUpInside" id="QPp-ox-P52"/>
-                                    <action selector="tapGetLocationInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0fu-tC-Ydf"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dt-Re-jiD">

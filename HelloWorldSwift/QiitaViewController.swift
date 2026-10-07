@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import WebKit
-import SQLite3
 
 struct QiitaArticleStruct: Codable {
 //  var coediting: Bool
@@ -41,8 +40,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   @IBOutlet weak var table: UITableView!
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
-  
-  var db: OpaquePointer?
   
   var isLoading = false;
   
@@ -88,22 +85,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
     //print("myload (viewDidLoad)")
     
-    //sqlite start
-    let fileUrl = try!
-      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
-    if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
-      //print("Error opening database. HeroDatabase.sqlite")
-      return
-    }
-    let createTableQuery = "create table if not exists Heroes (id integer primary key autoincrement, name text, powerrank integer)"
-    if sqlite3_exec(db, createTableQuery, nil, nil, nil) !=
-      SQLITE_OK{
-      //print("Error createing table Heros")
-      return
-    }
-    //print("SQLite Everything is fine!")
-    //sqlite end
-    
 //    let target = self.navigationController?.value(forKey: "_cachedInteractionController")
 //    let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
 //    self.view.addGestureRecognizer(recognizer)
@@ -111,12 +92,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //print("viewDidLoad End!")
   }
   
-  deinit {
-    if let db = db {
-      sqlite3_close(db)
-    }
-  }
-
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
@@ -189,27 +164,10 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func daysAgo(_ data: String) -> String {
-    let isoFormatter = ISO8601DateFormatter()
-    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    if let date = isoFormatter.date(from: data) ?? ISO8601DateFormatter().date(from: data) {
-      return date.timeAgo()
+    guard let date = DateParser.iso8601(data) ?? DateParser.localDateTime(data) else {
+      return ""
     }
-    if data.count >= 19 {
-      let calendar = Calendar.current
-      let dateComponents = DateComponents(
-        calendar: calendar,
-        year: Int(data[0...3]),
-        month: Int(data[5...6]),
-        day: Int(data[8...9]),
-        hour: Int(data[11...12]),
-        minute: Int(data[14...15]),
-        second: Int(data[17...18])
-      )
-      if let date = calendar.date(from: dateComponents) {
-        return date.timeAgo()
-      }
-    }
-    return ""
+    return date.timeAgo()
   }
   
   // Cellの個数を設定
@@ -238,6 +196,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         handler:{ [weak self] (action:UIAlertAction!) -> Void in
           guard let self = self else { return }
           self.articles.removeAll()
+          self.table.reloadData()
           self.tag = tag
           self.savedPage = page
           self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
@@ -260,8 +219,6 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print("start tapSave.")
         print("savedPage: " + String(self.savedPage))
         
-        // delete & insert
-        self.tapDelete(self.savedPage, self.tag + self.app)
         self.tapSave(self.savedPage, self.tag + self.app)
         
         self.sqliteSavedPage = self.savedPage
@@ -273,6 +230,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
       handler:{ [weak self] (action:UIAlertAction!) -> Void in
         guard let self = self else { return }
         self.articles.removeAll()
+        self.table.reloadData()
         self.savedPage = self.sqliteSavedPage
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
@@ -324,33 +282,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     tapClose(sender)
   }
   
-  // nameがtagのデータをdelete。引数のpageは未使用。
-  func tapDelete(_ page: Int, _ tag: String) {
-    var stmt: OpaquePointer?
-    let queryString = "DELETE FROM Heroes WHERE name = ?"
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-    _ = sqlite3_step(stmt)
-  }
-  
-  // nameがtag、powerrankが引数のpageの文字列で、insert
+  // tagの保存ページを page で置き換える
   func tapSave(_ page: Int, _ tag: String) {
-    var stmt: OpaquePointer?
-    let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (?, ?)"
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-    sqlite3_bind_int(stmt, 2, Int32(page))
-    _ = sqlite3_step(stmt)
+    PageStore.shared.save(page: page, for: tag)
   }
   
   // Loadボタンタップ時
@@ -358,25 +292,14 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func tapRead(_ page: Int, _ tag: String) {
-    sqliteSavedPage = 0
-    let queryString = "SELECT powerrank FROM Heroes WHERE name = ?"
-    var stmt: OpaquePointer?
-    if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) != SQLITE_OK {
-      return
-    }
-    defer {
-      sqlite3_finalize(stmt)
-    }
-    sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-    while sqlite3_step(stmt) == SQLITE_ROW {
-      let powerrank = sqlite3_column_int(stmt, 0)
-      print("name:" + tag + ", powerrank:" + String(powerrank))
-      sqliteSavedPage = Int(powerrank)
-    }
+    sqliteSavedPage = PageStore.shared.page(for: tag)
   }
   
   // Prevボタン押下
   @IBAction func prev(_ sender: Any) {
+    guard savedPage > 1 else { return }
+    articles.removeAll()
+    table.reloadData()
     savedPage -= 1
     myload(page: savedPage, perPage: 20, tag: tag)
     
@@ -415,86 +338,4 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   */
   
-}
-
-// 指定URLから画像を読み込み、セットする
-// defaultUIImageには、URLからの読込に失敗した時の画像を指定する
-extension UIImageView {
-  func loadImageAsynchronously(url: URL?, defaultUIImage: UIImage? = nil) {
-    guard let url = url else {
-      self.image = defaultUIImage
-      return
-    }
-
-    let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-      guard let self = self else { return }
-      if let data = data, let image = UIImage(data: data) {
-        DispatchQueue.main.async {
-          self.image = image
-        }
-      } else {
-        DispatchQueue.main.async {
-          self.image = defaultUIImage
-        }
-      }
-    }
-    task.resume()
-  }
-}
-
-extension Date {
-    func timeAgo() -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
-        formatter.zeroFormattingBehavior = .dropAll
-        formatter.maximumUnitCount = 1
-      return String(format: formatter.string(from: self, to: Date()) ?? "" , locale: .current)
-    }
-}
-
-extension String {
-    
-    /// Index with using position of Int type
-    func index(at position: Int) -> String.Index {
-        return index((position.signum() >= 0 ? startIndex : endIndex), offsetBy: position)
-    }
-    
-    /// Subscript for using like a "string[i]"
-    subscript (position: Int) -> String {
-        let i = index(at: position)
-        return String(self[i])
-    }
-
-    /// Subscript for using like a "string[start..<end]"
-    subscript (bounds: CountableRange<Int>) -> String {
-        let start = index(at: bounds.lowerBound)
-        let end = index(at: bounds.upperBound)
-        return String(self[start..<end])
-    }
-
-    /// Subscript for using like a "string[start...end]"
-    subscript (bounds: CountableClosedRange<Int>) -> String {
-        let start = index(at: bounds.lowerBound)
-        let end = index(at: bounds.upperBound)
-        return String(self[start...end])
-    }
-    
-    /// Subscript for using like a "string[..<end]"
-    subscript (bounds: PartialRangeUpTo<Int>) -> String {
-        let i = index(at: bounds.upperBound)
-        return String(prefix(upTo: i))
-    }
-
-    /// Subscript for using like a "string[...end]"
-    subscript (bounds: PartialRangeThrough<Int>) -> String {
-        let i = index(at: bounds.upperBound)
-        return String(prefix(through: i))
-    }
-
-    /// Subscript for using like a "string[start...]"
-    subscript (bounds: PartialRangeFrom<Int>) -> String {
-        let i = index(at: bounds.lowerBound)
-        return String(suffix(from: i))
-    }
 }
