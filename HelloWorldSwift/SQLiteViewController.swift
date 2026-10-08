@@ -11,6 +11,10 @@ import SQLite3
 
 class SQLiteViewController: UIViewController {
   var db: OpaquePointer?
+
+  deinit {
+    sqlite3_close(db)
+  }
   
   // Insertボタンタップ時
   @IBAction func tapSave(_ sender: Any) {
@@ -18,6 +22,7 @@ class SQLiteViewController: UIViewController {
     var stmt: OpaquePointer?
     //the insert query
     let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (1,?)"
+    defer { sqlite3_finalize(stmt) }
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
       let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -25,7 +30,7 @@ class SQLiteViewController: UIViewController {
       return
     }
     //binding the parameters 1つ目の?に2をセット
-    if sqlite3_bind_text(stmt, 1, "2", -1, nil) != SQLITE_OK{
+    if sqlite3_bind_text(stmt, 1, "2", -1, SQLITE_TRANSIENT) != SQLITE_OK{
         let errmsg = String(cString: sqlite3_errmsg(db)!)
         print("failure binding: \(errmsg)")
         return
@@ -45,6 +50,7 @@ class SQLiteViewController: UIViewController {
     let queryString = "SELECT * FROM Heroes"
     //statement pointer
     var stmt:OpaquePointer?
+    defer { sqlite3_finalize(stmt) }
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
         let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -54,7 +60,8 @@ class SQLiteViewController: UIViewController {
     //traversing through all the records
     while(sqlite3_step(stmt) == SQLITE_ROW){
       //let id = sqlite3_column_int(stmt, 0)
-      let name = String(cString: sqlite3_column_text(stmt, 1))
+      // name が NULL の行もあるため、nil を確認してから文字列にする
+      let name = sqlite3_column_text(stmt, 1).map { String(cString: $0) } ?? ""
       let powerrank = sqlite3_column_int(stmt, 2)
       print("name:" + name + ", powerrank:" + String(powerrank))
         //adding values to list
@@ -69,6 +76,7 @@ class SQLiteViewController: UIViewController {
     var stmt: OpaquePointer?
     //the insert query
     let queryString = "UPDATE Heroes SET powerrank = ?"
+    defer { sqlite3_finalize(stmt) }
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
       let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -76,7 +84,7 @@ class SQLiteViewController: UIViewController {
       return
     }
     //binding the parameters 1つ目の?に3をセット
-    if sqlite3_bind_text(stmt, 1, "3", -1, nil) != SQLITE_OK{
+    if sqlite3_bind_text(stmt, 1, "3", -1, SQLITE_TRANSIENT) != SQLITE_OK{
         let errmsg = String(cString: sqlite3_errmsg(db)!)
         print("failure binding: \(errmsg)")
         return
@@ -96,6 +104,7 @@ class SQLiteViewController: UIViewController {
     var stmt: OpaquePointer?
     //the insert query
     let queryString = "DELETE FROM  Heroes WHERE name = ?"
+    defer { sqlite3_finalize(stmt) }
     //preparing the query
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
       let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -103,7 +112,7 @@ class SQLiteViewController: UIViewController {
       return
     }
     //binding the parameters 1つ目の?に1をセット
-    if sqlite3_bind_text(stmt, 1, "1", -1, nil) != SQLITE_OK{
+    if sqlite3_bind_text(stmt, 1, "1", -1, SQLITE_TRANSIENT) != SQLITE_OK{
         let errmsg = String(cString: sqlite3_errmsg(db)!)
         print("failure binding: \(errmsg)")
         return
@@ -121,8 +130,8 @@ class SQLiteViewController: UIViewController {
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
-    let fileUrl = try!
-      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite")
+    guard let fileUrl = try?
+      FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("HeroDatabase.sqlite") else { return }
     if sqlite3_open(fileUrl.path, &db) != SQLITE_OK{
       print("Error opening database. HeroDatabase.sqlite")
       return

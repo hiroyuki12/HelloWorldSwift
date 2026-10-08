@@ -234,6 +234,8 @@ class MisskeyViewController: UIViewController {
   }
   
   func startTimer() {
+    // 前のタイマーが残っていると多重に TapNext が呼ばれるため止めてから作る
+    stopTimer()
     timer = Timer.scheduledTimer(
       timeInterval: 2.0,
       target: self,
@@ -285,7 +287,12 @@ class MisskeyViewController: UIViewController {
       }
     }
     else {
-      fileName = "/アプリ/Photo Watch/" + folderName + self.filenames![count]
+      // フォルダ一覧の取得が終わる前に押された場合は何もしない
+      guard let filenames = self.filenames, count < filenames.count else {
+        count -= 1
+        return
+      }
+      fileName = "/アプリ/Photo Watch/" + folderName + filenames[count]
 //      fileName = "/携帯/docomoF505i/100f505i-1/" + folderName + self.filenames![count]
     }
     
@@ -294,13 +301,11 @@ class MisskeyViewController: UIViewController {
   
   // Backボタンタップ時
   @IBAction func TapBack(_ sender: Any) {
+    // 先頭より前、またはフォルダ一覧の取得前は戻れない
+    guard let filenames = self.filenames, count - 1 >= 0, count - 1 < filenames.count else { return }
     count = count - 1
     
-    print(count)
-    print("self.filenames![?]")
-    print(self.filenames![count])
-    
-    fileName = "/アプリ/Photo Watch/" + folderName + self.filenames![count]
+    fileName = "/アプリ/Photo Watch/" + folderName + filenames[count]
     
     downloadDropboxFile()
   }
@@ -322,6 +327,12 @@ class MisskeyViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     becomeFirstResponder()
+  }
+
+  // Timer は self を強参照するため、画面を閉じたら必ず止める（止めないと画面が解放されずダウンロードが続く）
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    stopTimer()
   }
 
   // Closeボタンタップ時

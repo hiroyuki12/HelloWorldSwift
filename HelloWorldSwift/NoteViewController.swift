@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import WebKit
-import SQLite3
 
 struct NoteArticlesStruct: Codable {
     var data: DataStruct
@@ -47,12 +46,12 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var textPage: UILabel!
     @IBOutlet weak var myImage: UIImageView!
     
-    var db: OpaquePointer?
     var isLoading = false
+    // 読み込み中にタグやページを切り替えた場合に、古いリクエストの結果を捨てるための番号
+    private var loadGeneration = 0
     var notes: [NoteArticlesStruct.DataStruct.NotesStruct] = []
     
     var sqliteSavedPage = 0
-    var sqlliteSavedPerPage = 0
     
     var tag = "tech"
     let tagSwift    = "swift"
@@ -67,20 +66,6 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         table.rowHeight = 70
         
         myload(page: 1, perPage: perPage, tag: tag)
-        
-        // SQLite 初期化
-        let fileUrl = try! FileManager.default
-            .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            .appendingPathComponent("HeroDatabase.sqlite")
-        
-        if sqlite3_open(fileUrl.path, &db) != SQLITE_OK {
-            return
-        }
-        
-        let createTableQuery = "CREATE TABLE IF NOT EXISTS Heroes (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, powerrank INTEGER)"
-        if sqlite3_exec(db, createTableQuery, nil, nil, nil) != SQLITE_OK {
-            return
-        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -92,28 +77,40 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         let urlString = "https://note.com/api/v1/categories/tech?note_intro_only=true&sort=new&page=\(page)"
         guard let url = URL(string: urlString) else { return }
         
+        isLoading = true
+        let generation = loadGeneration
         // [weak self] で循環参照を防ぐ
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self, let data = data else { return }
-            
-            do {
-                let noteArticles = try JSONDecoder().decode(NoteArticlesStruct.self, from: data)
-                
-                let currentNotes = self.notes
-                self.notes = currentNotes + noteArticles.data.notes
-                
-                DispatchQueue.main.async {
+            // デコードはバックグラウンドで行い、配列の更新はメインスレッドで行う（データ競合防止）
+            var newNotes: [NoteArticlesStruct.DataStruct.NotesStruct]?
+            if let data = data {
+                do {
+                    newNotes = try JSONDecoder().decode(NoteArticlesStruct.self, from: data).data.notes
+                } catch {
+                    print("JSON Decode Error: \(error)")
+                }
+            }
+            DispatchQueue.main.async {
+                guard let self = self, generation == self.loadGeneration else { return }
+                if let newNotes = newNotes {
+                    self.notes += newNotes
                     self.table.reloadData()
-                    self.isLoading = false
                 }
-            } catch {
-                print("JSON Decode Error: \(error)")
-                DispatchQueue.main.async {
-                    self.isLoading = false
-                }
+                self.isLoading = false
             }
         }
         task.resume()
+    }
+    
+    // 一覧を空にして、指定したタグ・ページを読み込み直す
+    private func reload(tag: String, page: Int) {
+        loadGeneration += 1
+        notes.removeAll()
+        table.reloadData()
+        self.tag = tag
+        savedPage = page
+        myload(page: savedPage, perPage: 20, tag: self.tag)
+        updatePageLabel()
     }
     
     // MARK: - UITableViewDataSource
@@ -124,6 +121,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard indexPath.row < notes.count else { return cell }
         let note = notes[indexPath.row]
         
         // タイトルの表示（最優先を note.name に変更）
@@ -139,14 +137,10 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
             textDetailText.text = daysAgo(note.publish_at ?? "")
         }
         
-        // プロフィール画像
+        // プロフィール画像（画像がなければ再利用セルの古い画像を消す）
         if let profileImage = cell.viewWithTag(1) as? UIImageView {
-            if let profileImageUrl = note.user.user_profile_image_path,
-               let myUrl = URL(string: profileImageUrl) {
-                profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
-            } else {
-                profileImage.image = nil
-            }
+            let profileImageUrl = note.user.user_profile_image_path.flatMap { URL(string: $0) }
+            profileImage.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: nil)
         }
         
         // タグ
@@ -162,6 +156,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        guard indexPath.row < notes.count else { return }
         
         let note = notes[indexPath.row]
         
@@ -184,7 +179,6 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         
         if maximumOffset - currentOffset <= 0 && scrollView.isDragging && !isLoading {
-            isLoading = true
             savedPage += 1
             myload(page: savedPage, perPage: 20, tag: tag)
             
@@ -194,19 +188,9 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - 日付変換ユーティリティ
     
+    // publish_at（例: 2020-04-12T15:00:00+09:00）を「◯時間前」形式にする。解析できなければ空文字
     func daysAgo(_ data: String) -> String {
-        // ISO8601などのフォーマットに合わせてDateFormatterで解析
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" // APIの返却形式が "2020-04-12 15:00:00" の場合は "yyyy-MM-dd HH:mm:ss" に変更してください
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        
-        guard let date = formatter.date(from: data) else {
-            // フォーマット解析に失敗した場合は、古いロジックのフォールバックか空文字を返す
-            return ""
-        }
-        
-        // Dateの拡張メソッド（timeAgo）を呼び出し
-        return date.timeAgo()
+        return DateParser.iso8601(data)?.timeAgo() ?? ""
     }
     
     // MARK: - Actions
@@ -216,7 +200,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func next(_ sender: Any) {
-        tapRead(self.savedPage, self.tag)
+        sqliteSavedPage = PageStore.shared.page(for: tag)
         popUp()
     }
     
@@ -245,11 +229,8 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func prev(_ sender: Any) {
-        if savedPage > 1 {
-            savedPage -= 1
-            myload(page: savedPage, perPage: 20, tag: tag)
-            textPage.text = "swift Page \(savedPage)/20posts/\((savedPage - 1) * 20 + 1)〜"
-        }
+        guard savedPage > 1 else { return }
+        reload(tag: tag, page: savedPage - 1)
     }
     
     // 共通のラベル更新処理
@@ -264,112 +245,51 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let flutterSwiftAction = UIAlertAction(title: "Flutter/Swift", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.notes.removeAll()
-            self.tag = (self.tag == self.tagSwift) ? self.tagFlutter : self.tagSwift
-            self.savedPage = 1
-            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-            self.updatePageLabel()
+            self.reload(tag: (self.tag == self.tagSwift) ? self.tagFlutter : self.tagSwift, page: 1)
         }
         alertController.addAction(flutterSwiftAction)
         
         let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.notes.removeAll()
-            self.tag = self.tagSwift
-            self.savedPage = 1
-            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-            self.updatePageLabel()
+            self.reload(tag: self.tagSwift, page: 1)
         }
         alertController.addAction(swiftPage1Action)
         
         let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.notes.removeAll()
-            self.tag = self.tagSwift
-            self.savedPage = 50
-            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-            self.updatePageLabel()
+            self.reload(tag: self.tagSwift, page: 50)
         }
         alertController.addAction(swiftPage50Action)
         
         let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.notes.removeAll()
-            self.tag = self.tagFlutter
-            self.savedPage = 1
-            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-            self.updatePageLabel()
+            self.reload(tag: self.tagFlutter, page: 1)
         }
         alertController.addAction(flutterPage1Action)
         
         let saveSwiftPageAction = UIAlertAction(title: "Save \(self.tag) Page ! \(self.savedPage)", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            self.tapDelete(self.savedPage, self.tag)
-            self.tapSave(self.savedPage, self.tag)
+            PageStore.shared.save(page: self.savedPage, for: self.tag)
             self.sqliteSavedPage = self.savedPage
         }
         alertController.addAction(saveSwiftPageAction)
         
         let loadSwiftPageAction = UIAlertAction(title: "Load \(self.tag) Page ! \(self.sqliteSavedPage)", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.notes.removeAll()
-            self.savedPage = self.sqliteSavedPage
-            self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-            self.updatePageLabel()
+            guard let self = self, self.sqliteSavedPage > 0 else { return }
+            self.reload(tag: self.tag, page: self.sqliteSavedPage)
         }
         alertController.addAction(loadSwiftPageAction)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
+        // iPad/Macで表示した場合に備えて、ポップオーバーの表示位置を指定する
+        if let popover = alertController.popoverPresentationController {
+            popover.sourceView = view
+            popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
         present(alertController, animated: true, completion: nil)
-    }
-    
-    // MARK: - SQLite Operations (安全なバインド処理への修正)
-    
-    func tapDelete(_ page: Int, _ tag: String) {
-        var stmt: OpaquePointer?
-        let queryString = "DELETE FROM Heroes WHERE name = ?"
-        
-        if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) == SQLITE_OK {
-            // SQLインジェクションを防ぐため、値を安全にバインド
-            sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-            
-            if sqlite3_step(stmt) != SQLITE_DONE {
-                print("Error deleting row")
-            }
-        }
-        sqlite3_finalize(stmt)
-    }
-    
-    func tapSave(_ page: Int, _ tag: String) {
-        var stmt: OpaquePointer?
-        let queryString = "INSERT INTO Heroes (name, powerrank) VALUES (?, ?)"
-        
-        if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) == SQLITE_OK {
-            sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-            sqlite3_bind_int(stmt, 2, Int32(page))
-            
-            if sqlite3_step(stmt) != SQLITE_DONE {
-                print("Error inserting row")
-            }
-        }
-        sqlite3_finalize(stmt)
-    }
-    
-    func tapRead(_ page: Int, _ tag: String) {
-        sqliteSavedPage = 0
-        var stmt: OpaquePointer?
-        let queryString = "SELECT powerrank FROM Heroes WHERE name = ?"
-        
-        if sqlite3_prepare_v2(db, queryString, -1, &stmt, nil) == SQLITE_OK {
-            sqlite3_bind_text(stmt, 1, (tag as NSString).utf8String, -1, nil)
-            
-            if sqlite3_step(stmt) == SQLITE_ROW {
-                let powerrank = sqlite3_column_int(stmt, 0)
-                sqliteSavedPage = Int(powerrank)
-            }
-        }
-        sqlite3_finalize(stmt)
     }
 }

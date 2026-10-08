@@ -59,6 +59,8 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face IDで認証します。</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>バックグラウンドでも位置情報を記録するために使用します。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>現在地を表示するために位置情報を使用します。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
