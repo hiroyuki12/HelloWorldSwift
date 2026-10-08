@@ -10,11 +10,7 @@ import UIKit
 import Foundation
 import WebKit
 
-class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
-  @IBOutlet weak var table: UITableView!
-  @IBOutlet weak var textPage: UILabel!
-  @IBOutlet weak var myImage: UIImageView!
-
+class HatenaBookmarkFavoriteViewController: PagedListViewController {
   // お気に入りのRSSはユーザー固有のURLのため未設定（設定されるまで Fav は空表示）
   let feedUrlFavorite: URL? = nil
   let feedUrlHotentry = URL(string: "https://b.hatena.ne.jp/hotentry.rss")
@@ -22,36 +18,37 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
 
   var feedItems = [FeedItem]()
 
-  var isLoading = false;
-  
-  var sqliteSavedPage = 0
-  var sqlliteSavedPerPage = 0
-  
-  var tag = "Fav"
-  
-  let tagFav    = "Fav"
+  let tagFav      = "Fav"
   let tagSwift    = "Swift"
-  let tagHotentry  = "Hotentry"
-  let tagIT  = "IT"
-  
-  var savedPage = 1
-  var perPage = 20
+  let tagHotentry = "Hotentry"
+  let tagIT       = "IT"
 
-  // 起動時処理
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override var initialTag: String { return tagFav }
+  // 以前のバージョンで保存したページも読めるよう、従来の name = 1 を使う
+  override var pageStoreKey: String? { return "1" }
+  // ページ送りできるのはタグ検索（Swift）だけ。他の RSS は1ページのみ
+  override var canLoadMore: Bool { return tag == tagSwift }
 
-    // セルの高さを設定
-    table.rowHeight = 70
-
-    loadFeed()
+  override func menuItems() -> [ListMenuItem] {
+    return [
+      .cycle("Fav/Swift/Hotentry/IT", [tagFav, tagSwift, tagHotentry, tagIT]),
+      .fixed("Swift page1/20posts", tag: tagSwift, page: 1),
+      .fixed("Swift page50/20posts", tag: tagSwift, page: 50),
+      .fixed("Hotentry", tag: tagHotentry, page: 1),
+    ]
   }
-  
-  // 現在の tag / savedPage に対応する RSS のURL
-  private func feedUrl() -> URL? {
+
+  override var itemCount: Int { return feedItems.count }
+
+  override func removeAllItems() {
+    feedItems.removeAll()
+  }
+
+  // tag / page に対応する RSS のURL
+  private func feedUrl(tag: String, page: Int) -> URL? {
     switch tag {
     case tagSwift:
-      return URL(string: "https://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(savedPage))
+      return URL(string: "https://b.hatena.ne.jp/search/tag?q=swift&users=1&mode=rss&page=" + String(page))
     case tagHotentry:
       return feedUrlHotentry
     case tagIT:
@@ -61,286 +58,56 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     }
   }
 
-  // RSS を非同期に取得して feedItems の末尾に追加する
-  private func loadFeed() {
-    updatePageText()
-    guard let url = feedUrl() else {
-      textPage.text = String(tag) + " (URL未設定)"
-      isLoading = false
+  override func fetchPage(_ page: Int, tag: String, completion: @escaping ((() -> Void)?) -> Void) {
+    guard let url = feedUrl(tag: tag, page: page) else {
+      completion(nil)
       return
     }
-    let requestedTag = tag
-    let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-      let items = data.map { RSSParser.parse($0) } ?? []
-      DispatchQueue.main.async {
-        guard let self = self else { return }
-        // 読み込み中に tag が切り替わった場合は古い結果を捨てる
-        if requestedTag == self.tag {
-          self.feedItems += items
-          self.table.reloadData()
-        }
-        self.isLoading = false
+    URLSession.shared.dataTask(with: url) { data, response, error in
+      guard let data = data else {
+        completion(nil)
+        return
       }
-    }
-    task.resume()
+      let items = RSSParser.parse(data)
+      completion { [weak self] in
+        self?.feedItems += items
+      }
+    }.resume()
   }
 
-  private func updatePageText() {
-    textPage.text = String(tag) + " Page " + String(savedPage) +
-      "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+  override func loadDidFail() {
+    if feedUrl(tag: tag, page: savedPage) == nil {
+      textPage.text = tag + " (URL未設定)"
+    }
   }
 
-  // Cellの中身を設定
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    // セルを取得する
-    let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-    
-    let feedItem = self.feedItems[indexPath.row]
-    // セルに表示するタイトルを設定する
-    let textTitle = cell.viewWithTag(2) as! UILabel
-    textTitle.text = feedItem.title
-    // セルに表示するブックマーク数を設定する
-    let textDetailText = cell.viewWithTag(3) as! UILabel
-    textDetailText.text = feedItem.bookmarkcount + " users"
-    // セルに表示する画像を設定する
-    let profileImage = cell.viewWithTag(1) as! UIImageView
-    var imageUrl: String?
-    if let creator = feedItem.creator {  // Favorite
-      imageUrl = "https://cdn.profile-image.st-hatena.com/users/" + creator + "/profile.gif"
-    }
-    if let imageurl = feedItem.imageurl {  // Hotentry, IT
-      imageUrl = imageurl
-    }
-    if let imageUrl = imageUrl {
-      profileImage.loadImageAsynchronously(url: URL(string: imageUrl), defaultUIImage: nil)
-    } else {
-      profileImage.image = nil  // 再利用セルの古い画像を消す
-    }
-    // セルに表示するブックマークしたユーザー、日を設定する
-    let tagsText = cell.viewWithTag(4) as! UILabel
-    let ago = daysAgo(feedItem.date ?? "")
+  override func configure(_ cell: UITableViewCell, row: Int) {
+    let feedItem = feedItems[row]
+    // タイトル
+    (cell.viewWithTag(2) as? UILabel)?.text = feedItem.title
+    // ブックマーク数
+    (cell.viewWithTag(3) as? UILabel)?.text = feedItem.bookmarkcount + " users"
+    // 画像（Fav はブックマークしたユーザーのアイコン、Hotentry / IT は記事の画像）
+    var imageUrl: URL?
     if let creator = feedItem.creator {
-      tagsText.text = creator + " " + ago
+      imageUrl = URL(string: "https://cdn.profile-image.st-hatena.com/users/" + creator + "/profile.gif")
+    }
+    if let imageurl = feedItem.imageurl {
+      imageUrl = URL(string: imageurl)
+    }
+    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: imageUrl, defaultUIImage: nil)
+    // ブックマークしたユーザーと日時（dc:date 例: 2020-10-15T12:34:56+09:00）
+    let ago = DateParser.iso8601(feedItem.date ?? "")?.timeAgo() ?? ""
+    if let creator = feedItem.creator {
+      (cell.viewWithTag(4) as? UILabel)?.text = creator + " " + ago
     }
     else {
-      tagsText.text = ago
-    }
-    return cell
-  }
-
-  // dc:date（例: 2020-10-15T12:34:56+09:00）を「◯時間前」形式にする。解析できなければ空文字
-  func daysAgo(_ data: String) -> String {
-    guard let date = DateParser.iso8601(data) else {
-      return ""
-    }
-    return date.timeAgo()
-  }
-  
-  // Cellの個数を設定
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.feedItems.count
-  }
-  
-  override func viewWillLayoutSubviews() {  // isModalInPresentationにtrueを代入
-      isModalInPresentation = true  // 下にスワイプで閉じなくする
-  }
-  
-  // Loadボタン押下
-  @IBAction func load(_ sender: Any) {
-    self.table.reloadData()
-    //print("reloadData(tap load button")
-  }
-  
-  // Menuボタンタップ時
-  @IBAction func next(_ sender: Any) {
-    tapRead(self.savedPage)
-    
-    popUp()
-  }
-  
-  private func popUp() {
-    let alertController = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-    
-    let flutterSwiftAction = UIAlertAction(title: "Fav/Swift/Hotentry/IT", style: .default,
-                                           handler:{
-                                            (action:UIAlertAction!) -> Void in
-                                            self.feedItems.removeAll()
-                                            if(self.tag == self.tagFav) {
-                                              self.tag = self.tagSwift
-                                            }
-                                            else if(self.tag == self.tagSwift) {
-                                              self.tag = self.tagHotentry
-                                            }
-                                            else if(self.tag == self.tagHotentry) {
-                                              self.tag = self.tagIT
-                                            }
-                                            else {
-                                              self.tag = self.tagFav
-                                            }
-                                            self.savedPage = 1
-                                            self.table.reloadData()
-                                            self.loadFeed()
-                                           })
-    alertController.addAction(flutterSwiftAction)
-    
-    let swiftPage1Action = UIAlertAction(title: "Swift page1/20posts", style: .default,
-                                         handler:{
-                                          (action:UIAlertAction!) -> Void in
-//                                          self.articles.removeAll()
-                                          self.tag = self.tagFav
-                                          self.savedPage = 1
-                                          //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                          self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                          "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-                                         })
-    alertController.addAction(swiftPage1Action)
-    
-    let swiftPage50Action = UIAlertAction(title: "Swift page50/20posts", style: .default,
-                                          handler:{
-                                            (action:UIAlertAction!) -> Void in
-//                                            self.articles.removeAll()
-                                            self.tag = self.tagFav
-                                            self.savedPage = 50
-                                            //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                            self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                              "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-                                          })
-    alertController.addAction(swiftPage50Action)
-    
-    let flutterPage1Action = UIAlertAction(title: "Flutter page1/20posts", style: .default,
-                                           handler:{
-                                            (action:UIAlertAction!) -> Void in
-//                                            self.articles.removeAll()
-                                            self.tag = self.tagHotentry
-                                            self.savedPage = 1
-                                            //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                            self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                            "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-                                           })
-    alertController.addAction(flutterPage1Action)
-    
-    let saveSwiftPageAction = UIAlertAction(title: "Save Swift Page ! " + String(self.savedPage), style: .default,
-                                            handler:{
-                                              (action:UIAlertAction!) -> Void in
-                                              //savedPage  //現在のページ
-                                              //        print("start tapSave.")
-                                              //        print("savedPage: "  String(self.savedPage))
-                                              
-                                              self.tapSave(self.savedPage)
-                                              
-                                              self.sqliteSavedPage = self.savedPage;
-                                              //        print("sqliteSavedPage: "  String(self.sqliteSavedPage))
-                                              
-                                            })
-    alertController.addAction(saveSwiftPageAction)
-    
-    let loadSwiftPageAction = UIAlertAction(title: "Load Swift Page ! " + String(self.sqliteSavedPage), style: .default,
-                                            handler:{
-                                              (action:UIAlertAction!) -> Void in
-                                              
-//                                              self.articles.removeAll()
-                                              self.savedPage = self.sqliteSavedPage
-                                              //self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
-                                              self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
-                                                "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
-                                              
-                                              //      print ("finish tapLoad!")
-                                              
-                                            })
-    alertController.addAction(loadSwiftPageAction)
-    
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-    alertController.addAction(cancelAction)
-    
-    present(alertController, animated: true, completion: nil)
-  }
-  
-  func swiftPage1Action() {
-  }
-  
-  // qキーで画面を閉じる
-  override var keyCommands: [UIKeyCommand]? {
-    let command = UIKeyCommand(input: "q", modifierFlags: [], action: #selector(tapSave(_:) as (Any) -> Void))
-    command.wantsPriorityOverSystemBehavior = true
-    return [command]
-  }
-
-  // キー入力を受け取るためにファーストレスポンダーになる
-  override var canBecomeFirstResponder: Bool {
-    return true
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    becomeFirstResponder()
-  }
-
-  // Closeボタンタップ時
-  @IBAction func tapSave(_ sender: Any) {
-    //戻る
-    dismiss(animated: true, completion: nil)
-    
-  }
-  
-  // 保存ページのキー（以前のバージョンで保存したページも読めるよう、従来の name = 1 を使う）
-  private let pageStoreKey = "1"
-
-  // 保存ページを page で置き換える
-  func tapSave(_ page: Int) {
-    PageStore.shared.save(page: page, for: pageStoreKey)
-  }
-  
-  // Loadボタンタップ時
-  @IBAction func tapLoad(_ sender: Any) {
-  }
-  
-  func tapRead(_ page: Int) {
-    sqliteSavedPage = PageStore.shared.page(for: pageStoreKey)
-  }
-  
-  // Prevボタン押下
-  @IBAction func prev(_ sender: Any) {
-  }
-  
-  // セルをタップした時の処理
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //    print (indexPath)  // 1つ目が[0,0]、２つ目が[0,1]
-    //    popUp()
-    
-    guard indexPath.row < self.feedItems.count else { return }
-    guard let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
-      return
-    }
-    let feedItem = self.feedItems[indexPath.row]
-    webView.url = feedItem.url
-    
-    if webView.url?.hasPrefix("http") == true {
-      self.present(webView, animated: true, completion: nil)
-    }
-    else {
-      print(feedItem.url)
-    }
-    
-  }
-  
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    if(tag == tagSwift) {
-        if (self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading){
-          isLoading = true  // 読み込み完了時に loadFeed() が false に戻す
-          savedPage += 1
-          loadFeed()
-        }
+      (cell.viewWithTag(4) as? UILabel)?.text = ago
     }
   }
 
-  /*
-   // MARK: - Navigation
-   
-   // In a storyboard-based application, you will often want to do a little preparation before navigation
-   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-   // Get the new view controller using segue.destination.
-   // Pass the selected object to the new view controller.
-   }
-   */
-
+  override func url(forRow row: Int) -> String? {
+    let url = feedItems[row].url
+    return url.hasPrefix("http") ? url : nil
+  }
 }
