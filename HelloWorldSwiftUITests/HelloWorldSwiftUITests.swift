@@ -305,10 +305,17 @@ extension HelloWorldSwiftUITests {
     assertAlive("DatePicker")
   }
 
-  func testFunctional_LocationCoordinates() { exerciseCoordinates(fromSub: false) }
-  func testFunctional_LocationNameCoordinates() { exerciseCoordinates(fromSub: true) }
+  func testFunctional_LocationCoordinates() throws { try exerciseCoordinates(fromSub: false) }
+  func testFunctional_LocationNameCoordinates() throws { try exerciseCoordinates(fromSub: true) }
 
-  private func exerciseCoordinates(fromSub: Bool) {
+  /// シミュレーターに設定した仮想位置（東京駅）が表示されることを確認する
+  private func exerciseCoordinates(fromSub: Bool) throws {
+    #if targetEnvironment(simulator)
+    let isSimulator = true
+    #else
+    let isSimulator = false
+    #endif
+    try XCTSkipUnless(isSimulator, "実機では本物の現在地が使われ、仮想位置（東京駅）を設定できない")
     if fromSub { openFromSub("LocationName", marker: "位置情報を取得") }
     else { openFromTop("Location", marker: "位置情報を取得") }
     allowSystemAlertIfNeeded()
