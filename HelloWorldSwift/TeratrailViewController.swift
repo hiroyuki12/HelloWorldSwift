@@ -14,11 +14,11 @@ struct TeratailArticlesStruct: Codable {
   var questions: [QuestionsStruct]
   
   struct QuestionsStruct: Codable {
-    var id: Int
+    var id: String
     var title: String
     var created: String
-    var count_reply: Int
-    var count_pv: Int
+    var count_reply: String
+    var count_pv: String
     var tags: [String]
     var user: UserStruct?
 
@@ -124,12 +124,16 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
     // セルに表示する作成日を設定する
     let textDetailText = cell.viewWithTag(3) as? UILabel
     textDetailText?.text = daysAgo(question.created)  // questions->created
-    // セルに表示する画像を設定する（画像がなければ再利用セルの古い画像を消す）
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
+    // セルに表示する画像を設定する（退会済みユーザーなど画像がなければ既定のアイコンにする）
     let profileImage = cell.viewWithTag(1) as? UIImageView
-    profileImage?.loadImageAsynchronously(url: question.user.flatMap { URL(string: $0.photo) }, defaultUIImage: nil)
+    profileImage?.loadImageAsynchronously(url: question.user.flatMap { URL(string: $0.photo) },
+                                          defaultUIImage: UIImage(systemName: "person.crop.square"))
     // セルに表示する回答数とタグ（最大5つ）を設定する
     let tagsText = cell.viewWithTag(4) as? UILabel
-    var text = "回答数 " + String(question.count_reply) + " / PV数 " + String(question.count_pv)
+    var text = "回答数 " + question.count_reply + " / PV数 " + question.count_pv
     if !question.tags.isEmpty {
       text += " / " + question.tags.prefix(5).joined(separator: ",")
     }
@@ -269,7 +273,7 @@ class TeratrailViewController: UIViewController, UITableViewDelegate, UITableVie
           let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
       return
     }
-    webView.url = "https://teratail.com/questions/" + String(questions[indexPath.row].id)
+    webView.url = "https://teratail.com/questions/" + questions[indexPath.row].id
     
     self.present(webView, animated: true, completion: nil)
   }

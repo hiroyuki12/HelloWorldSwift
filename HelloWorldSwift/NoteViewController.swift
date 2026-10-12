@@ -123,6 +123,9 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         guard indexPath.row < notes.count else { return cell }
         let note = notes[indexPath.row]
+        // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+        cell.textLabel?.text = nil
+        cell.detailTextLabel?.text = nil
         
         // タイトルの表示（最優先を note.name に変更）
         if let textTitle = cell.viewWithTag(2) as? UILabel {
@@ -140,7 +143,7 @@ class NoteViewController: UIViewController, UITableViewDelegate, UITableViewData
         // プロフィール画像（画像がなければ再利用セルの古い画像を消す）
         if let profileImage = cell.viewWithTag(1) as? UIImageView {
             let profileImageUrl = note.user.user_profile_image_path.flatMap { URL(string: $0) }
-            profileImage.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: nil)
+            profileImage.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
         }
         
         // タグ

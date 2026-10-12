@@ -119,6 +119,9 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     
     guard indexPath.row < items.count else { return cell }
     let item = items[indexPath.row]
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
     // セルに表示するタイトルを設定する（HTMLエスケープを戻す）
     let textTitle = cell.viewWithTag(2) as? UILabel
     textTitle?.text = item.title.htmlToPlainText
@@ -131,7 +134,7 @@ class StackOverflowViewController: UIViewController, UITableViewDelegate, UITabl
     if let owner = item.owner, owner.user_type != "does_not_exist", let urlString = owner.profile_image {
       profileImageUrl = URL(string: urlString)
     }
-    profileImage?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: nil)
+    profileImage?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
     // セルに表示する回答数とタグ（最大5つ）を設定する
     let tagsText = cell.viewWithTag(4) as? UILabel
     var text = "回答数 " + String(item.answer_count) + " / PV数 " + String(item.view_count)

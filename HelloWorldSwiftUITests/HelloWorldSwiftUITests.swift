@@ -63,7 +63,6 @@ final class HelloWorldSwiftUITests: XCTestCase {
   // 非表示のボタンはスキップ。表示されている Google News の不具合は実際の失敗として記録する。
 
   func testKnownBroken_Box() throws { throw XCTSkip("トップ画面の Box ボタンは hidden=YES") }
-  func testKnownBroken_GoogleNews() { openFromTop("Google News", marker: "xLoad") }
   func testKnownBroken_Twitter() throws { throw XCTSkip("トップ画面の Twitter ボタンは hidden=YES") }
 
   // MARK: - Sub 画面

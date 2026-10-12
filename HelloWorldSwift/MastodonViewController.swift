@@ -195,6 +195,9 @@
       
       guard indexPath.row < articles.count else { return cell }
       let article = articles[indexPath.row]
+      // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+      cell.textLabel?.text = nil
+      cell.detailTextLabel?.text = nil
       // ブーストの場合は元の投稿の本文・ユーザーを表示する
       let isBoosted = article.reblog != nil && article.in_reply_to_account_id == nil
       // セルに表示する本文を設定する
@@ -213,7 +216,7 @@
       let account = isBoosted ? (article.reblog?.account ?? article.account) : article.account
       // セルに表示する画像を設定する
       let profileImage = cell.viewWithTag(1) as? UIImageView
-      profileImage?.loadImageAsynchronously(url: URL(string: account.avatar), defaultUIImage: nil)
+      profileImage?.loadImageAsynchronously(url: URL(string: account.avatar), defaultUIImage: UIImage(systemName: "person.crop.square"))
       // セルに表示するuserName,作成日を設定する
       let textDetailText = cell.viewWithTag(3) as? UILabel
       textDetailText?.text = account.display_name + " " + daysAgo(article.created_at)

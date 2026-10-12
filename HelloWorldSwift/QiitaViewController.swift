@@ -145,6 +145,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     guard indexPath.row < articles.count else { return cell }
     let article = articles[indexPath.row]
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as? UILabel
     textTitle?.text = article.title
@@ -156,7 +159,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let profileImage = cell.viewWithTag(1) as? UIImageView
     profileImage?.image = nil
     let myUrl: URL? = URL(string: profileImageUrl)
-    profileImage?.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+    profileImage?.loadImageAsynchronously(url: myUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
     // セルに表示するタグを設定する
     let tagsText = cell.viewWithTag(4) as? UILabel
     tagsText?.text = article.tags.prefix(5).map { $0.name }.joined(separator: ", ")

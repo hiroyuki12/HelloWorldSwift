@@ -27,7 +27,7 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
   var sqliteSavedPage = 0
   var sqlliteSavedPerPage = 0
   
-  var tag = "Fav"
+  var tag = "Hotentry"  // Fav はお気に入りRSSに秘密キーが必要なため、最初は Hotentry を表示する
   
   let tagFav    = "Fav"
   let tagSwift    = "Swift"
@@ -96,6 +96,9 @@ class HatenaBookmarkFavoriteViewController: UIViewController, UITableViewDelegat
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
     let feedItem = self.feedItems[indexPath.row]
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
     textTitle.text = feedItem.title

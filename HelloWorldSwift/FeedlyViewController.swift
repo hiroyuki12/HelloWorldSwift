@@ -173,6 +173,9 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     
     let article = articles[indexPath.row]
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
     // セルに表示するタイトルを設定する
     let textTitle = cell.viewWithTag(2) as! UILabel
     let tmpTitle = article["title"]! as? String // items->title
@@ -221,7 +224,7 @@ class FeedlyViewController: UIViewController, UITableViewDelegate, UITableViewDa
       let profileImageUrl = "https://cdn.profile-image.st-hatena.com/users/" + author + "/profile.gif"// items->thumbnail
       let profileImage = cell.viewWithTag(1) as! UIImageView
       let myUrl: URL? = URL(string: profileImageUrl)
-      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: nil)
+      profileImage.loadImageAsynchronously(url: myUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
     }
     else {
       if tag == tagZennSwift {
