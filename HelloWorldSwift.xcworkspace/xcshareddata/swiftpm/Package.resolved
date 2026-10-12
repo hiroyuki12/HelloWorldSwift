@@ -1,0 +1,24 @@
+{
+  "originHash" : "84400947d0a46caab16b0aa5f1308a68201994f00bf5a947965254762edd60ae",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
+        "version" : "5.12.0"
+      }
+    },
+    {
+      "identity" : "swiftydropbox",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dropbox/SwiftyDropbox",
+      "state" : {
+        "revision" : "5bda01b02a87568801a5b2af07e3fdb075dce69c",
+        "version" : "9.2.0"
+      }
+    }
+  ],
+  "version" : 3
+}
