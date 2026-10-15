@@ -87,7 +87,7 @@ class NoteViewController: PagedListViewController {
         (cell.viewWithTag(3) as? UILabel)?.text = DateParser.iso8601(note.publish_at ?? "")?.timeAgo() ?? ""
         // プロフィール画像（画像がなければ再利用セルの古い画像を消す）
         let profileImageUrl = note.user.user_profile_image_path.flatMap { URL(string: $0) }
-        (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: nil)
+        (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
         // ハッシュタグ（最大5つ）
         let tagNames = note.hashtag_notes.prefix(5).map { $0.hashtag.name ?? "" }.filter { !$0.isEmpty }
         (cell.viewWithTag(4) as? UILabel)?.text = tagNames.joined(separator: " ")

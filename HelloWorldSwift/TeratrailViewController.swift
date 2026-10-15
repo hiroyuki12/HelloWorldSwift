@@ -14,11 +14,11 @@ struct TeratailArticlesStruct: Codable {
   var questions: [QuestionsStruct]
   
   struct QuestionsStruct: Codable {
-    var id: Int
+    var id: String
     var title: String
     var created: String
-    var count_reply: Int
-    var count_pv: Int
+    var count_reply: String
+    var count_pv: String
     var tags: [String]
     var user: UserStruct?
 
@@ -79,10 +79,10 @@ class TeratrailViewController: PagedListViewController {
     (cell.viewWithTag(2) as? UILabel)?.text = question.title
     // 作成日
     (cell.viewWithTag(3) as? UILabel)?.text = DateParser.localDateTime(question.created)?.timeAgo() ?? ""
-    // プロフィール画像（画像がなければ再利用セルの古い画像を消す）
-    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: question.user.flatMap { URL(string: $0.photo) }, defaultUIImage: nil)
+    // プロフィール画像（退会済みユーザーなど画像がなければ既定のアイコンにする）
+    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: question.user.flatMap { URL(string: $0.photo) }, defaultUIImage: UIImage(systemName: "person.crop.square"))
     // 回答数・PV数とタグ（最大5つ）
-    var text = "回答数 " + String(question.count_reply) + " / PV数 " + String(question.count_pv)
+    var text = "回答数 " + question.count_reply + " / PV数 " + question.count_pv
     if !question.tags.isEmpty {
       text += " / " + question.tags.prefix(5).joined(separator: ",")
     }
@@ -90,6 +90,6 @@ class TeratrailViewController: PagedListViewController {
   }
 
   override func url(forRow row: Int) -> String? {
-    return "https://teratail.com/questions/" + String(questions[row].id)
+    return "https://teratail.com/questions/" + questions[row].id
   }
 }

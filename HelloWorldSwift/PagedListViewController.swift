@@ -37,6 +37,8 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   var isLoading = false
   // 読み込み中にタグやページを切り替えた場合に、古いリクエストの結果を捨てるための番号
   private var loadGeneration = 0
+  // 読み込み中のリクエスト。タグやページを切り替えたら取り消す
+  private var currentTask: URLSessionDataTask?
 
   var tag = ""
   var savedPage = 1
@@ -54,8 +56,11 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   // 保存ページのキー。nil ならメニューに Save / Load を出さない
   var pageStoreKey: String? { return nil }
 
+  // 読み込めるページの上限。nil なら上限なし
+  var maxPage: Int? { return nil }
+
   // スクロールで次のページを読み込めるか
-  var canLoadMore: Bool { return true }
+  var canLoadMore: Bool { return maxPage.map { savedPage < $0 } ?? true }
 
   // メニューに並べる項目（Save / Load / Cancel は共通で追加される）
   func menuItems() -> [ListMenuItem] { return [] }
@@ -93,25 +98,33 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     table.rowHeight = rowHeight
 
     tag = initialTag
-    loadPage()
+    loadPage(savedPage)
     updatePageLabel()
   }
+
+  deinit { currentTask?.cancel() }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     isModalInPresentation = true  // 下にスワイプで閉じなくする
   }
 
-  // 現在の tag / savedPage を読み込み、一覧の末尾に追加する
-  func loadPage() {
+  // 現在の tag の page ページを読み込み、一覧の末尾に追加する。
+  // 成功したときだけ savedPage を page に進める（失敗したページを飛ばさないため）
+  func loadPage(_ page: Int) {
     isLoading = true
     let generation = loadGeneration
-    fetchPage(savedPage, tag: tag) { [weak self] append in
+    fetchPage(page, tag: tag) { [weak self] append in
       DispatchQueue.main.async {
         guard let self = self, generation == self.loadGeneration else { return }
+        self.currentTask = nil
         if let append = append {
           append()
           self.table.reloadData()
+          if self.savedPage != page {
+            self.savedPage = page
+            self.updatePageLabel()
+          }
         } else {
           self.loadDidFail()
         }
@@ -124,12 +137,14 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   // 一覧を空にして、指定したタグ・ページを読み込み直す
   func reload(tag: String, page: Int) {
     loadGeneration += 1
+    currentTask?.cancel()
+    currentTask = nil
     removeAllItems()
     table.reloadData()
     self.tag = tag
-    savedPage = page
+    savedPage = max(1, min(maxPage ?? Int.max, page))
     resetPaging()
-    loadPage()
+    loadPage(savedPage)
     updatePageLabel()
   }
 
@@ -137,13 +152,29 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     textPage.text = "\(tag) Page \(savedPage)/20posts/\((savedPage - 1) * 20 + 1)〜"
   }
 
-  // JSON を取得して T にデコードする。失敗時は nil
-  func fetchJSON<T: Decodable>(_ type: T.Type, from url: URL?, completion: @escaping (T?) -> Void) {
-    guard let url = url else {
+  // url のデータを取得する。通信エラーや 2xx 以外の応答は nil。
+  // タグやページを切り替えたときに取り消せるよう、リクエストを currentTask に持っておく
+  func fetchData(from url: URL?, completion: @escaping (Data?) -> Void) {
+    guard let url = url, url.isHTTPOrHTTPS else {
       completion(nil)
       return
     }
-    URLSession.shared.dataTask(with: url) { data, response, error in
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+      guard error == nil, let response = response as? HTTPURLResponse,
+            (200...299).contains(response.statusCode) else {
+        completion(nil)
+        return
+      }
+      completion(data)
+    }
+    // fetchPage はメインスレッドから呼ばれる
+    currentTask = task
+    task.resume()
+  }
+
+  // JSON を取得して T にデコードする。失敗時は nil
+  func fetchJSON<T: Decodable>(_ type: T.Type, from url: URL?, completion: @escaping (T?) -> Void) {
+    fetchData(from: url) { data in
       var decoded: T?
       if let data = data {
         do {
@@ -153,7 +184,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
       }
       completion(decoded)
-    }.resume()
+    }
   }
 
   // MARK: - UITableViewDataSource
@@ -164,6 +195,9 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    // Subtitle スタイル標準の「Title」「Detail」ラベルが画像の後ろに透けて見えないよう消しておく
+    cell.textLabel?.text = nil
+    cell.detailTextLabel?.text = nil
     if indexPath.row < itemCount {
       configure(cell, row: indexPath.row)
     }
@@ -172,11 +206,17 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
 
   // MARK: - UITableViewDelegate
 
+  // 画面外に出たセルの画像読み込みを取り消す
+  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    (cell.viewWithTag(1) as? UIImageView)?.cancelImageLoad()
+  }
+
   // セルをタップしたら記事を開く
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard indexPath.row < itemCount,
           let urlString = url(forRow: indexPath.row),
+          let url = URL(string: urlString), url.isHTTPOrHTTPS,
           let webView = storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
       return
     }
@@ -189,9 +229,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     if table.contentSize.height > 0
         && table.contentOffset.y + table.frame.size.height > table.contentSize.height
         && table.isDragging && !isLoading && canLoadMore {
-      savedPage += 1
-      loadPage()
-      updatePageLabel()
+      loadPage(savedPage + 1)
     }
   }
 

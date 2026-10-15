@@ -69,7 +69,7 @@
 
     override var initialTag: String { return tagJp }
     override var rowHeight: CGFloat { return 110 }
-    override var canLoadMore: Bool { return savedPage < 100 }
+    override var maxPage: Int? { return 100 }
 
     override func menuItems() -> [ListMenuItem] {
       return [
@@ -159,7 +159,7 @@
 
       let account = isBoosted ? (article.reblog?.account ?? article.account) : article.account
       // プロフィール画像
-      (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: URL(string: account.avatar), defaultUIImage: nil)
+      (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: URL(string: account.avatar), defaultUIImage: UIImage(systemName: "person.crop.square"))
       // ユーザー名・作成日（created_at は UTC の ISO8601）
       (cell.viewWithTag(3) as? UILabel)?.text = account.display_name + " " + (DateParser.iso8601(article.created_at)?.timeAgo() ?? "")
       // 返信・ブースト・お気に入り数

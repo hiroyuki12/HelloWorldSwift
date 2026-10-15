@@ -5,6 +5,17 @@
 	};
 	objectVersion = 54;
 	objects = {
+		AA0000000000000000000001 = {isa = PBXNativeTarget; buildConfigurationList = AA0000000000000000000002; buildPhases = (AA0000000000000000000003, AA0000000000000000000004,); buildRules = (); dependencies = (AA0000000000000000000008,); name = HelloWorldSwiftUITests; productName = HelloWorldSwiftUITests; productReference = AA0000000000000000000005; productType = "com.apple.product-type.bundle.ui-testing"; };
+		AA0000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (AA0000000000000000000006, AA0000000000000000000007,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		AA0000000000000000000003 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (AA000000000000000000000A,); runOnlyForDeploymentPostprocessing = 0; };
+		AA0000000000000000000004 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		AA0000000000000000000005 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = HelloWorldSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000000000000000000006 = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; TEST_TARGET_NAME = HelloWorldSwift; IPHONEOS_DEPLOYMENT_TARGET = 16.0; CODE_SIGN_STYLE = Automatic; }; name = Debug; };
+		AA0000000000000000000007 = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.hiroyuki12.HelloWorldSwiftUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; TEST_TARGET_NAME = HelloWorldSwift; IPHONEOS_DEPLOYMENT_TARGET = 16.0; CODE_SIGN_STYLE = Automatic; }; name = Release; };
+		AA0000000000000000000008 = {isa = PBXTargetDependency; target = 2EE5C7C0243767D5005215DD; targetProxy = AA0000000000000000000009; };
+		AA0000000000000000000009 = {isa = PBXContainerItemProxy; containerPortal = 2EE5C7B9243767D5005215DD; proxyType = 1; remoteGlobalIDString = 2EE5C7C0243767D5005215DD; remoteInfo = HelloWorldSwift; };
+		AA000000000000000000000A = {isa = PBXBuildFile; fileRef = 2EE5C7E6243767D9005215DD; };
+
 
 /* Begin PBXBuildFile section */
 		2E0447EB2A02510700C314E0 /* SwiftyDropbox in Frameworks */ = {isa = PBXBuildFile; productRef = 2E0447EA2A02510700C314E0 /* SwiftyDropbox */; };
@@ -53,7 +64,6 @@
 
 /* Begin PBXFileReference section */
 		2E64BD652461033800DAE6C9 /* NasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NasViewController.swift; sourceTree = "<group>"; };
-		2E64BD692461097800DAE6C9 /* SMBClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SMBClient.framework; path = Carthage/Build/iOS/SMBClient.framework; sourceTree = "<group>"; };
 		2E685889244DDD060023AE5A /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		2E68588B244DDF2D0023AE5A /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		2E68588D244EF2E90023AE5A /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -119,7 +129,6 @@
 		2E7D68BC244127D9008C962B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2E64BD692461097800DAE6C9 /* SMBClient.framework */,
 				2E7D68BD244127D9008C962B /* WebKit.framework */,
 			);
 			name = Frameworks;
@@ -276,6 +285,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				AA0000000000000000000001,
 				2EE5C7C0243767D5005215DD /* HelloWorldSwift */,
 			);
 		};

@@ -85,7 +85,7 @@ class StackOverflowViewController: PagedListViewController {
     if let owner = item.owner, owner.user_type != "does_not_exist", let urlString = owner.profile_image {
       profileImageUrl = URL(string: urlString)
     }
-    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: nil)
+    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: profileImageUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
     // 回答数・PV数とタグ（最大5つ）
     var text = "回答数 " + String(item.answer_count) + " / PV数 " + String(item.view_count)
     if !item.tags.isEmpty {

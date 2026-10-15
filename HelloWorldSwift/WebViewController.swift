@@ -10,11 +10,12 @@ import UIKit
 import WebKit
 import Accounts
 
-class WebViewController: UIViewController {
+class WebViewController: UIViewController, WKNavigationDelegate {
   @IBOutlet weak var wkWebView: WKWebView!
   
   // ①表示するURLを持っておく public 外部から変更
   var url: String?
+  private var initialHost: String?
 
   // qキーで画面を閉じる
   override var keyCommands: [UIKeyCommand]? {
@@ -37,7 +38,9 @@ class WebViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    if let urlString = self.url, let url = URL(string: urlString) {
+    wkWebView.navigationDelegate = self
+    if let urlString = self.url, let url = URL(string: urlString), url.isHTTPOrHTTPS {
+      initialHost = url.host?.lowercased()
       let request = URLRequest(url: url)
       wkWebView.load(request)
       // スワイプで進む、戻るを有効にする
@@ -45,6 +48,43 @@ class WebViewController: UIViewController {
     }
   }
   
+  // 同じホストのHTTPSだけをアプリ内で表示する。外部リンクはURLが見えるブラウザへ渡す。
+  static func allowsEmbeddedNavigation(_ url: URL, host: String?) -> Bool {
+    guard let host = host else { return false }
+    return url.scheme?.lowercased() == "https" && url.host?.lowercased() == host
+      && url.user == nil && url.password == nil && (url.port == nil || url.port == 443)
+  }
+
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+               decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    guard let destination = navigationAction.request.url else {
+      decisionHandler(.cancel)
+      return
+    }
+    if Self.allowsEmbeddedNavigation(destination, host: initialHost), navigationAction.targetFrame != nil {
+      decisionHandler(.allow)
+    } else {
+      decisionHandler(.cancel)
+      // サブフレームから外部アプリを自動起動しない。
+      if navigationAction.targetFrame?.isMainFrame != false, destination.isHTTPOrHTTPS {
+        UIApplication.shared.open(destination, options: [:])
+      }
+    }
+  }
+
+  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse,
+               decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+    guard let destination = navigationResponse.response.url else {
+      decisionHandler(.cancel)
+      return
+    }
+    let allowed = Self.allowsEmbeddedNavigation(destination, host: initialHost)
+    decisionHandler(allowed ? .allow : .cancel)
+    if !allowed, navigationResponse.isForMainFrame, destination.isHTTPOrHTTPS {
+      UIApplication.shared.open(destination, options: [:])
+    }
+  }
+
   override func viewWillLayoutSubviews() {  // 2: isModalInPresentationに1: のプロパティを代入
       isModalInPresentation = true  // 下にスワイプで閉じなくなる
   }
@@ -59,7 +99,7 @@ class WebViewController: UIViewController {
   }
   
   @IBAction func tapShare(_ sender: Any) {
-    guard let urlString = url, let shareWebsite = URL(string: urlString) else { return }
+    guard let shareWebsite = wkWebView.url, shareWebsite.isHTTPOrHTTPS else { return }
     let shareText = wkWebView.title
     
     let activityItems: [Any] = [shareText ?? "", shareWebsite]
@@ -90,7 +130,7 @@ class WebViewController: UIViewController {
   }
   
   @IBAction func tapSafari(_ sender: Any) {
-    guard let urlString = url, let url2 = URL(string: urlString) else { return }
+    guard let url2 = wkWebView.url, url2.isHTTPOrHTTPS else { return }
     UIApplication.shared.open(url2, options: [:], completionHandler: nil)
   }
   

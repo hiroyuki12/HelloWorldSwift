@@ -23,7 +23,8 @@ class HatenaBookmarkFavoriteViewController: PagedListViewController {
   let tagHotentry = "Hotentry"
   let tagIT       = "IT"
 
-  override var initialTag: String { return tagFav }
+  // Fav はお気に入りRSSに秘密キーが必要なため、最初は Hotentry を表示する
+  override var initialTag: String { return tagHotentry }
   // 以前のバージョンで保存したページも読めるよう、従来の name = 1 を使う
   override var pageStoreKey: String? { return "1" }
   // ページ送りできるのはタグ検索（Swift）だけ。他の RSS は1ページのみ
@@ -63,7 +64,7 @@ class HatenaBookmarkFavoriteViewController: PagedListViewController {
       completion(nil)
       return
     }
-    URLSession.shared.dataTask(with: url) { data, response, error in
+    fetchData(from: url) { data in
       guard let data = data else {
         completion(nil)
         return
@@ -72,7 +73,7 @@ class HatenaBookmarkFavoriteViewController: PagedListViewController {
       completion { [weak self] in
         self?.feedItems += items
       }
-    }.resume()
+    }
   }
 
   override func loadDidFail() {
@@ -95,7 +96,7 @@ class HatenaBookmarkFavoriteViewController: PagedListViewController {
     if let imageurl = feedItem.imageurl {
       imageUrl = URL(string: imageurl)
     }
-    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: imageUrl, defaultUIImage: nil)
+    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: imageUrl, defaultUIImage: UIImage(systemName: "person.crop.square"))
     // ブックマークしたユーザーと日時（dc:date 例: 2020-10-15T12:34:56+09:00）
     let ago = DateParser.iso8601(feedItem.date ?? "")?.timeAgo() ?? ""
     if let creator = feedItem.creator {

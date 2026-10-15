@@ -19,16 +19,13 @@ class HelloWorldSwiftTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testURLSchemeValidation() {
+        XCTAssertEqual(URL(string: "https://qiita.com/api/v2/items")?.isHTTPOrHTTPS, true)
+        XCTAssertEqual(URL(string: "http://example.com")?.isHTTPOrHTTPS, true)
+        XCTAssertEqual(URL(string: "HTTPS://qiita.com")?.isHTTPOrHTTPS, true)
+        XCTAssertEqual(URL(string: "javascript:alert(1)")?.isHTTPOrHTTPS, false)
+        XCTAssertEqual(URL(string: "file:///etc/passwd")?.isHTTPOrHTTPS, false)
+        XCTAssertEqual(URL(string: "db-DROPBOX_APP_KEY://oauth")?.isHTTPOrHTTPS, false)
     }
 
 }

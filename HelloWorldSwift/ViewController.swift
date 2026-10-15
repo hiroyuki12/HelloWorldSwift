@@ -85,7 +85,7 @@ class ViewController: UIViewController {
       // ③遷移先ViewCntrollerの取得
       let webView = segue.destination as! WebViewController
       // ④遷移先に渡す値の設定
-      webView.url = "http://www.google.com/"
+      webView.url = "https://www.google.com/"
     //}
      */
   }

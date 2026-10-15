@@ -44,6 +44,7 @@ class QiitaViewController: PagedListViewController {
   let tagSwift         = "Swift"
   let tagReact         = "React"
   let tagCodex         = "Codex"
+  let tagChatGPT       = "ChatGPT"
   let tagClaudeCode    = "ClaudeCode"
   let tagGemini        = "Gemini"
   let tagGitHubCopilot = "GitHubCopilot"
@@ -51,12 +52,13 @@ class QiitaViewController: PagedListViewController {
   override var initialTag: String { return tagClaudeCode }
   override var pageStoreKey: String? { return tag + app }
   // Qiita API は100ページまで
-  override var canLoadMore: Bool { return savedPage < 100 }
+  override var maxPage: Int? { return 100 }
 
   override func menuItems() -> [ListMenuItem] {
     return [
       .fixed("ClaudeCode", tag: tagClaudeCode),
       .fixed("Codex", tag: tagCodex),
+      .fixed("ChatGPT", tag: tagChatGPT),
       .fixed("Gemini", tag: tagGemini),
       .fixed("GitHubCopilot", tag: tagGitHubCopilot),
       .fixed("Swift", tag: tagSwift),
@@ -91,7 +93,7 @@ class QiitaViewController: PagedListViewController {
     // 作成日
     (cell.viewWithTag(3) as? UILabel)?.text = daysAgo(article.created_at)
     // プロフィール画像
-    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: URL(string: article.user.profile_image_url), defaultUIImage: nil)
+    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: URL(string: article.user.profile_image_url), defaultUIImage: UIImage(systemName: "person.crop.square"))
     // タグ（最大5つ）
     (cell.viewWithTag(4) as? UILabel)?.text = article.tags.prefix(5).map { $0.name }.joined(separator: ", ")
   }
