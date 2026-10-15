@@ -41,7 +41,9 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   @IBOutlet weak var textPage: UILabel!
   @IBOutlet weak var myImage: UIImageView!
   
-  var isLoading = false;
+  var isLoading = false
+  private var articleTask: URLSessionDataTask?
+  private var requestID = UUID()
   
   var articles: [QiitaArticleStruct] = []  // Codable
   
@@ -64,6 +66,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   let tagFlutter       = "Flutter"
   let tagReact         = "React"
   let tagCodex         = "Codex"
+  let tagChatGPT       = "ChatGPT"
   let tagClaudeCode    = "ClaudeCode"
   let tagGemini        = "Gemini"
   let tagGitHubCopilot = "GitHubCopilot"
@@ -97,45 +100,41 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func myload(page: Int , perPage: Int, tag: String) {
-    if page > 100 {
-      return
-    }
+    articleTask?.cancel()
+    let id = UUID()
+    requestID = id
+    isLoading = false
+    guard (1...100).contains(page), (1...100).contains(perPage) else { return }
     let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? tag
-    let urlString = "https://qiita.com/api/v2/tags/\(encodedTag)/items?page=\(page)&per_page=\(perPage)"
-    guard let url = URL(string: urlString) else {
-      self.isLoading = false
-      return
+    guard let url = URL(string: "https://qiita.com/api/v2/tags/\(encodedTag)/items?page=\(page)&per_page=\(perPage)") else { return }
+    isLoading = true
+    articleTask = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+      let articles: [QiitaArticleStruct]?
+      if error == nil, let response = response as? HTTPURLResponse,
+         (200...299).contains(response.statusCode), let data = data {
+        articles = try? JSONDecoder().decode([QiitaArticleStruct].self, from: data)
+      } else {
+        articles = nil
+      }
+      DispatchQueue.main.async {
+        guard let self = self, self.requestID == id else { return }
+        self.isLoading = false
+        self.articleTask = nil
+        if let articles = articles {
+          self.articles += articles
+          self.savedPage = page
+          self.textPage.text = "\(tag) Page \(page)/20posts/\((page - 1) * 20 + 1)〜"
+          self.table.reloadData()
+        }
+      }
     }
-    
-    let requestedTag = tag
-    let task: URLSessionTask = URLSession.shared.dataTask(with: url, completionHandler: { [weak self] data, response, error in
-      guard let self = self else { return }
-      guard let data = data else {
-        DispatchQueue.main.async {
-          self.isLoading = false
-        }
-        return
-      }
-      do {
-        let qiitaArticles = try JSONDecoder().decode([QiitaArticleStruct].self, from: data)  // Codable
-        
-        DispatchQueue.main.async {
-          // タグが切り替わっていないか確認し、メインスレッドで配列を更新 (Data Race防止)
-          if requestedTag == self.tag {
-            self.articles += qiitaArticles
-            self.table.reloadData()
-          }
-          self.isLoading = false
-        }
-      }
-      catch {
-        DispatchQueue.main.async {
-          self.isLoading = false
-        }
-      }
-    })
-    
-    task.resume() //実行する
+    articleTask?.resume()
+  }
+
+  deinit { articleTask?.cancel() }
+
+  func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    (cell.viewWithTag(1) as? UIImageView)?.cancelImageLoad()
   }
   
   // Cellの中身を設定
@@ -211,6 +210,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     addTagAction(title: "ClaudeCode", tag: tagClaudeCode, page: 1)
     addTagAction(title: "Codex", tag: tagCodex, page: 1)
+    addTagAction(title: "ChatGPT", tag: tagChatGPT, page: 1)
     addTagAction(title: "Gemini", tag: tagGemini, page: 1)
     addTagAction(title: "GitHubCopilot", tag: tagGitHubCopilot, page: 1)
     addTagAction(title: "Swift", tag: tagSwift, page: 1)
@@ -234,7 +234,7 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
         guard let self = self else { return }
         self.articles.removeAll()
         self.table.reloadData()
-        self.savedPage = self.sqliteSavedPage
+        self.savedPage = max(1, min(100, self.sqliteSavedPage))
         self.myload(page: self.savedPage, perPage: 20, tag: self.tag)
         self.textPage.text =  String(self.tag) + " Page " + String(self.savedPage) +
               "/20posts/" + String((self.savedPage-1) * 20 + 1) + "〜"
@@ -313,21 +313,21 @@ class QiitaViewController: UIViewController, UITableViewDelegate, UITableViewDat
   // セルをタップした時の処理
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard indexPath.row < articles.count else { return }
+    let urlString = articles[indexPath.row].url
+    guard let url = URL(string: urlString), url.isHTTPOrHTTPS else {
+      return
+    }
     guard let webView = self.storyboard?.instantiateViewController(withIdentifier: "MyWebView") as? WebViewController else {
       return
     }
-    webView.url = articles[indexPath.row].url
+    webView.url = urlString
     self.present(webView, animated: true, completion: nil)
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     if (self.table.contentSize.height > 0 && self.table.contentOffset.y + self.table.frame.size.height > self.table.contentSize.height && self.table.isDragging && !isLoading) {
-      isLoading = true
-      savedPage += 1
-      myload(page: savedPage, perPage: 20, tag: tag)
-      
-      textPage.text =  String(tag) + " Page " + String(savedPage) +
-        "/20posts/" + String((savedPage-1) * 20 + 1) + "〜"
+      guard savedPage < 100 else { return }
+      myload(page: savedPage + 1, perPage: 20, tag: tag)
     }
   }
   

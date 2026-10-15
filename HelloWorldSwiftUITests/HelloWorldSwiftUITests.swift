@@ -231,6 +231,32 @@ extension HelloWorldSwiftUITests {
   }
 
   func testFunctional_QiitaMenuAndReload() { exerciseFeed("Qiita") }
+  func testFunctional_QiitaChatGPTMenu() {
+    openFromTop("Qiita", marker: "Menu", wait: 0)
+    app.buttons["Menu"].tap()
+    let sheet = app.sheets.firstMatch
+    XCTAssertTrue(sheet.waitForExistence(timeout: 5), "Qiitaのメニューが表示されない")
+    let codex = sheet.buttons["Codex"]
+    let chatgpt = sheet.buttons["ChatGPT"]
+    let gemini = sheet.buttons["Gemini"]
+    XCTAssertTrue(codex.exists && chatgpt.exists && gemini.exists)
+    XCTAssertLessThan(codex.frame.midY, chatgpt.frame.midY)
+    XCTAssertLessThan(chatgpt.frame.midY, gemini.frame.midY)
+    snapshot("Qiita_ChatGPT_Menu")
+    chatgpt.tap()
+    XCTAssertTrue(sheet.waitForNonExistence(timeout: 5))
+    XCTAssertTrue(app.staticTexts["ChatGPT Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+                  "ChatGPTタグに切り替わらない")
+    XCTAssertTrue(app.tables.cells.firstMatch.waitForExistence(timeout: 30), "ChatGPTの記事が取得できない")
+    snapshot("Qiita_ChatGPT_Articles")
+    // 実機では上部に動画の小窓が重なる場合があるため、画面中央の記事を開く。
+    let article = app.tables.cells.element(boundBy: 3)
+    XCTAssertTrue(article.waitForExistence(timeout: 10))
+    article.tap()
+    XCTAssertTrue(app.buttons["Share"].waitForExistence(timeout: 10), "記事のWeb画面が開かない")
+    snapshot("Qiita_ChatGPT_Article")
+    assertAlive("Qiita ChatGPT")
+  }
   func testFunctional_TeratailMenuAndReload() { exerciseFeed("Teratrail") }
   func testFunctional_NoteMenuAndReload() { exerciseFeed("Note") }
   func testFunctional_StackOverflowMenuAndReload() { exerciseFeed("Stack Overflow") }

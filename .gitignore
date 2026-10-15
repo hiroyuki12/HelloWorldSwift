@@ -93,3 +93,4 @@ iOSInjectionProject/
 GoogleService-Info.plist
 
 Constants.swift
+.DS_Store
