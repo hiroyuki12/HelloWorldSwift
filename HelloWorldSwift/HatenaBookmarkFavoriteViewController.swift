@@ -79,6 +79,8 @@ class HatenaBookmarkFavoriteViewController: PagedListViewController {
   override func loadDidFail() {
     if feedUrl(tag: tag, page: savedPage) == nil {
       textPage.text = tag + " (URL未設定)"
+    } else {
+      super.loadDidFail()
     }
   }
 

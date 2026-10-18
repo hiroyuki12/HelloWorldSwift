@@ -42,6 +42,12 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
 
   var tag = ""
   var savedPage = 1
+  // これ以上ページが無いと分かったら true にする（各画面が一覧に追加する処理の中で設定する）
+  var reachedEnd = false
+  // 最後に読み込みに失敗した時刻。失敗直後はスクロールで自動的に再試行しない
+  // （指を離すまで scrollViewDidScroll が呼ばれ続け、API の利用回数を使い切ってしまうため）
+  private var lastFailureDate: Date?
+  private let retryInterval: TimeInterval = 10
   var perPage = 20
   var sqliteSavedPage = 0
 
@@ -81,7 +87,9 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   }
 
   // 読み込みに失敗したとき（メインスレッド）
-  func loadDidFail() {}
+  func loadDidFail() {
+    textPage.text = "\(tag) 読み込みに失敗しました"
+  }
 
   // セルに row 行目の内容を表示する
   func configure(_ cell: UITableViewCell, row: Int) {}
@@ -119,6 +127,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
         guard let self = self, generation == self.loadGeneration else { return }
         self.currentTask = nil
         if let append = append {
+          self.lastFailureDate = nil
           append()
           self.table.reloadData()
           if self.savedPage != page {
@@ -126,6 +135,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
             self.updatePageLabel()
           }
         } else {
+          self.lastFailureDate = Date()
           self.loadDidFail()
         }
         // 失敗時も解除しないと、以降スクロールで次のページを読み込めなくなる
@@ -141,6 +151,8 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     currentTask = nil
     removeAllItems()
     table.reloadData()
+    reachedEnd = false
+    lastFailureDate = nil
     self.tag = tag
     savedPage = max(1, min(maxPage ?? Int.max, page))
     resetPaging()
@@ -228,9 +240,15 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     if table.contentSize.height > 0
         && table.contentOffset.y + table.frame.size.height > table.contentSize.height
-        && table.isDragging && !isLoading && canLoadMore {
+        && table.isDragging && !isLoading && !reachedEnd && canLoadMore && !isWaitingToRetry {
       loadPage(savedPage + 1)
     }
+  }
+
+  // 失敗してから retryInterval 秒たつまでは、スクロールで再試行しない
+  private var isWaitingToRetry: Bool {
+    guard let lastFailureDate = lastFailureDate else { return false }
+    return Date().timeIntervalSince(lastFailureDate) < retryInterval
   }
 
   // MARK: - Actions

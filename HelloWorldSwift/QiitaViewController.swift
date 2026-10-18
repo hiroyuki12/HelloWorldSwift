@@ -8,13 +8,12 @@
 
 import UIKit
 import Foundation
-import WebKit
 
 struct QiitaArticleStruct: Codable {
 //  var coediting: Bool
 //  var comments_count: Int
   var created_at: String
-//  var id: String
+  var id: String
 //  var likes_count: Int
 //  var private: Bool  //
 //  var reactions_count: Int
@@ -38,6 +37,8 @@ struct QiitaArticleStruct: Codable {
 
 class QiitaViewController: PagedListViewController {
   var articles: [QiitaArticleStruct] = []  // Codable
+  // 表示中の記事の id（ページをまたいだ重複を除くため）
+  private var articleIDs = Set<String>()
 
   let app = "qiita"
 
@@ -70,9 +71,20 @@ class QiitaViewController: PagedListViewController {
 
   override func removeAllItems() {
     articles.removeAll()
+    articleIDs.removeAll()
+  }
+
+  // 取得した1ページ分の記事から、表示済みの記事を除いたものと、それが最後のページだったかを返す。
+  // 新着記事が投稿されるとページの境目がずれ、前のページと同じ記事が返ることがあるため重複を除く
+  static func merge(page: [QiitaArticleStruct], seenIDs: inout Set<String>,
+                    perPage: Int) -> (articles: [QiitaArticleStruct], isLastPage: Bool) {
+    let newArticles = page.filter { seenIDs.insert($0.id).inserted }
+    // 1ページ分に満たなければ、それ以降のページは無い
+    return (newArticles, page.count < perPage)
   }
 
   override func fetchPage(_ page: Int, tag: String, completion: @escaping ((() -> Void)?) -> Void) {
+    let perPage = self.perPage
     let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? tag
     let url = URL(string: "https://qiita.com/api/v2/tags/\(encodedTag)/items?page=\(page)&per_page=\(perPage)")
     fetchJSON([QiitaArticleStruct].self, from: url) { articles in
@@ -81,7 +93,12 @@ class QiitaViewController: PagedListViewController {
         return
       }
       completion { [weak self] in
-        self?.articles += articles
+        guard let self = self else { return }
+        let result = QiitaViewController.merge(page: articles, seenIDs: &self.articleIDs, perPage: perPage)
+        self.articles += result.articles
+        if result.isLastPage {
+          self.reachedEnd = true
+        }
       }
     }
   }
@@ -102,7 +119,12 @@ class QiitaViewController: PagedListViewController {
     return articles[row].url
   }
 
-  func daysAgo(_ data: String) -> String {
+  // 未認証の Qiita API は1時間に60回までのため、失敗の多くは利用制限による
+  override func loadDidFail() {
+    textPage.text = "\(tag) 読み込み失敗（API制限の可能性）"
+  }
+
+  private func daysAgo(_ data: String) -> String {
     guard let date = DateParser.iso8601(data) ?? DateParser.localDateTime(data) else {
       return ""
     }
