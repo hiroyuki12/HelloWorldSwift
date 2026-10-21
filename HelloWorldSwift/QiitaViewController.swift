@@ -58,10 +58,10 @@ class QiitaViewController: PagedListViewController {
   override func menuItems() -> [ListMenuItem] {
     return [
       .fixed("ClaudeCode", tag: tagClaudeCode),
-      .fixed("Codex", tag: tagCodex),
       .fixed("ChatGPT", tag: tagChatGPT),
       .fixed("Gemini", tag: tagGemini),
       .fixed("GitHubCopilot", tag: tagGitHubCopilot),
+      .fixed("Codex", tag: tagCodex),
       .fixed("Swift", tag: tagSwift),
       .fixed("React", tag: tagReact),
     ]
