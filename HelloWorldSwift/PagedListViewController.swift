@@ -105,9 +105,20 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     // セルの高さを設定
     table.rowHeight = rowHeight
 
+    // 画面の左端から右にスワイプしたら閉じる
+    let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
+    edgePan.edges = .left
+    view.addGestureRecognizer(edgePan)
+
     tag = initialTag
     loadPage(savedPage)
     updatePageLabel()
+  }
+
+  @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
+    if gesture.state == .recognized {
+      tapClose(gesture)
+    }
   }
 
   deinit { currentTask?.cancel() }
