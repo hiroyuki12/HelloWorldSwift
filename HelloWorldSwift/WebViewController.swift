@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import Accounts
 
-class WebViewController: UIViewController, WKNavigationDelegate {
+class WebViewController: UIViewController, WKNavigationDelegate, UIGestureRecognizerDelegate {
   @IBOutlet weak var wkWebView: WKWebView!
   
   // ①表示するURLを持っておく public 外部から変更
@@ -46,6 +46,29 @@ class WebViewController: UIViewController, WKNavigationDelegate {
       // スワイプで進む、戻るを有効にする
       wkWebView.allowsBackForwardNavigationGestures = true
     }
+
+    // 戻るページが無いときは、画面の左端から右にスワイプしたら閉じる
+    let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
+    edgePan.edges = .left
+    edgePan.delegate = self
+    view.addGestureRecognizer(edgePan)
+  }
+
+  @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
+    if gesture.state == .recognized {
+      tapClose(gesture)
+    }
+  }
+
+  // 戻るページがあるときは WKWebView のスワイプで戻る
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return !wkWebView.canGoBack
+  }
+
+  // WKWebView のスクロールなどと同時に認識できるようにする
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
   }
   
   // 同じホストのHTTPSだけをアプリ内で表示する。外部リンクはURLが見えるブラウザへ渡す。
