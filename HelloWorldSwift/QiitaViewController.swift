@@ -46,6 +46,7 @@ class QiitaViewController: PagedListViewController {
   let tagReact         = "React"
   let tagCodex         = "Codex"
   let tagChatGPT       = "ChatGPT"
+  let tagGrokBot       = "GrokBot"
   let tagClaudeCode    = "ClaudeCode"
   let tagGemini        = "Gemini"
   let tagGitHubCopilot = "GitHubCopilot"
@@ -57,6 +58,7 @@ class QiitaViewController: PagedListViewController {
 
   override func menuItems() -> [ListMenuItem] {
     return [
+      .fixed("GrokBot", tag: tagGrokBot),
       .fixed("ClaudeCode", tag: tagClaudeCode),
       .fixed("ChatGPT", tag: tagChatGPT),
       .fixed("Gemini", tag: tagGemini),

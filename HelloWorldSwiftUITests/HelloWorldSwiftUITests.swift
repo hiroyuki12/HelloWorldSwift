@@ -231,6 +231,24 @@ extension HelloWorldSwiftUITests {
   }
 
   func testFunctional_QiitaMenuAndReload() { exerciseFeed("Qiita") }
+  func testFunctional_QiitaGrokBotMenu() {
+    openFromTop("Qiita", marker: "Menu", wait: 0)
+    app.buttons["Menu"].tap()
+    let sheet = app.sheets.firstMatch
+    XCTAssertTrue(sheet.waitForExistence(timeout: 5), "Qiitaのメニューが表示されない")
+    let grokbot = sheet.buttons["GrokBot"]
+    let claudeCode = sheet.buttons["ClaudeCode"]
+    XCTAssertTrue(grokbot.exists && claudeCode.exists)
+    XCTAssertLessThan(grokbot.frame.midY, claudeCode.frame.midY)
+    snapshot("Qiita_GrokBot_Menu")
+    grokbot.tap()
+    XCTAssertTrue(sheet.waitForNonExistence(timeout: 5))
+    XCTAssertTrue(app.staticTexts["GrokBot Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+                  "GrokBotタグに切り替わらない")
+    XCTAssertTrue(app.tables.cells.firstMatch.waitForExistence(timeout: 30), "GrokBotの記事が取得できない")
+    snapshot("Qiita_GrokBot_Articles")
+    assertAlive("Qiita GrokBot")
+  }
   func testFunctional_QiitaChatGPTMenu() {
     openFromTop("Qiita", marker: "Menu", wait: 0)
     app.buttons["Menu"].tap()
