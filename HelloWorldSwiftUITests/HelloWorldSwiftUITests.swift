@@ -254,11 +254,11 @@ extension HelloWorldSwiftUITests {
     app.buttons["Menu"].tap()
     let sheet = app.sheets.firstMatch
     XCTAssertTrue(sheet.waitForExistence(timeout: 5), "Qiitaのメニューが表示されない")
-    let codex = sheet.buttons["Codex"]
+    let claudeCode = sheet.buttons["ClaudeCode"]
     let chatgpt = sheet.buttons["ChatGPT"]
     let gemini = sheet.buttons["Gemini"]
-    XCTAssertTrue(codex.exists && chatgpt.exists && gemini.exists)
-    XCTAssertLessThan(codex.frame.midY, chatgpt.frame.midY)
+    XCTAssertTrue(claudeCode.exists && chatgpt.exists && gemini.exists)
+    XCTAssertLessThan(claudeCode.frame.midY, chatgpt.frame.midY)
     XCTAssertLessThan(chatgpt.frame.midY, gemini.frame.midY)
     snapshot("Qiita_ChatGPT_Menu")
     chatgpt.tap()

@@ -87,9 +87,13 @@ class QiitaViewController: PagedListViewController {
 
   override func fetchPage(_ page: Int, tag: String, completion: @escaping ((() -> Void)?) -> Void) {
     let perPage = self.perPage
-    let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? tag
-    let url = URL(string: "https://qiita.com/api/v2/tags/\(encodedTag)/items?page=\(page)&per_page=\(perPage)")
-    fetchJSON([QiitaArticleStruct].self, from: url) { articles in
+    var components = URLComponents(string: "https://qiita.com/api/v2/tags/")
+    components?.path += "\(tag)/items"
+    components?.queryItems = [
+      URLQueryItem(name: "page", value: String(page)),
+      URLQueryItem(name: "per_page", value: String(perPage)),
+    ]
+    fetchJSON([QiitaArticleStruct].self, from: components?.url) { articles in
       guard let articles = articles else {
         completion(nil)
         return
