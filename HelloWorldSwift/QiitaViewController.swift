@@ -40,6 +40,18 @@ class QiitaViewController: PagedListViewController {
   // 表示中の記事の id（ページをまたいだ重複を除くため）
   private var articleIDs = Set<String>()
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(refreshArticles), for: .valueChanged)
+    table.refreshControl = refreshControl
+    table.alwaysBounceVertical = true
+  }
+
+  @objc private func refreshArticles() {
+    reload(tag: tag, page: 1)
+  }
+
   let app = "qiita"
 
   let tagSwift         = "Swift"

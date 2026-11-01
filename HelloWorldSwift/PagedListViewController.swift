@@ -137,6 +137,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
       DispatchQueue.main.async {
         guard let self = self, generation == self.loadGeneration else { return }
         self.currentTask = nil
+        self.table.refreshControl?.endRefreshing()
         if let append = append {
           self.lastFailureDate = nil
           append()
