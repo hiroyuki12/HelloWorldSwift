@@ -51,7 +51,7 @@ class QiitaViewController: PagedListViewController {
   let tagGemini        = "Gemini"
   let tagGitHubCopilot = "GitHubCopilot"
 
-  override var initialTag: String { return tagClaudeCode }
+  override var initialTag: String { return tagGrokBot }
   override var pageStoreKey: String? { return tag + app }
   // Qiita API は100ページまで
   override var maxPage: Int? { return 100 }
