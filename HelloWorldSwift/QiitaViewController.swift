@@ -97,7 +97,7 @@ class QiitaViewController: PagedListViewController {
     return (newArticles, page.count < perPage)
   }
 
-  override func fetchPage(_ page: Int, tag: String, completion: @escaping ((() -> Void)?) -> Void) {
+  override func fetchPageResult(_ page: Int, tag: String, completion: @escaping (Result<() -> Void, ListLoadError>) -> Void) {
     let perPage = self.perPage
     var components = URLComponents(string: "https://qiita.com/api/v2/tags/")
     components?.path += "\(tag)/items"
@@ -105,18 +105,19 @@ class QiitaViewController: PagedListViewController {
       URLQueryItem(name: "page", value: String(page)),
       URLQueryItem(name: "per_page", value: String(perPage)),
     ]
-    fetchJSON([QiitaArticleStruct].self, from: components?.url) { articles in
-      guard let articles = articles else {
-        completion(nil)
-        return
-      }
-      completion { [weak self] in
-        guard let self = self else { return }
-        let result = QiitaViewController.merge(page: articles, seenIDs: &self.articleIDs, perPage: perPage)
-        self.articles += result.articles
-        if result.isLastPage {
-          self.reachedEnd = true
-        }
+    fetchJSONResult([QiitaArticleStruct].self, from: components?.url) { result in
+      switch result {
+      case .failure(let error):
+        completion(.failure(error))
+      case .success(let articles):
+        completion(.success { [weak self] in
+          guard let self = self else { return }
+          let result = QiitaViewController.merge(page: articles, seenIDs: &self.articleIDs, perPage: perPage)
+          self.articles += result.articles
+          if result.isLastPage {
+            self.reachedEnd = true
+          }
+        })
       }
     }
   }
@@ -137,9 +138,21 @@ class QiitaViewController: PagedListViewController {
     return articles[row].url
   }
 
-  // 未認証の Qiita API は1時間に60回までのため、失敗の多くは利用制限による
-  override func loadDidFail() {
-    textPage.text = "\(tag) 読み込み失敗（API制限の可能性）"
+  override func loadDidFail(_ error: ListLoadError) {
+    let message: String
+    switch error {
+    case .network:
+      message = "通信できません。接続を確認してください"
+    case .httpStatus(429):
+      message = "APIの利用制限に達しました。時間をおいて再試行してください"
+    case .httpStatus(let status):
+      message = "読み込み失敗（HTTP \(status)）"
+    case .decoding:
+      message = "記事データを読み取れませんでした"
+    case .invalidURL, .invalidResponse, .unknown:
+      message = "記事を読み込めませんでした"
+    }
+    textPage.text = "\(tag) \(message)"
   }
 
   private func daysAgo(_ data: String) -> String {

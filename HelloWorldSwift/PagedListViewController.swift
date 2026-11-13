@@ -9,6 +9,15 @@
 
 import UIKit
 
+enum ListLoadError: Error {
+  case invalidURL
+  case network(Error)
+  case invalidResponse
+  case httpStatus(Int)
+  case decoding(Error)
+  case unknown
+}
+
 // メニューの1項目。tag は現在のタグを受け取り、切り替え先のタグを返す
 struct ListMenuItem {
   let title: String
@@ -86,9 +95,21 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
     completion(nil)
   }
 
+  // エラーの詳細が必要な画面はこのメソッドを上書きする。
+  func fetchPageResult(_ page: Int, tag: String, completion: @escaping (Result<() -> Void, ListLoadError>) -> Void) {
+    fetchPage(page, tag: tag) { append in
+      if let append = append { completion(.success(append)) }
+      else { completion(.failure(.unknown)) }
+    }
+  }
+
   // 読み込みに失敗したとき（メインスレッド）
   func loadDidFail() {
     textPage.text = "\(tag) 読み込みに失敗しました"
+  }
+
+  func loadDidFail(_ error: ListLoadError) {
+    loadDidFail()
   }
 
   // セルに row 行目の内容を表示する
@@ -133,22 +154,21 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   func loadPage(_ page: Int) {
     isLoading = true
     let generation = loadGeneration
-    fetchPage(page, tag: tag) { [weak self] append in
+    fetchPageResult(page, tag: tag) { [weak self] result in
       DispatchQueue.main.async {
         guard let self = self, generation == self.loadGeneration else { return }
         self.currentTask = nil
         self.table.refreshControl?.endRefreshing()
-        if let append = append {
+        switch result {
+        case .success(let append):
           self.lastFailureDate = nil
           append()
           self.table.reloadData()
-          if self.savedPage != page {
-            self.savedPage = page
-            self.updatePageLabel()
-          }
-        } else {
+          self.savedPage = page
+          self.updatePageLabel()
+        case .failure(let error):
           self.lastFailureDate = Date()
-          self.loadDidFail()
+          self.loadDidFail(error)
         }
         // 失敗時も解除しないと、以降スクロールで次のページを読み込めなくなる
         self.isLoading = false
@@ -179,17 +199,34 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   // url のデータを取得する。通信エラーや 2xx 以外の応答は nil。
   // タグやページを切り替えたときに取り消せるよう、リクエストを currentTask に持っておく
   func fetchData(from url: URL?, completion: @escaping (Data?) -> Void) {
+    fetchDataResult(from: url) { result in
+      completion(try? result.get())
+    }
+  }
+
+  func fetchDataResult(from url: URL?, completion: @escaping (Result<Data, ListLoadError>) -> Void) {
     guard let url = url, url.isHTTPOrHTTPS else {
-      completion(nil)
+      completion(.failure(.invalidURL))
       return
     }
     let task = URLSession.shared.dataTask(with: url) { data, response, error in
-      guard error == nil, let response = response as? HTTPURLResponse,
-            (200...299).contains(response.statusCode) else {
-        completion(nil)
+      if let error = error {
+        completion(.failure(.network(error)))
         return
       }
-      completion(data)
+      guard let response = response as? HTTPURLResponse else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      guard (200...299).contains(response.statusCode) else {
+        completion(.failure(.httpStatus(response.statusCode)))
+        return
+      }
+      guard let data = data else {
+        completion(.failure(.invalidResponse))
+        return
+      }
+      completion(.success(data))
     }
     // fetchPage はメインスレッドから呼ばれる
     currentTask = task
@@ -208,6 +245,18 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
       }
       completion(decoded)
+    }
+  }
+
+  func fetchJSONResult<T: Decodable>(_ type: T.Type, from url: URL?, completion: @escaping (Result<T, ListLoadError>) -> Void) {
+    fetchDataResult(from: url) { result in
+      switch result {
+      case .success(let data):
+        do { completion(.success(try JSONDecoder().decode(T.self, from: data))) }
+        catch { completion(.failure(.decoding(error))) }
+      case .failure(let error):
+        completion(.failure(error))
+      }
     }
   }
 
