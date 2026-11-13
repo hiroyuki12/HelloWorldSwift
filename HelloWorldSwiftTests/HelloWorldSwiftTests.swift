@@ -62,4 +62,61 @@ class HelloWorldSwiftTests: XCTestCase {
         XCTAssertTrue(QiitaViewController.merge(page: [], seenIDs: &seenIDs, perPage: 20).isLastPage)
     }
 
+    func testQiitaEmptyPageUpdatesLabel() {
+        let vc = QiitaViewController()
+        let label = UILabel()
+        let table = UITableView()
+        vc.textPage = label
+        vc.table = table
+        vc.tag = "GrokBot"
+        vc.reachedEnd = true
+        vc.isLoading = false
+        vc.updatePageLabel()
+        XCTAssertEqual(label.text, "GrokBot 記事がありません")
+    }
+
+    func testAllDuplicatePageAutomaticallyLoadsNextPage() throws {
+        final class MockQiitaViewController: QiitaViewController {
+            var pages: [Int: [QiitaArticleStruct]] = [:]
+            var fetchedPages: [Int] = []
+            override func fetchPageResult(_ page: Int, tag: String, completion: @escaping (Result<() -> Void, ListLoadError>) -> Void) {
+                fetchedPages.append(page)
+                let items = pages[page] ?? []
+                let perPage = self.perPage
+                completion(.success { [weak self] in
+                    guard let self = self else { return }
+                    let result = QiitaViewController.merge(page: items, seenIDs: &self.articleIDsForTest, perPage: perPage)
+                    self.articles += result.articles
+                    if result.isLastPage {
+                        self.reachedEnd = true
+                    }
+                })
+            }
+            var articleIDsForTest = Set<String>()
+        }
+
+        let vc = MockQiitaViewController()
+        vc.perPage = 2
+        vc.textPage = UILabel()
+        vc.table = UITableView()
+        vc.tag = "Swift"
+        // Page 1: ["a", "b"], Page 2: ["a", "b"] (all duplicates), Page 3: ["c"]
+        vc.pages[1] = try qiitaArticles(["a", "b"])
+        vc.pages[2] = try qiitaArticles(["a", "b"])
+        vc.pages[3] = try qiitaArticles(["c"])
+
+        let exp = expectation(description: "loads page 1 then skips duplicate page 2 to page 3")
+        vc.loadPage(1)
+        DispatchQueue.main.async {
+            vc.loadPage(2)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                XCTAssertEqual(vc.fetchedPages, [1, 2, 3])
+                XCTAssertEqual(vc.articles.map { $0.id }, ["a", "b", "c"])
+                XCTAssertEqual(vc.savedPage, 3)
+                exp.fulfill()
+            }
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+
 }

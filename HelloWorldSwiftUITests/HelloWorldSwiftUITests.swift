@@ -233,13 +233,15 @@ extension HelloWorldSwiftUITests {
   func testFunctional_QiitaMenuAndReload() { exerciseFeed("Qiita") }
   func testFunctional_QiitaGrokBotMenu() {
     openFromTop("Qiita", marker: "Menu", wait: 0)
+    XCTAssertTrue(app.staticTexts["ClaudeCode Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+                  "初期表示がClaudeCodeになっていない")
     app.buttons["Menu"].tap()
     let sheet = app.sheets.firstMatch
     XCTAssertTrue(sheet.waitForExistence(timeout: 5), "Qiitaのメニューが表示されない")
-    let grokbot = sheet.buttons["GrokBot"]
     let claudeCode = sheet.buttons["ClaudeCode"]
-    XCTAssertTrue(grokbot.exists && claudeCode.exists)
-    XCTAssertLessThan(grokbot.frame.midY, claudeCode.frame.midY)
+    let grokbot = sheet.buttons["GrokBot"]
+    XCTAssertTrue(claudeCode.exists && grokbot.exists)
+    XCTAssertLessThan(claudeCode.frame.midY, grokbot.frame.midY)
     snapshot("Qiita_GrokBot_Menu")
     grokbot.tap()
     XCTAssertTrue(sheet.waitForNonExistence(timeout: 5))
@@ -255,10 +257,12 @@ extension HelloWorldSwiftUITests {
     let sheet = app.sheets.firstMatch
     XCTAssertTrue(sheet.waitForExistence(timeout: 5), "Qiitaのメニューが表示されない")
     let claudeCode = sheet.buttons["ClaudeCode"]
+    let grokbot = sheet.buttons["GrokBot"]
     let chatgpt = sheet.buttons["ChatGPT"]
     let gemini = sheet.buttons["Gemini"]
-    XCTAssertTrue(claudeCode.exists && chatgpt.exists && gemini.exists)
-    XCTAssertLessThan(claudeCode.frame.midY, chatgpt.frame.midY)
+    XCTAssertTrue(claudeCode.exists && grokbot.exists && chatgpt.exists && gemini.exists)
+    XCTAssertLessThan(claudeCode.frame.midY, grokbot.frame.midY)
+    XCTAssertLessThan(grokbot.frame.midY, chatgpt.frame.midY)
     XCTAssertLessThan(chatgpt.frame.midY, gemini.frame.midY)
     snapshot("Qiita_ChatGPT_Menu")
     chatgpt.tap()

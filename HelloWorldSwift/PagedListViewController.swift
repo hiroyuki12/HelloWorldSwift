@@ -151,7 +151,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
 
   // 現在の tag の page ページを読み込み、一覧の末尾に追加する。
   // 成功したときだけ savedPage を page に進める（失敗したページを飛ばさないため）
-  func loadPage(_ page: Int) {
+  func loadPage(_ page: Int, replaceExisting: Bool = false) {
     isLoading = true
     let generation = loadGeneration
     fetchPageResult(page, tag: tag) { [weak self] result in
@@ -162,33 +162,47 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
         switch result {
         case .success(let append):
           self.lastFailureDate = nil
+          if replaceExisting {
+            self.removeAllItems()
+            self.resetPaging()
+          }
+          let previousCount = self.itemCount
           append()
           self.table.reloadData()
           self.savedPage = page
+          // 全件が既出（重複）で1件も増えず、まだ次のページがある場合は続けて読み込む
+          if self.itemCount == previousCount && self.itemCount > 0 && !self.reachedEnd && self.canLoadMore {
+            self.updatePageLabel()
+            self.loadPage(page + 1)
+            return
+          }
+          self.isLoading = false
           self.updatePageLabel()
         case .failure(let error):
           self.lastFailureDate = Date()
+          self.isLoading = false
           self.loadDidFail(error)
         }
-        // 失敗時も解除しないと、以降スクロールで次のページを読み込めなくなる
-        self.isLoading = false
       }
     }
   }
 
   // 一覧を空にして、指定したタグ・ページを読み込み直す
-  func reload(tag: String, page: Int) {
+  func reload(tag: String, page: Int, clearImmediately: Bool = true) {
     loadGeneration += 1
     currentTask?.cancel()
     currentTask = nil
-    removeAllItems()
-    table.reloadData()
     reachedEnd = false
     lastFailureDate = nil
     self.tag = tag
     savedPage = max(1, min(maxPage ?? Int.max, page))
-    resetPaging()
-    loadPage(savedPage)
+    if clearImmediately {
+      table.refreshControl?.endRefreshing()
+      removeAllItems()
+      table.reloadData()
+      resetPaging()
+    }
+    loadPage(savedPage, replaceExisting: !clearImmediately)
     updatePageLabel()
   }
 

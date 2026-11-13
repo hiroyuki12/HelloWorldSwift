@@ -49,7 +49,7 @@ class QiitaViewController: PagedListViewController {
   }
 
   @objc private func refreshArticles() {
-    reload(tag: tag, page: 1)
+    reload(tag: tag, page: 1, clearImmediately: false)
   }
 
   let app = "qiita"
@@ -63,15 +63,15 @@ class QiitaViewController: PagedListViewController {
   let tagGemini        = "Gemini"
   let tagGitHubCopilot = "GitHubCopilot"
 
-  override var initialTag: String { return tagGrokBot }
+  override var initialTag: String { return tagClaudeCode }
   override var pageStoreKey: String? { return tag + app }
   // Qiita API は100ページまで
   override var maxPage: Int? { return 100 }
 
   override func menuItems() -> [ListMenuItem] {
     return [
-      .fixed("GrokBot", tag: tagGrokBot),
       .fixed("ClaudeCode", tag: tagClaudeCode),
+      .fixed("GrokBot", tag: tagGrokBot),
       .fixed("ChatGPT", tag: tagChatGPT),
       .fixed("Gemini", tag: tagGemini),
       .fixed("GitHubCopilot", tag: tagGitHubCopilot),
@@ -136,6 +136,14 @@ class QiitaViewController: PagedListViewController {
 
   override func url(forRow row: Int) -> String? {
     return articles[row].url
+  }
+
+  override func updatePageLabel() {
+    if !isLoading && articles.isEmpty && reachedEnd {
+      textPage.text = "\(tag) 記事がありません"
+    } else {
+      super.updatePageLabel()
+    }
   }
 
   override func loadDidFail(_ error: ListLoadError) {
