@@ -207,7 +207,7 @@ class PagedListViewController: UIViewController, UITableViewDelegate, UITableVie
   }
 
   func updatePageLabel() {
-    textPage.text = "\(tag) Page \(savedPage)/20posts/\((savedPage - 1) * 20 + 1)〜"
+    textPage.text = "\(tag) Page \(savedPage)/\(perPage)posts/\((savedPage - 1) * perPage + 1)〜"
   }
 
   // url のデータを取得する。通信エラーや 2xx 以外の応答は nil。

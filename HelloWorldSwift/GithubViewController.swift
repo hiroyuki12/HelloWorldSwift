@@ -151,7 +151,7 @@ class GithubViewController: UIViewController {
 //      print("error: \(String(describing: error))")
       }
       catch {
-          //print(error)
+          print("Hatena bookmark decode error: \(error)")
       }
     })
     task.resume()

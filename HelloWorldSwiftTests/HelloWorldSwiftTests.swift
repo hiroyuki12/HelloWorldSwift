@@ -25,7 +25,10 @@ class HelloWorldSwiftTests: XCTestCase {
         XCTAssertEqual(URL(string: "HTTPS://qiita.com")?.isHTTPOrHTTPS, true)
         XCTAssertEqual(URL(string: "javascript:alert(1)")?.isHTTPOrHTTPS, false)
         XCTAssertEqual(URL(string: "file:///etc/passwd")?.isHTTPOrHTTPS, false)
-        XCTAssertEqual(URL(string: "db-DROPBOX_APP_KEY://oauth")?.isHTTPOrHTTPS, false)
+        // 「db-DROPBOX_APP_KEY://oauth」はスキームにアンダースコアを含むため、
+        // 現行の Foundation では URL(string:) が nil を返す（パース拒否）。
+        // 意図は「http/https 以外は決して true にならない」なので、nil 許容で検証する
+        XCTAssertNotEqual(URL(string: "db-DROPBOX_APP_KEY://oauth")?.isHTTPOrHTTPS, true)
     }
 
     // Qiita API の応答（必要な項目だけ）から記事を作る
@@ -97,8 +100,13 @@ class HelloWorldSwiftTests: XCTestCase {
 
         let vc = MockQiitaViewController()
         vc.perPage = 2
-        vc.textPage = UILabel()
-        vc.table = UITableView()
+        // IBOutlet は weak のため、一時オブジェクトを直接代入すると直後に解放されて
+        // loadPage 内の self.table が nil になる（IUO クラッシュ）。
+        // テストメソッドのスコープで強参照を保持する
+        let pageLabel = UILabel()
+        let tableView = UITableView()
+        vc.textPage = pageLabel
+        vc.table = tableView
         vc.tag = "Swift"
         // Page 1: ["a", "b"], Page 2: ["a", "b"] (all duplicates), Page 3: ["c"]
         vc.pages[1] = try qiitaArticles(["a", "b"])
@@ -117,6 +125,34 @@ class HelloWorldSwiftTests: XCTestCase {
             }
         }
         wait(for: [exp], timeout: 1.0)
+    }
+
+    // 境界: 満杯（count == perPage）のページに既出記事だけが返った場合。
+    // 追加は0件だが、isLastPage は false のまま（全件重複時に次ページを自動で読む根拠になる）
+    func testQiitaMergeFullPageAllDuplicatesAddsNothing() throws {
+        var seenIDs = Set<String>()
+        let page1 = try qiitaArticles(["a", "b"])
+        XCTAssertEqual(QiitaViewController.merge(page: page1, seenIDs: &seenIDs, perPage: 2).articles.count, 2)
+
+        let duplicateFullPage = try qiitaArticles(["a", "b"])
+        let result = QiitaViewController.merge(page: duplicateFullPage, seenIDs: &seenIDs, perPage: 2)
+        XCTAssertTrue(result.articles.isEmpty, "既出だらけの満杯ページは追加0件")
+        XCTAssertFalse(result.isLastPage, "満杯ページは既出だらけでも isLastPage にならない")
+    }
+
+    // 境界: 記事総数が per_page の倍数のとき、最終ページは満杯で判定できず、
+    // 空の次ページで初めて isLastPage が立つ（余分に1回リクエストする現行挙動の固定）
+    func testQiitaMergeFullThenEmptyPageReachesEnd() throws {
+        var seenIDs = Set<String>()
+        let fullPage = try qiitaArticles(["a", "b"])
+        let first = QiitaViewController.merge(page: fullPage, seenIDs: &seenIDs, perPage: 2)
+        XCTAssertFalse(first.isLastPage, "総数が per_page の倍数だと満杯ページでは最終判定できない")
+        XCTAssertEqual(first.articles.map { $0.id }, ["a", "b"])
+
+        let emptyPage: [QiitaArticleStruct] = []
+        let second = QiitaViewController.merge(page: emptyPage, seenIDs: &seenIDs, perPage: 2)
+        XCTAssertTrue(second.isLastPage, "空ページで最終ページが確定する")
+        XCTAssertTrue(second.articles.isEmpty)
     }
 
 }

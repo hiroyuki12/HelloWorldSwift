@@ -30,7 +30,7 @@ class ListViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
 //    guard data != nil else { return }
 //
 //
-    TodoCell.textLabel!.text = TodoKobetsunonakami[indexPath.row]
+    TodoCell.textLabel?.text = TodoKobetsunonakami[indexPath.row]
     return TodoCell
   }
   

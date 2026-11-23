@@ -233,7 +233,7 @@ extension HelloWorldSwiftUITests {
   func testFunctional_QiitaMenuAndReload() { exerciseFeed("Qiita") }
   func testFunctional_QiitaGrokBotMenu() {
     openFromTop("Qiita", marker: "Menu", wait: 0)
-    XCTAssertTrue(app.staticTexts["ClaudeCode Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+    XCTAssertTrue(pageLabel(beginsWith: "ClaudeCode Page 1/").waitForExistence(timeout: 10),
                   "初期表示がClaudeCodeになっていない")
     app.buttons["Menu"].tap()
     let sheet = app.sheets.firstMatch
@@ -245,9 +245,9 @@ extension HelloWorldSwiftUITests {
     snapshot("Qiita_GrokBot_Menu")
     grokbot.tap()
     XCTAssertTrue(sheet.waitForNonExistence(timeout: 5))
-    XCTAssertTrue(app.staticTexts["GrokBot Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+    XCTAssertTrue(pageLabel(beginsWith: "GrokBot Page 1/").waitForExistence(timeout: 10),
                   "GrokBotタグに切り替わらない")
-    XCTAssertTrue(app.tables.cells.firstMatch.waitForExistence(timeout: 30), "GrokBotの記事が取得できない")
+    XCTAssertTrue(app.tables["qiitaArticleTable"].cells.firstMatch.waitForExistence(timeout: 30), "GrokBotの記事が取得できない")
     snapshot("Qiita_GrokBot_Articles")
     assertAlive("Qiita GrokBot")
   }
@@ -267,12 +267,12 @@ extension HelloWorldSwiftUITests {
     snapshot("Qiita_ChatGPT_Menu")
     chatgpt.tap()
     XCTAssertTrue(sheet.waitForNonExistence(timeout: 5))
-    XCTAssertTrue(app.staticTexts["ChatGPT Page 1/20posts/1〜"].waitForExistence(timeout: 10),
+    XCTAssertTrue(pageLabel(beginsWith: "ChatGPT Page 1/").waitForExistence(timeout: 10),
                   "ChatGPTタグに切り替わらない")
-    XCTAssertTrue(app.tables.cells.firstMatch.waitForExistence(timeout: 30), "ChatGPTの記事が取得できない")
+    XCTAssertTrue(app.tables["qiitaArticleTable"].cells.firstMatch.waitForExistence(timeout: 30), "ChatGPTの記事が取得できない")
     snapshot("Qiita_ChatGPT_Articles")
     // 実機では上部に動画の小窓が重なる場合があるため、画面中央の記事を開く。
-    let article = app.tables.cells.element(boundBy: 3)
+    let article = app.tables["qiitaArticleTable"].cells.element(boundBy: 3)
     XCTAssertTrue(article.waitForExistence(timeout: 10))
     article.tap()
     XCTAssertTrue(app.buttons["Share"].waitForExistence(timeout: 10), "記事のWeb画面が開かない")
@@ -311,6 +311,15 @@ extension HelloWorldSwiftUITests {
                   title + ": 再読み込みしても一覧データが表示されない")
   }
 
+  /// ページラベルを「先頭一致」で探す。perPage の値（"20posts" の部分）とテストを切り離すためのヘルパー。
+  /// label BEGINSWITH は、文言が指定プレフィックスになった時点で要素が見つかるため、
+  /// 従来の app.staticTexts["GrokBot Page 1/20posts/1〜"] と同じ「内容変化の待機」になる
+  private func pageLabel(beginsWith prefix: String) -> XCUIElement {
+    app.staticTexts
+      .matching(NSPredicate(format: "label BEGINSWITH %@", prefix))
+      .firstMatch
+  }
+
   private func dismissFeedMenu() {
     if app.buttons["Cancel"].exists {
       app.buttons["Cancel"].tap()
@@ -323,8 +332,8 @@ extension HelloWorldSwiftUITests {
 
   func testFunctional_QiitaArticleAndShare() {
     openFromTop("Qiita", marker: "Menu", wait: networkWait)
-    XCTAssertTrue(app.tables.cells.firstMatch.waitForExistence(timeout: 20), "記事が取得できない")
-    app.tables.cells.firstMatch.tap()
+    XCTAssertTrue(app.tables["qiitaArticleTable"].cells.firstMatch.waitForExistence(timeout: 20), "記事が取得できない")
+    app.tables["qiitaArticleTable"].cells.firstMatch.tap()
     XCTAssertTrue(app.buttons["Share"].waitForExistence(timeout: 10), "記事のWeb画面が開かない")
     snapshot("Qiita_Article")
     app.buttons["Share"].tap()
@@ -334,6 +343,15 @@ extension HelloWorldSwiftUITests {
     app.swipeDown()
     if app.buttons["Close"].isHittable { app.buttons["Close"].tap() }
     assertAlive("Qiita Share")
+  }
+
+  // H-Q2 で付与した accessibilityIdentifier が実際に UI 階層に現れることを確認する
+  func testQiitaAccessibilityIdentifiers() {
+    openFromTop("Qiita", marker: "Menu", wait: networkWait)
+    XCTAssertTrue(app.tables["qiitaArticleTable"].waitForExistence(timeout: 10),
+                  "qiitaArticleTable 識別子が付いていない")
+    XCTAssertTrue(app.staticTexts["qiitaPageLabel"].waitForExistence(timeout: 10),
+                  "qiitaPageLabel 識別子が付いていない")
   }
 
   func testFunctional_DatePicker() {

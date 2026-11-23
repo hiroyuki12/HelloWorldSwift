@@ -20,7 +20,10 @@ class ViewController: UIViewController {
   }
   
   @IBAction func tapAdd(_ sender: Any) {
-    let next = self.storyboard!.instantiateViewController(withIdentifier: "AddViewController")
+    guard let next = self.storyboard?.instantiateViewController(withIdentifier: "AddViewController") else {
+      assertionFailure("Storyboard または AddViewController が見つからない")
+      return
+    }
     self.present(next, animated: true)
   }
   

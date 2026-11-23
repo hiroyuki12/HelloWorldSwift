@@ -24,7 +24,7 @@ class MyTableViewController: UIViewController, UITableViewDelegate, UITableViewD
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         // セルに表示する値を設定する
-        cell.textLabel!.text = TODO[indexPath.row]
+        cell.textLabel?.text = TODO[indexPath.row]
         return cell
     }
     

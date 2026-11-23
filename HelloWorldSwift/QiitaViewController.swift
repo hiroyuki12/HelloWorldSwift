@@ -40,8 +40,22 @@ class QiitaViewController: PagedListViewController {
   // 表示中の記事の id（ページをまたいだ重複を除くため）
   private var articleIDs = Set<String>()
 
+  // Main.storyboard のセル（Zyp-Fn-3Is）内サブビューの tag。
+  // Storyboard 側と合わせて変えないこと
+  private enum CellTag {
+    static let icon  = 1  // プロフィール画像 (gBg-r1-P97)
+    static let title = 2  // 記事タイトル (ICk-MU-aIU)
+    static let date  = 3  // 作成日 (xvU-yB-LeX)
+    static let tags  = 4  // タグ列 (xmi-Rb-FES)
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    // UI テスト・VoiceOver が表示文言に依存しないよう、要素に識別子を付ける
+    table.accessibilityIdentifier = "qiitaArticleTable"
+    textPage.accessibilityIdentifier = "qiitaPageLabel"
+
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(refreshArticles), for: .valueChanged)
     table.refreshControl = refreshControl
@@ -125,13 +139,13 @@ class QiitaViewController: PagedListViewController {
   override func configure(_ cell: UITableViewCell, row: Int) {
     let article = articles[row]
     // タイトル
-    (cell.viewWithTag(2) as? UILabel)?.text = article.title
+    (cell.viewWithTag(CellTag.title) as? UILabel)?.text = article.title
     // 作成日
-    (cell.viewWithTag(3) as? UILabel)?.text = daysAgo(article.created_at)
+    (cell.viewWithTag(CellTag.date) as? UILabel)?.text = daysAgo(article.created_at)
     // プロフィール画像
-    (cell.viewWithTag(1) as? UIImageView)?.loadImageAsynchronously(url: URL(string: article.user.profile_image_url), defaultUIImage: UIImage(systemName: "person.crop.square"))
+    (cell.viewWithTag(CellTag.icon) as? UIImageView)?.loadImageAsynchronously(url: URL(string: article.user.profile_image_url), defaultUIImage: UIImage(systemName: "person.crop.square"))
     // タグ（最大5つ）
-    (cell.viewWithTag(4) as? UILabel)?.text = article.tags.prefix(5).map { $0.name }.joined(separator: ", ")
+    (cell.viewWithTag(CellTag.tags) as? UILabel)?.text = article.tags.prefix(5).map { $0.name }.joined(separator: ", ")
   }
 
   override func url(forRow row: Int) -> String? {

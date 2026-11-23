@@ -136,7 +136,7 @@ class DropboxSlideshowViewController: UIViewController {
                 self.filenames?.append(entry.name)
               }
             }
-            self.maxCount = UInt32(self.filenames!.count)
+            self.maxCount = UInt32((self.filenames ?? []).count)
             self.finishListFolder = true
             self.CountLabel.text = String(self.count+1) + " / " + String(self.maxCount)
             self.startTimer()
@@ -204,7 +204,7 @@ class DropboxSlideshowViewController: UIViewController {
             print("Error : \(err.localizedDescription)")
           }
         } else {
-          print(error!)
+          print(error.map { "\($0)" } ?? "unknown error")
         }
       }
     }
